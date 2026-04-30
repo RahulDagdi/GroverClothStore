@@ -1,0 +1,588 @@
+<!--
+  ╔══════════════════════════════════════════════════════════════╗
+  ║   GROVER CLOTH STORE — FOOTER v2 (fully animated)          ║
+  ║   Paste entire block at BOTTOM of <body>                    ║
+  ║   CSS scoped .gcs-f-* — zero conflicts                     ║
+  ╚══════════════════════════════════════════════════════════════╝
+-->
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,500&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+.gcs-f *, .gcs-f *::before, .gcs-f *::after { box-sizing:border-box; margin:0; padding:0; }
+.gcs-f {
+  --fr: #CC0D39;
+  --fn: #1a2044;
+  --fg: #c9a227;
+  --fw: #ffffff;
+  --fc: #fdf8f2;
+  --fb: #e8ddd4;
+  --ft: #2c2c2c;
+  --fm: #777;
+  font-family: 'DM Sans', sans-serif;
+  width: 100%;
+}
+
+/* ════ KEYFRAMES ════ */
+@keyframes gcs-f-shimmer {
+  0%{background-position:-200% center}
+  100%{background-position:200% center}
+}
+@keyframes gcs-f-ltr {
+  from{transform:translateX(-50%)} to{transform:translateX(0)}
+}
+@keyframes gcs-f-float {
+  0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)}
+}
+@keyframes gcs-f-spin {
+  to{transform:rotate(360deg)}
+}
+@keyframes gcs-f-reveal-up {
+  from{opacity:0;transform:translateY(32px)}
+  to{opacity:1;transform:translateY(0)}
+}
+@keyframes gcs-f-reveal-left {
+  from{opacity:0;transform:translateX(-24px)}
+  to{opacity:1;transform:translateX(0)}
+}
+@keyframes gcs-f-pulse-gold {
+  0%,100%{box-shadow:0 0 0 0 rgba(201,162,39,.4)}
+  50%{box-shadow:0 0 0 12px rgba(201,162,39,0)}
+}
+@keyframes gcs-f-wave {
+  0%,100%{transform:scaleX(1)}
+  50%{transform:scaleX(1.05)}
+}
+@keyframes gcs-f-underline {
+  from{width:0} to{width:100%}
+}
+@keyframes gcs-f-heart {
+  0%,100%{transform:scale(1)}
+  25%{transform:scale(1.3)}
+  50%{transform:scale(0.95)}
+  75%{transform:scale(1.15)}
+}
+@keyframes gcs-f-star-twinkle {
+  0%,100%{opacity:1;transform:scale(1) rotate(0deg)}
+  33%{opacity:.4;transform:scale(.7) rotate(20deg)}
+  66%{opacity:.8;transform:scale(1.2) rotate(-10deg)}
+}
+@keyframes gcs-f-bg-drift {
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+@keyframes gcs-f-logo-glow {
+  0%,100%{filter:drop-shadow(0 3px 8px rgba(201,162,39,.2))}
+  50%{filter:drop-shadow(0 6px 20px rgba(201,162,39,.6))}
+}
+@keyframes gcs-f-count-up {
+  from{opacity:0;transform:translateY(10px) scale(.8)}
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
+@keyframes gcs-f-pay-float {
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-3px)}
+}
+
+/* ════ MARQUEE ════ */
+.gcs-f-marquee {
+  overflow:hidden; padding:13px 0;
+  border-top:1px solid var(--fb);
+  background:var(--fw); position:relative;
+}
+.gcs-f-marquee::before,.gcs-f-marquee::after {
+  content:''; position:absolute; top:0; bottom:0; width:80px; z-index:1; pointer-events:none;
+}
+.gcs-f-marquee::before { left:0; background:linear-gradient(to right,var(--fw),transparent); }
+.gcs-f-marquee::after  { right:0; background:linear-gradient(to left,var(--fw),transparent); }
+.gcs-f-mq-track {
+  display:flex; white-space:nowrap;
+  animation:gcs-f-ltr 32s linear infinite;
+}
+.gcs-f-mq-track:hover { animation-play-state:paused; }
+.gcs-f-mq-item {
+  display:inline-flex; align-items:center; gap:10px;
+  padding:0 36px; font-size:12px; font-weight:700;
+  letter-spacing:2px; text-transform:uppercase; color:var(--fn);
+}
+.gcs-f-mq-gem {
+  color:var(--fg); font-size:14px;
+  animation:gcs-f-star-twinkle 2.5s ease-in-out infinite;
+}
+.gcs-f-mq-item:nth-child(3n) .gcs-f-mq-gem { animation-delay:.8s; }
+.gcs-f-mq-item:nth-child(5n) .gcs-f-mq-gem { animation-delay:1.6s; }
+
+/* ════ STATS STRIP ════ */
+.gcs-f-stats {
+  background: linear-gradient(135deg, var(--fn) 0%, #2a3260 50%, var(--fn) 100%);
+  background-size:200% 200%;
+  animation:gcs-f-bg-drift 8s ease infinite;
+  padding:28px 20px;
+}
+.gcs-f-stats-inner {
+  max-width:1300px; margin:0 auto;
+  display:grid; grid-template-columns:repeat(4,1fr); gap:0;
+}
+.gcs-f-stat {
+  text-align:center; padding:12px 20px;
+  border-right:1px solid rgba(255,255,255,.1);
+  position:relative;
+}
+.gcs-f-stat:last-child { border-right:none; }
+.gcs-f-stat-num {
+  font-size:clamp(22px,3vw,32px); font-weight:800; color:var(--fg);
+  font-family:'Cormorant Garamond',serif;
+  line-height:1;
+  animation:gcs-f-count-up .6s both;
+}
+.gcs-f-stat:nth-child(1) .gcs-f-stat-num{animation-delay:.1s}
+.gcs-f-stat:nth-child(2) .gcs-f-stat-num{animation-delay:.2s}
+.gcs-f-stat:nth-child(3) .gcs-f-stat-num{animation-delay:.3s}
+.gcs-f-stat:nth-child(4) .gcs-f-stat-num{animation-delay:.4s}
+.gcs-f-stat-label {
+  font-size:11px; color:rgba(255,255,255,.65);
+  letter-spacing:1.5px; text-transform:uppercase; margin-top:4px;
+}
+.gcs-f-stat i {
+  display:block; font-size:20px; color:var(--fg); margin-bottom:8px;
+  animation:gcs-f-float 3s ease-in-out infinite;
+}
+.gcs-f-stat:nth-child(2) i{animation-delay:.5s}
+.gcs-f-stat:nth-child(3) i{animation-delay:1s}
+.gcs-f-stat:nth-child(4) i{animation-delay:1.5s}
+
+/* ════ MAIN FOOTER ════ */
+.gcs-f-main {
+  background:var(--fc);
+  padding:56px 20px 48px;
+  position:relative; overflow:hidden;
+}
+/* animated mesh gradient background */
+.gcs-f-main::before {
+  content:''; position:absolute; inset:0; pointer-events:none;
+  background:
+    radial-gradient(circle at 8% 15%, rgba(201,162,39,.07) 0%, transparent 40%),
+    radial-gradient(circle at 92% 85%, rgba(26,32,68,.06) 0%, transparent 40%),
+    radial-gradient(circle at 50% 50%, rgba(204,13,57,.03) 0%, transparent 60%);
+  animation:gcs-f-bg-drift 10s ease infinite alternate;
+}
+
+/* decorative corner ornaments */
+.gcs-f-corner {
+  position:absolute; font-size:80px; opacity:.04;
+  pointer-events:none;
+  animation:gcs-f-float 6s ease-in-out infinite;
+}
+.gcs-f-corner.tl { top:-10px; left:-10px; animation-delay:0s; }
+.gcs-f-corner.tr { top:-10px; right:-10px; animation-delay:1s; transform:scaleX(-1); }
+.gcs-f-corner.bl { bottom:-10px; left:-10px; animation-delay:2s; transform:scaleY(-1); }
+.gcs-f-corner.br { bottom:-10px; right:-10px; animation-delay:3s; transform:scale(-1); }
+
+.gcs-f-grid {
+  max-width:1300px; margin:0 auto;
+  display:grid;
+  grid-template-columns:2fr 1fr 1.4fr 1.6fr;
+  gap:48px;
+  position:relative; z-index:1;
+}
+
+/* — Brand col — */
+.gcs-f-reveal {
+  opacity:0; transform:translateY(28px);
+  transition:opacity .7s cubic-bezier(.4,0,.2,1), transform .7s cubic-bezier(.4,0,.2,1);
+}
+.gcs-f-reveal.visible { opacity:1; transform:translateY(0); }
+
+.gcs-f-logo-wrap {
+  display:flex; align-items:center; gap:12px;
+  margin-bottom:18px; text-decoration:none;
+  width:fit-content;
+}
+.gcs-f-logo-ring-wrap {
+  position:relative; flex-shrink:0;
+  width:68px; height:68px;
+}
+.gcs-f-logo-img {
+  width:68px; height:68px; border-radius:50%;
+  object-fit:contain; position:relative; z-index:1;
+  animation:gcs-f-logo-glow 3s ease-in-out infinite;
+  transition:transform .4s cubic-bezier(.34,1.56,.64,1);
+}
+.gcs-f-logo-wrap:hover .gcs-f-logo-img { transform:scale(1.1) rotate(5deg); }
+.gcs-f-logo-spin {
+  position:absolute; inset:0;
+  border:2px dashed rgba(201,162,39,.35);
+  border-radius:50%;
+  animation:gcs-f-spin 10s linear infinite;
+}
+.gcs-f-logo-spin2 {
+  position:absolute; inset:5px;
+  border:1px dashed rgba(204,13,57,.2);
+  border-radius:50%;
+  animation:gcs-f-spin 6s linear infinite reverse;
+}
+.gcs-f-brand-name strong {
+  display:block;
+  font-family:'Cormorant Garamond',serif;
+  font-size:19px; font-weight:700; color:var(--fn);
+}
+.gcs-f-brand-name span {
+  font-size:9.5px; color:var(--fg); font-weight:700;
+  letter-spacing:2px; text-transform:uppercase;
+}
+.gcs-f-desc {
+  font-size:13.5px; color:#666; line-height:1.8; margin-bottom:24px;
+}
+
+/* social icons */
+.gcs-f-social { display:flex; gap:10px; }
+.gcs-f-soc-btn {
+  width:38px; height:38px; border-radius:12px;
+  background:var(--fw); border:1.5px solid var(--fb);
+  display:flex; align-items:center; justify-content:center;
+  font-size:15px; color:var(--fn); text-decoration:none;
+  transition:all .35s cubic-bezier(.34,1.56,.64,1);
+  position:relative; overflow:hidden;
+}
+.gcs-f-soc-btn::before {
+  content:''; position:absolute; inset:0;
+  background:var(--fr); transform:scale(0);
+  border-radius:50%; transition:transform .35s cubic-bezier(.34,1.56,.64,1);
+  z-index:0;
+}
+.gcs-f-soc-btn i { position:relative; z-index:1; transition:transform .35s, color .2s; }
+.gcs-f-soc-btn:hover::before { transform:scale(2); }
+.gcs-f-soc-btn:hover i { color:#fff; transform:scale(1.15) rotate(-8deg); }
+.gcs-f-soc-btn:hover { border-color:var(--fr); transform:translateY(-3px); box-shadow:0 8px 20px rgba(204,13,57,.25); }
+.gcs-f-soc-btn:nth-child(1):hover::before{background:#25D366}
+.gcs-f-soc-btn:nth-child(2):hover::before{background:#1877F2}
+.gcs-f-soc-btn:nth-child(3):hover::before{background:linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888)}
+.gcs-f-soc-btn:nth-child(4):hover::before{background:#1DA1F2}
+
+/* — Column headings — */
+.gcs-f-col-title {
+  font-size:12.5px; font-weight:800; color:var(--fn);
+  text-transform:uppercase; letter-spacing:2px;
+  margin-bottom:22px; position:relative; padding-bottom:12px;
+}
+.gcs-f-col-title::after {
+  content:''; position:absolute; bottom:0; left:0;
+  width:32px; height:2.5px; background:var(--fg); border-radius:2px;
+  animation:gcs-f-wave 2s ease-in-out infinite;
+}
+
+/* — Links — */
+.gcs-f-links { list-style:none; }
+.gcs-f-links li { margin-bottom:9px; }
+.gcs-f-links a {
+  display:inline-flex; align-items:center; gap:7px;
+  font-size:13.5px; color:#666; text-decoration:none;
+  transition:all .25s; position:relative; padding-left:0;
+}
+.gcs-f-links a::before {
+  content:'→'; color:var(--fr); font-size:11px;
+  transform:translateX(-8px); opacity:0;
+  transition:all .25s; display:inline-block;
+  width:0; overflow:hidden;
+}
+.gcs-f-links a:hover { color:var(--fr); padding-left:16px; }
+.gcs-f-links a:hover::before { transform:translateX(0); opacity:1; width:14px; }
+
+/* — Store info — */
+.gcs-f-store-row {
+  display:flex; gap:11px; margin-bottom:14px; align-items:flex-start;
+}
+.gcs-f-store-icon {
+  width:30px; height:30px; border-radius:8px;
+  background:var(--fn); color:var(--fg);
+  display:flex; align-items:center; justify-content:center;
+  font-size:13px; flex-shrink:0;
+  transition:transform .3s cubic-bezier(.34,1.56,.64,1), background .3s;
+}
+.gcs-f-store-row:hover .gcs-f-store-icon { transform:scale(1.15) rotate(-5deg); background:var(--fr); }
+.gcs-f-store-row span { font-size:13px; color:#666; line-height:1.65; }
+.gcs-f-store-row a { color:var(--fn); text-decoration:none; font-weight:600; transition:color .2s; }
+.gcs-f-store-row a:hover { color:var(--fr); }
+
+/* — Newsletter — */
+.gcs-f-newsletter { margin-top:4px; }
+.gcs-f-newsletter-label { font-size:12px; color:var(--fm); margin-bottom:10px; }
+.gcs-f-newsletter-form {
+  display:flex; border:1.5px solid var(--fb); border-radius:10px; overflow:hidden;
+  transition:border-color .25s, box-shadow .25s;
+}
+.gcs-f-newsletter-form:focus-within {
+  border-color:var(--fr); box-shadow:0 0 0 3px rgba(204,13,57,.1);
+}
+.gcs-f-newsletter-input {
+  flex:1; border:none; outline:none; padding:10px 14px;
+  font-size:13px; font-family:'DM Sans',sans-serif; background:var(--fw);
+}
+.gcs-f-newsletter-btn {
+  background:var(--fr); border:none; padding:0 16px;
+  color:#fff; font-size:12px; font-weight:700; cursor:pointer;
+  font-family:'DM Sans',sans-serif; letter-spacing:.5px;
+  transition:all .25s; position:relative; overflow:hidden;
+}
+.gcs-f-newsletter-btn::after {
+  content:''; position:absolute; inset:0;
+  background:rgba(255,255,255,.2); transform:translateX(-100%); transition:transform .3s;
+}
+.gcs-f-newsletter-btn:hover { background:#a50929; }
+.gcs-f-newsletter-btn:hover::after { transform:translateX(100%); }
+
+/* ════ BOTTOM BAR ════ */
+.gcs-f-bottom {
+  background:linear-gradient(90deg, var(--fn) 0%, #252d5a 50%, var(--fn) 100%);
+  padding:20px;
+  position:relative; overflow:hidden;
+}
+.gcs-f-bottom::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:1px;
+  background:linear-gradient(90deg,transparent,var(--fg),transparent);
+  animation:gcs-f-shimmer 3s linear infinite;
+  background-size:200% 100%;
+}
+.gcs-f-bottom-inner {
+  max-width:1300px; margin:0 auto;
+  display:flex; align-items:center; justify-content:space-between;
+  flex-wrap:wrap; gap:14px;
+}
+.gcs-f-copy {
+  font-size:12.5px; color:rgba(255,255,255,.55);
+  display:flex; align-items:center; gap:6px;
+}
+.gcs-f-copy strong { color:var(--fg); }
+.gcs-f-heart {
+  color:var(--fr); display:inline-block;
+  animation:gcs-f-heart 1.5s ease-in-out infinite;
+}
+
+/* payment chips */
+.gcs-f-pays { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+.gcs-f-pay {
+  background:#fff; border-radius:8px;
+  padding:5px 12px; display:flex; align-items:center; gap:4px;
+  box-shadow:0 2px 8px rgba(0,0,0,.12);
+  font-size:12px; font-weight:800; color:var(--fn);
+  transition:all .3s cubic-bezier(.34,1.56,.64,1);
+  animation:gcs-f-pay-float 3s ease-in-out infinite;
+  cursor:default;
+}
+.gcs-f-pay:nth-child(2){animation-delay:.4s}
+.gcs-f-pay:nth-child(3){animation-delay:.8s}
+.gcs-f-pay:nth-child(4){animation-delay:1.2s}
+.gcs-f-pay:hover { transform:translateY(-4px) scale(1.05); box-shadow:0 8px 20px rgba(0,0,0,.15); }
+.gcs-f-pay i { font-size:18px; }
+.gcs-f-pay.visa i  { color:#1a1f71; }
+.gcs-f-pay.mc i    { color:#eb001b; }
+.gcs-f-pay.pp i    { color:#003087; }
+.gcs-f-pay.gp      { color:#4285f4; letter-spacing:-.5px; }
+
+/* ════ RESPONSIVE ════ */
+@media(max-width:1024px){
+  .gcs-f-grid{grid-template-columns:1fr 1fr;gap:36px}
+  .gcs-f-stats-inner{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:600px){
+  .gcs-f-grid{grid-template-columns:1fr;gap:28px}
+  .gcs-f-stats-inner{grid-template-columns:repeat(2,1fr)}
+  .gcs-f-bottom-inner{flex-direction:column;text-align:center;align-items:center}
+}
+</style>
+
+<div class="gcs-f">
+
+  <!-- Marquee -->
+  <div class="gcs-f-marquee">
+    <div class="gcs-f-mq-track" id="gcs-f-mq"></div>
+  </div>
+
+  <!-- Stats strip -->
+  <div class="gcs-f-stats">
+    <div class="gcs-f-stats-inner">
+      <div class="gcs-f-stat">
+        <i class="fas fa-users"></i>
+        <div class="gcs-f-stat-num" data-target="15000">15K+</div>
+        <div class="gcs-f-stat-label">Happy Customers</div>
+      </div>
+      <div class="gcs-f-stat">
+        <i class="fas fa-tshirt"></i>
+        <div class="gcs-f-stat-num" data-target="1591">1591+</div>
+        <div class="gcs-f-stat-label">Products Available</div>
+      </div>
+      <div class="gcs-f-stat">
+        <i class="fas fa-star"></i>
+        <div class="gcs-f-stat-num">4.9★</div>
+        <div class="gcs-f-stat-label">Average Rating</div>
+      </div>
+      <div class="gcs-f-stat">
+        <i class="fas fa-truck"></i>
+        <div class="gcs-f-stat-num">Free</div>
+        <div class="gcs-f-stat-label">Shipping ₹999+</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main footer -->
+  <footer class="gcs-f-main">
+    <span class="gcs-f-corner tl">❋</span>
+    <span class="gcs-f-corner tr">❋</span>
+    <span class="gcs-f-corner bl">❋</span>
+    <span class="gcs-f-corner br">❋</span>
+
+    <div class="gcs-f-grid">
+
+      <!-- Brand -->
+      <div class="gcs-f-reveal">
+        <a href="/" class="gcs-f-logo-wrap">
+          <div class="gcs-f-logo-ring-wrap">
+            <img class="gcs-f-logo-img" src="FOOTER_LOGO_URI" alt="Grover Cloth Store">
+            <div class="gcs-f-logo-spin"></div>
+            <div class="gcs-f-logo-spin2"></div>
+          </div>
+          <div class="gcs-f-brand-name">
+            <strong>Grover Cloth Store</strong>
+            <span>Meet Your Fashion</span>
+          </div>
+        </a>
+        <p class="gcs-f-desc">
+          Grover Cloth Store offers stylish, high-quality clothing designed for comfort, confidence, and everyday wear. From ethnic classics to contemporary chic — your fashion destination in Rajasthan.
+        </p>
+        <div class="gcs-f-social">
+          <a href="https://wa.me/8619375610" class="gcs-f-soc-btn" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+          <a href="#" class="gcs-f-soc-btn" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" class="gcs-f-soc-btn" title="Instagram"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="gcs-f-soc-btn" title="Twitter"><i class="fab fa-twitter"></i></a>
+        </div>
+
+        <!-- Newsletter -->
+        <div class="gcs-f-newsletter" style="margin-top:24px;">
+          <p class="gcs-f-newsletter-label">Get exclusive offers in your inbox</p>
+          <div class="gcs-f-newsletter-form">
+            <input class="gcs-f-newsletter-input" type="email"
+              placeholder="Your email address…" id="gcs-f-email">
+            <button class="gcs-f-newsletter-btn" onclick="gcsFSubscribe()">
+              Subscribe
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Explore -->
+      <div class="gcs-f-reveal" style="transition-delay:.12s">
+        <h4 class="gcs-f-col-title">Explore</h4>
+        <ul class="gcs-f-links">
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Exchange Policy</a></li>
+          <li><a href="#">Bulk Order</a></li>
+          <li><a href="#">Contact Us</a></li>
+          <li><a href="#">New Arrivals</a></li>
+          <li><a href="#">Best Sellers</a></li>
+          <li><a href="#">All Collections</a></li>
+        </ul>
+      </div>
+
+      <!-- Policies -->
+      <div class="gcs-f-reveal" style="transition-delay:.22s">
+        <h4 class="gcs-f-col-title">Policies</h4>
+        <ul class="gcs-f-links">
+          <li><a href="#">Shipping Policy</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Cancellation &amp; Exchange</a></li>
+          <li><a href="#">Terms &amp; Services</a></li>
+          <li><a href="#">Return Policy</a></li>
+          <li><a href="#">FAQ</a></li>
+        </ul>
+      </div>
+
+      <!-- Visit Store -->
+      <div class="gcs-f-reveal" style="transition-delay:.32s">
+        <h4 class="gcs-f-col-title">Visit Our Store</h4>
+        <div class="gcs-f-store-row">
+          <div class="gcs-f-store-icon"><i class="fas fa-map-marker-alt"></i></div>
+          <span>Hassaria Market, In front of Lal Kothi, Hanumangarh Town, Hanumangarh, Rajasthan 335513</span>
+        </div>
+        <div class="gcs-f-store-row">
+          <div class="gcs-f-store-icon"><i class="fas fa-phone-alt"></i></div>
+          <span><a href="tel:8619375610">8619375610</a></span>
+        </div>
+        <div class="gcs-f-store-row">
+          <div class="gcs-f-store-icon"><i class="fas fa-envelope"></i></div>
+          <span><a href="mailto:groverclothstore@gmail.com">groverclothstore@gmail.com</a></span>
+        </div>
+        <div class="gcs-f-store-row">
+          <div class="gcs-f-store-icon"><i class="fab fa-whatsapp"></i></div>
+          <span><a href="https://wa.me/8619375610">Chat on WhatsApp</a></span>
+        </div>
+        <div class="gcs-f-store-row" style="margin-top:8px;">
+          <div class="gcs-f-store-icon"><i class="fas fa-clock"></i></div>
+          <span>Mon–Sat: 9:00 AM – 8:00 PM<br>Sunday: 10:00 AM – 6:00 PM</span>
+        </div>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- Bottom bar -->
+  <div class="gcs-f-bottom">
+    <div class="gcs-f-bottom-inner">
+      <p class="gcs-f-copy">
+        © 2026 <strong>Grover Cloth Store.</strong>
+        Made with <span class="gcs-f-heart">♥</span> in Rajasthan
+      </p>
+      <div class="gcs-f-pays">
+        <div class="gcs-f-pay visa"><i class="fab fa-cc-visa"></i></div>
+        <div class="gcs-f-pay mc"><i class="fab fa-cc-mastercard"></i></div>
+        <div class="gcs-f-pay pp"><i class="fab fa-cc-paypal"></i></div>
+        <div class="gcs-f-pay gp"><i class="fab fa-google-pay" style="font-size:20px;color:#4285f4"></i></div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /gcs-f -->
+
+<script>
+(function(){
+  /* Marquee */
+  var mq = document.getElementById('gcs-f-mq');
+  if(mq){
+    var h='';
+    for(var i=0;i<20;i++)
+      h+='<span class="gcs-f-mq-item">GROVER CLOTH STORE <span class="gcs-f-mq-gem">✦</span></span>';
+    mq.innerHTML=h;
+  }
+
+  /* Scroll reveal with stagger */
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){
+          e.target.classList.add('visible');
+          io.unobserve(e.target);
+        }
+      });
+    },{threshold:0.12});
+    document.querySelectorAll('.gcs-f-reveal').forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('.gcs-f-reveal').forEach(function(el){ el.classList.add('visible'); });
+  }
+
+  /* Newsletter subscribe */
+  window.gcsFSubscribe = function(){
+    var inp = document.getElementById('gcs-f-email');
+    if(!inp) return;
+    var val = inp.value.trim();
+    if(!val || !val.includes('@')){
+      inp.style.borderColor='var(--fr)';
+      inp.placeholder='Please enter a valid email!';
+      setTimeout(function(){ inp.style.borderColor=''; inp.placeholder='Your email address…'; },2000);
+      return;
+    }
+    inp.value='';
+    inp.placeholder='✓ Subscribed! Thank you 🎉';
+    setTimeout(function(){ inp.placeholder='Your email address…'; },3000);
+  };
+})();
+</script>

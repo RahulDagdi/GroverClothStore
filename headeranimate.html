@@ -1,0 +1,696 @@
+<!--
+  ╔══════════════════════════════════════════════════════════════╗
+  ║   GROVER CLOTH STORE — HEADER v2 (fully animated)          ║
+  ║   Paste entire block at TOP of <body>                       ║
+  ║   CSS scoped .gcs-h-* — zero conflicts                     ║
+  ╚══════════════════════════════════════════════════════════════╝
+-->
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,500&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+.gcs-h *, .gcs-h *::before, .gcs-h *::after { box-sizing:border-box; margin:0; padding:0; }
+.gcs-h {
+  --hr: #CC0D39;
+  --hn: #1a2044;
+  --hg: #c9a227;
+  --hw: #ffffff;
+  --hc: #fffaf3;
+  --hb: #e8ddd4;
+  --hy: #fff3b0;
+  --ht: #2c2c2c;
+  --hm: #777;
+  font-family: 'DM Sans', sans-serif;
+  width: 100%; position: relative; z-index: 1000;
+}
+
+/* ════ KEYFRAMES ════ */
+@keyframes gcs-h-shimmer {
+  0%{background-position:-200% center}
+  100%{background-position:200% center}
+}
+@keyframes gcs-h-float {
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-5px)}
+}
+@keyframes gcs-h-spin-slow {
+  to{transform:rotate(360deg)}
+}
+@keyframes gcs-h-pulse-ring {
+  0%{box-shadow:0 0 0 0 rgba(201,162,39,.5)}
+  70%{box-shadow:0 0 0 10px rgba(201,162,39,0)}
+  100%{box-shadow:0 0 0 0 rgba(201,162,39,0)}
+}
+@keyframes gcs-h-slide-down {
+  from{opacity:0;transform:translateY(-100%)}
+  to{opacity:1;transform:translateY(0)}
+}
+@keyframes gcs-h-fade-in {
+  from{opacity:0;transform:translateY(-8px)}
+  to{opacity:1;transform:translateY(0)}
+}
+@keyframes gcs-h-logo-pop {
+  0%{opacity:0;transform:scale(0.5) rotate(-15deg)}
+  60%{transform:scale(1.1) rotate(4deg)}
+  80%{transform:scale(0.97) rotate(-1deg)}
+  100%{opacity:1;transform:scale(1) rotate(0deg)}
+}
+@keyframes gcs-h-nav-item {
+  from{opacity:0;transform:translateY(-14px)}
+  to{opacity:1;transform:translateY(0)}
+}
+@keyframes gcs-h-cart-bounce {
+  0%,100%{transform:scale(1)}
+  30%{transform:scale(1.35) rotate(-8deg)}
+  60%{transform:scale(0.9) rotate(4deg)}
+}
+@keyframes gcs-h-typing-cursor {
+  0%,100%{opacity:1} 50%{opacity:0}
+}
+@keyframes gcs-h-topbar-slide {
+  from{opacity:0;transform:translateY(-100%)}
+  to{opacity:1;transform:translateY(0)}
+}
+@keyframes gcs-h-underline-grow {
+  from{transform:scaleX(0);transform-origin:left}
+  to{transform:scaleX(1);transform-origin:left}
+}
+@keyframes gcs-h-dropdown-in {
+  from{opacity:0;transform:translateY(10px) scale(0.97)}
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
+@keyframes gcs-h-sparkle {
+  0%,100%{opacity:0;transform:scale(0)}
+  50%{opacity:1;transform:scale(1)}
+}
+@keyframes gcs-h-mb-slide {
+  from{transform:translateX(-100%)}
+  to{transform:translateX(0)}
+}
+@keyframes gcs-h-search-glow {
+  0%,100%{box-shadow:0 0 0 0 rgba(204,13,57,0)}
+  50%{box-shadow:0 0 0 4px rgba(204,13,57,.15)}
+}
+@keyframes gcs-h-sticky-drop {
+  from{transform:translateY(-100%);opacity:0}
+  to{transform:translateY(0);opacity:1}
+}
+
+/* ════ TOP BAR ════ */
+.gcs-h-topbar {
+  background: linear-gradient(90deg, #a50929, var(--hr), #cc1a44, var(--hr), #a50929);
+  background-size: 300% 100%;
+  animation: gcs-h-shimmer 4s linear infinite, gcs-h-topbar-slide .5s ease both;
+  color: #fff;
+  padding: 9px 20px;
+  text-align: center;
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: .6px;
+  position: relative;
+  overflow: hidden;
+}
+.gcs-h-topbar-inner {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  position: relative; z-index: 1;
+}
+.gcs-h-topbar i { animation: gcs-h-float 2s ease-in-out infinite; }
+.gcs-h-topbar a {
+  color: var(--hy); text-decoration: none; font-weight: 800;
+  position: relative;
+  transition: color .2s;
+}
+.gcs-h-topbar a::after {
+  content:''; position:absolute; bottom:-1px; left:0; right:0;
+  height:1px; background:var(--hy);
+  transform:scaleX(0); transition:transform .3s;
+}
+.gcs-h-topbar a:hover::after { transform:scaleX(1); }
+
+/* ════ MAIN HEADER ════ */
+.gcs-h-main {
+  background: var(--hy);
+  padding: 10px 24px;
+  display: flex; align-items: center; gap: 18px;
+  position: sticky; top: 0; z-index: 998;
+  animation: gcs-h-slide-down .5s .1s cubic-bezier(.34,1.2,.64,1) both;
+  transition: background .35s, box-shadow .35s, padding .35s;
+}
+.gcs-h-main.gcs-h-scrolled {
+  background: rgba(255,255,255,.97);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 4px 28px rgba(0,0,0,.1);
+  padding: 7px 24px;
+  animation: gcs-h-sticky-drop .35s cubic-bezier(.4,0,.2,1) both;
+}
+
+/* Logo */
+.gcs-h-logo {
+  flex-shrink: 0; display: flex; align-items: center;
+  text-decoration: none; position: relative;
+}
+.gcs-h-logo img {
+  width: 66px; height: 66px; object-fit: contain; border-radius: 50%;
+  animation: gcs-h-logo-pop .8s .2s cubic-bezier(.34,1.56,.64,1) both;
+  filter: drop-shadow(0 3px 10px rgba(0,0,0,.2));
+  transition: transform .4s cubic-bezier(.34,1.56,.64,1), filter .3s;
+  position: relative; z-index: 1;
+}
+.gcs-h-scrolled .gcs-h-logo img { width: 52px; height: 52px; }
+.gcs-h-logo:hover img {
+  transform: scale(1.1) rotate(5deg);
+  filter: drop-shadow(0 6px 18px rgba(201,162,39,.5));
+}
+/* spinning ring behind logo */
+.gcs-h-logo-ring {
+  position: absolute;
+  width: 78px; height: 78px;
+  border-radius: 50%;
+  border: 2px dashed rgba(201,162,39,.4);
+  animation: gcs-h-spin-slow 8s linear infinite, gcs-h-logo-pop .8s .2s both;
+  top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  pointer-events: none;
+  transition: width .3s, height .3s;
+}
+.gcs-h-scrolled .gcs-h-logo-ring { width:62px; height:62px; }
+
+/* Search */
+.gcs-h-search {
+  flex: 1; max-width: 580px;
+  display: flex;
+  border: 1.5px solid var(--hb);
+  border-radius: 10px; overflow: hidden;
+  background: var(--hw);
+  animation: gcs-h-fade-in .5s .3s both;
+  transition: box-shadow .25s, border-color .25s, transform .25s;
+}
+.gcs-h-search:focus-within {
+  border-color: var(--hr);
+  box-shadow: 0 0 0 4px rgba(204,13,57,.1);
+  transform: translateY(-1px);
+  animation: gcs-h-search-glow 2s ease-in-out infinite;
+}
+.gcs-h-search-cat {
+  border: none; border-right: 1.5px solid var(--hb);
+  background: #f5f0e8; padding: 0 10px 0 12px;
+  font-size: 12px; font-family: 'DM Sans',sans-serif;
+  color: var(--ht); min-width: 96px; cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23999'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  background-color: #f5f0e8;
+  padding-right: 26px;
+  transition: background .2s;
+}
+.gcs-h-search-cat:focus { outline:none; background-color:#ffe9ec; }
+.gcs-h-search-input {
+  flex:1; border:none; outline:none;
+  padding: 11px 14px; font-size: 13px;
+  font-family: 'DM Sans',sans-serif; color: var(--ht);
+  background: transparent;
+}
+.gcs-h-search-input::placeholder { color: #ccc; transition: color .3s; }
+.gcs-h-search:focus-within .gcs-h-search-input::placeholder { color: #bbb; }
+.gcs-h-search-btn {
+  background: var(--hr); border: none; padding: 0 18px;
+  cursor: pointer; color: #fff; font-size: 14px;
+  transition: background .2s, transform .15s;
+  position: relative; overflow: hidden;
+}
+.gcs-h-search-btn::after {
+  content:''; position:absolute; inset:0;
+  background: rgba(255,255,255,.15);
+  transform:translateX(-100%);
+  transition:transform .3s;
+}
+.gcs-h-search-btn:hover { background: #a50929; }
+.gcs-h-search-btn:hover::after { transform:translateX(100%); }
+.gcs-h-search-btn:active { transform: scale(0.95); }
+
+/* Support */
+.gcs-h-support {
+  display: flex; align-items: center; gap: 10px;
+  flex-shrink: 0;
+  animation: gcs-h-fade-in .5s .45s both;
+}
+.gcs-h-support-icon {
+  width: 42px; height: 42px; border-radius: 50%;
+  background: var(--hn); color: var(--hg);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; flex-shrink: 0;
+  animation: gcs-h-pulse-ring 2.5s ease-in-out infinite;
+  transition: transform .3s;
+}
+.gcs-h-support:hover .gcs-h-support-icon {
+  transform: scale(1.1) rotate(-10deg);
+}
+.gcs-h-support-text span { display:block; font-size:9.5px; color:var(--hm); letter-spacing:.7px; text-transform:uppercase; }
+.gcs-h-support-text strong { font-size:13px; color:var(--hn); font-weight:700; }
+
+/* Hamburger */
+.gcs-h-ham {
+  display: none; flex-direction: column; gap: 5px;
+  cursor: pointer; padding: 8px; border: none; background: none;
+  margin-left: auto;
+}
+.gcs-h-ham span {
+  display: block; width: 24px; height: 2px;
+  background: var(--ht); border-radius: 2px;
+  transition: all .35s cubic-bezier(.4,0,.2,1);
+}
+.gcs-h-ham.open span:nth-child(1) { transform: rotate(45deg) translate(5px,5px); background: var(--hr); }
+.gcs-h-ham.open span:nth-child(2) { opacity:0; transform:translateX(-12px); }
+.gcs-h-ham.open span:nth-child(3) { transform: rotate(-45deg) translate(5px,-5px); background: var(--hr); }
+
+/* ════ NAV BAR ════ */
+.gcs-h-nav {
+  background: var(--hw);
+  border-bottom: 2px solid transparent;
+  background-clip: padding-box;
+  position: relative;
+  animation: gcs-h-fade-in .5s .2s both;
+}
+.gcs-h-nav::after {
+  content:''; position:absolute; bottom:0; left:0; right:0;
+  height:2px;
+  background: linear-gradient(90deg, transparent, var(--hr), var(--hg), var(--hr), transparent);
+  background-size: 200% 100%;
+  animation: gcs-h-shimmer 3s linear infinite;
+}
+.gcs-h-nav-inner {
+  max-width: 1400px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 24px;
+}
+
+/* nav links */
+.gcs-h-nav-links { display:flex; list-style:none; align-items:center; }
+.gcs-h-nav-links > li {
+  position: relative;
+  animation: gcs-h-nav-item .5s both;
+}
+.gcs-h-nav-links > li:nth-child(1){animation-delay:.15s}
+.gcs-h-nav-links > li:nth-child(2){animation-delay:.2s}
+.gcs-h-nav-links > li:nth-child(3){animation-delay:.25s}
+.gcs-h-nav-links > li:nth-child(4){animation-delay:.3s}
+.gcs-h-nav-links > li:nth-child(5){animation-delay:.35s}
+.gcs-h-nav-links > li:nth-child(6){animation-delay:.4s}
+
+.gcs-h-nav-links > li > a,
+.gcs-h-nav-links > li > span {
+  display: flex; align-items: center; gap: 4px;
+  padding: 15px 16px;
+  font-size: 12px; font-weight: 700;
+  color: var(--ht); text-decoration: none;
+  letter-spacing: .8px; text-transform: uppercase;
+  position: relative; cursor: pointer;
+  transition: color .25s;
+}
+/* animated underline */
+.gcs-h-nav-links > li > a::before,
+.gcs-h-nav-links > li > span::before {
+  content:'';
+  position:absolute; bottom:0; left:16px; right:16px;
+  height:2px; background:var(--hr);
+  transform:scaleX(0); transform-origin:right;
+  transition:transform .35s cubic-bezier(.4,0,.2,1);
+}
+.gcs-h-nav-links > li:hover > a::before,
+.gcs-h-nav-links > li:hover > span::before,
+.gcs-h-nav-links > li.gcs-h-active > a::before {
+  transform:scaleX(1); transform-origin:left;
+}
+.gcs-h-nav-links > li:hover > a,
+.gcs-h-nav-links > li:hover > span,
+.gcs-h-nav-links > li.gcs-h-active > a { color: var(--hr); }
+
+/* hot badge */
+.gcs-h-hot {
+  background: var(--hr); color:#fff;
+  font-size:8px; font-weight:800; padding:1px 5px;
+  border-radius:4px; letter-spacing:.5px;
+  animation: gcs-h-float 1.5s ease-in-out infinite;
+  margin-left:2px;
+}
+
+/* dropdown */
+.gcs-h-drop {
+  position:absolute; top:calc(100% + 2px); left:0;
+  background:var(--hw);
+  border: 1px solid var(--hb);
+  border-radius:0 0 12px 12px;
+  min-width:190px;
+  box-shadow:0 12px 40px rgba(0,0,0,.12);
+  opacity:0; visibility:hidden; pointer-events:none;
+  transform:translateY(8px) scale(.97);
+  transform-origin:top left;
+  transition:all .25s cubic-bezier(.4,0,.2,1);
+  z-index:200;
+  overflow:hidden;
+}
+.gcs-h-nav-links > li:hover .gcs-h-drop {
+  opacity:1; visibility:visible; pointer-events:auto;
+  transform:translateY(0) scale(1);
+  animation:gcs-h-dropdown-in .25s cubic-bezier(.4,0,.2,1) both;
+}
+.gcs-h-drop a {
+  display:flex; align-items:center; gap:8px;
+  padding:11px 18px; font-size:12.5px;
+  color:var(--ht); text-decoration:none; font-weight:500;
+  border-bottom:1px solid #faf5ef;
+  transition:background .2s, padding-left .2s, color .2s;
+  position: relative; overflow: hidden;
+}
+.gcs-h-drop a::before {
+  content:''; position:absolute; left:0; top:0; bottom:0;
+  width:3px; background:var(--hr);
+  transform:translateX(-3px); transition:transform .2s;
+}
+.gcs-h-drop a:hover { background:#fff5f7; color:var(--hr); padding-left:24px; }
+.gcs-h-drop a:hover::before { transform:translateX(0); }
+.gcs-h-drop a:last-child { border-bottom:none; }
+.gcs-h-drop a i { font-size:13px; color:var(--hg); width:16px; }
+
+/* right icons */
+.gcs-h-nav-right {
+  display:flex; align-items:center; gap:4px;
+  animation: gcs-h-fade-in .5s .45s both;
+}
+.gcs-h-icon-btn {
+  display:flex; align-items:center; gap:6px;
+  padding:9px 12px; border-radius:10px;
+  color:var(--ht); text-decoration:none;
+  font-size:12px; font-weight:600; border:none;
+  background:none; cursor:pointer; font-family:'DM Sans',sans-serif;
+  position:relative; transition:all .25s;
+  white-space: nowrap;
+}
+.gcs-h-icon-btn i { font-size:15px; transition:transform .3s cubic-bezier(.34,1.56,.64,1); }
+.gcs-h-icon-btn:hover { background:#fff5f7; color:var(--hr); }
+.gcs-h-icon-btn:hover i { transform:scale(1.25) rotate(-8deg); }
+
+/* cart badge */
+.gcs-h-badge {
+  position:absolute; top:4px; right:4px;
+  background:var(--hr); color:#fff;
+  width:16px; height:16px; border-radius:50%;
+  font-size:9px; font-weight:800;
+  display:flex; align-items:center; justify-content:center;
+  transition:transform .3s cubic-bezier(.34,1.56,.64,1);
+}
+.gcs-h-icon-btn:hover .gcs-h-badge { transform:scale(1.2); }
+.gcs-h-badge.bump { animation:gcs-h-cart-bounce .5s cubic-bezier(.34,1.56,.64,1); }
+
+/* divider between icons */
+.gcs-h-nav-div {
+  width:1px; height:20px; background:var(--hb);
+  margin:0 4px;
+}
+
+/* ════ MOBILE MENU ════ */
+.gcs-h-overlay {
+  display:none; position:fixed; inset:0;
+  background:rgba(0,0,0,.5); z-index:9996;
+  opacity:0; transition:opacity .35s;
+  backdrop-filter:blur(3px);
+}
+.gcs-h-overlay.open { display:block; opacity:1; }
+
+.gcs-h-mob-menu {
+  display:none; position:fixed;
+  top:0; left:0; bottom:0; width:min(320px,88vw);
+  background:var(--hw); z-index:9997;
+  transform:translateX(-100%);
+  transition:transform .4s cubic-bezier(.4,0,.2,1);
+  overflow-y:auto;
+  box-shadow:8px 0 40px rgba(0,0,0,.2);
+}
+.gcs-h-mob-menu.open {
+  transform:translateX(0);
+  animation:gcs-h-mb-slide .4s cubic-bezier(.4,0,.2,1) both;
+}
+.gcs-h-mob-head {
+  background: linear-gradient(135deg,var(--hn),#2a3260);
+  padding:24px 20px;
+  display:flex; align-items:center; gap:12px;
+  position:relative;
+}
+.gcs-h-mob-head img {
+  width:52px; height:52px; border-radius:50%;
+  border:2px solid var(--hg);
+  animation:gcs-h-logo-pop .6s both;
+}
+.gcs-h-mob-head-text strong { display:block; color:#fff; font-size:15px; }
+.gcs-h-mob-head-text span { color:var(--hg); font-size:11px; letter-spacing:.5px; }
+.gcs-h-mob-close {
+  position:absolute; top:16px; right:16px;
+  width:32px; height:32px; border-radius:50%;
+  background:rgba(255,255,255,.15); border:none;
+  color:#fff; font-size:14px; cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+  transition:all .25s;
+}
+.gcs-h-mob-close:hover { background:var(--hr); transform:rotate(90deg); }
+.gcs-h-mob-search {
+  display:flex; margin:16px; border:1.5px solid var(--hb);
+  border-radius:8px; overflow:hidden;
+}
+.gcs-h-mob-search input {
+  flex:1; border:none; outline:none; padding:10px 14px;
+  font-size:13px; font-family:'DM Sans',sans-serif;
+}
+.gcs-h-mob-search button {
+  background:var(--hr); border:none; padding:0 14px;
+  color:#fff; cursor:pointer;
+}
+.gcs-h-mob-links { padding:0 0 24px; }
+.gcs-h-mob-link {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:14px 20px; border-bottom:1px solid #f5f0ea;
+  font-size:13.5px; font-weight:600; color:var(--ht);
+  text-decoration:none; text-transform:uppercase; letter-spacing:.5px;
+  cursor:pointer; transition:all .2s;
+}
+.gcs-h-mob-link:hover { color:var(--hr); padding-left:26px; background:#fff5f7; }
+.gcs-h-mob-link:hover i { color:var(--hr); }
+.gcs-h-mob-link i { font-size:11px; color:var(--hm); transition:transform .25s; }
+.gcs-h-mob-link.open i { transform:rotate(180deg); }
+.gcs-h-mob-sub {
+  max-height:0; overflow:hidden;
+  transition:max-height .35s cubic-bezier(.4,0,.2,1);
+  background:#faf7f3;
+}
+.gcs-h-mob-sub.open { max-height:400px; }
+.gcs-h-mob-sub a {
+  display:block; padding:11px 28px;
+  font-size:13px; color:#666; text-decoration:none;
+  border-bottom:1px solid #f0ece6;
+  transition:all .2s;
+}
+.gcs-h-mob-sub a:hover { color:var(--hr); padding-left:36px; }
+
+/* ════ RESPONSIVE ════ */
+@media(max-width:900px){
+  .gcs-h-support{display:none}
+}
+@media(max-width:768px){
+  .gcs-h-nav-links,.gcs-h-nav-right,.gcs-h-search{display:none}
+  .gcs-h-ham{display:flex}
+  .gcs-h-mob-menu,.gcs-h-overlay{display:block}
+}
+@media(max-width:480px){
+  .gcs-h-main{padding:8px 14px}
+  .gcs-h-logo img{width:52px;height:52px}
+}
+</style>
+
+<div class="gcs-h">
+
+  <!-- Top bar -->
+  <div class="gcs-h-topbar">
+    <div class="gcs-h-topbar-inner">
+      <i class="fab fa-whatsapp"></i>
+      Get express shipping on WhatsApp —
+      <a href="https://wa.me/8619375610">8619375610</a>
+      &nbsp;|&nbsp; <i class="fas fa-truck"></i> Free shipping above ₹999
+    </div>
+  </div>
+
+  <!-- Main header -->
+  <div class="gcs-h-main" id="gcs-h-main">
+
+    <a href="/" class="gcs-h-logo">
+      <div class="gcs-h-logo-ring"></div>
+      <img src="LOGO_URI_PLACEHOLDER" alt="Grover Cloth Store">
+    </a>
+
+    <div class="gcs-h-search">
+      <select class="gcs-h-search-cat" id="gcs-h-cat">
+        <option value="">All</option>
+        <option value="printed">Printed</option>
+        <option value="cotton">Cotton Wear</option>
+        <option value="suits">Suit Sets</option>
+        <option value="sarees">Sarees</option>
+        <option value="lehengas">Lehengas</option>
+      </select>
+      <input class="gcs-h-search-input" id="gcs-h-q" type="text"
+        placeholder="Search for products…" autocomplete="off">
+      <button class="gcs-h-search-btn" onclick="gcsHSearch()">
+        <i class="fas fa-search"></i>
+      </button>
+    </div>
+
+    <div class="gcs-h-support">
+      <div class="gcs-h-support-icon"><i class="fas fa-headset"></i></div>
+      <div class="gcs-h-support-text">
+        <span>24/7 Support</span>
+        <strong>8619375610</strong>
+      </div>
+    </div>
+
+    <button class="gcs-h-ham" id="gcs-h-ham" onclick="gcsHToggle()">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+
+  <!-- Nav -->
+  <nav class="gcs-h-nav">
+    <div class="gcs-h-nav-inner">
+      <ul class="gcs-h-nav-links" id="gcs-h-navlinks">
+        <li class="gcs-h-active"><a href="/"><i class="fas fa-home" style="font-size:11px"></i> Home</a></li>
+        <li>
+          <span>All Collections <i class="fas fa-chevron-down" style="font-size:9px"></i></span>
+          <div class="gcs-h-drop">
+            <a href="#"><i class="fas fa-th"></i> All Products</a>
+            <a href="#"><i class="fas fa-print"></i> Printed</a>
+            <a href="#"><i class="fas fa-leaf"></i> Cotton Wear</a>
+            <a href="#"><i class="fas fa-tshirt"></i> Suit Sets</a>
+            <a href="#"><i class="fas fa-star"></i> Sarees</a>
+            <a href="#"><i class="fas fa-crown"></i> Lehengas</a>
+          </div>
+        </li>
+        <li><a href="#">New Arrivals <span class="gcs-h-hot">NEW</span></a></li>
+        <li><a href="#">Best Sellers <span class="gcs-h-hot">🔥</span></a></li>
+        <li><a href="#">About Us</a></li>
+      </ul>
+
+      <div class="gcs-h-nav-right">
+        <a href="/login" class="gcs-h-icon-btn">
+          <i class="fas fa-user"></i> <span>Login</span>
+        </a>
+        <div class="gcs-h-nav-div"></div>
+        <button class="gcs-h-icon-btn" style="position:relative" onclick="gcsHWishlist(this)">
+          <i class="far fa-heart"></i>
+          <span class="gcs-h-badge" id="gcs-h-wish-count">0</span>
+        </button>
+        <button class="gcs-h-icon-btn" id="gcs-h-cart-btn" style="position:relative">
+          <i class="fas fa-shopping-bag"></i>
+          <span class="gcs-h-badge" id="gcs-h-cart-count">0</span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Overlay -->
+  <div class="gcs-h-overlay" id="gcs-h-overlay" onclick="gcsHToggle()"></div>
+
+  <!-- Mobile menu -->
+  <div class="gcs-h-mob-menu" id="gcs-h-mob">
+    <div class="gcs-h-mob-head">
+      <img src="LOGO_URI_PLACEHOLDER" alt="Logo">
+      <div class="gcs-h-mob-head-text">
+        <strong>Grover Cloth Store</strong>
+        <span>Meet Your Fashion</span>
+      </div>
+      <button class="gcs-h-mob-close" onclick="gcsHToggle()"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="gcs-h-mob-search">
+      <input type="text" placeholder="Search products…">
+      <button><i class="fas fa-search"></i></button>
+    </div>
+    <div class="gcs-h-mob-links">
+      <a class="gcs-h-mob-link" href="/"><i class="fas fa-home" style="margin-right:8px;color:var(--hg)"></i> Home</a>
+      <div class="gcs-h-mob-link" onclick="gcsHSub('mob-col',this)">
+        <span><i class="fas fa-layer-group" style="margin-right:8px;color:var(--hg)"></i> All Collections</span>
+        <i class="fas fa-chevron-down"></i>
+      </div>
+      <div class="gcs-h-mob-sub" id="mob-col">
+        <a href="#">All Products</a>
+        <a href="#">Printed</a>
+        <a href="#">Cotton Wear</a>
+        <a href="#">Suit Sets</a>
+        <a href="#">Sarees</a>
+        <a href="#">Lehengas</a>
+      </div>
+      <a class="gcs-h-mob-link" href="#"><i class="fas fa-star" style="margin-right:8px;color:var(--hg)"></i> New Arrivals</a>
+      <a class="gcs-h-mob-link" href="#"><i class="fas fa-fire" style="margin-right:8px;color:var(--hr)"></i> Best Sellers</a>
+      <a class="gcs-h-mob-link" href="#"><i class="fas fa-info-circle" style="margin-right:8px;color:var(--hg)"></i> About Us</a>
+      <a class="gcs-h-mob-link" href="/login"><i class="fas fa-user" style="margin-right:8px;color:var(--hg)"></i> Login / Register</a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+(function(){
+  var hdr = document.getElementById('gcs-h-main');
+  /* sticky scroll effect */
+  var ticking = false;
+  window.addEventListener('scroll', function(){
+    if(!ticking){
+      requestAnimationFrame(function(){
+        if(hdr) hdr.classList.toggle('gcs-h-scrolled', window.scrollY > 50);
+        ticking = false;
+      });
+      ticking = true;
+    }
+  });
+
+  /* mobile toggle */
+  window.gcsHToggle = function(){
+    var mob = document.getElementById('gcs-h-mob');
+    var ham = document.getElementById('gcs-h-ham');
+    var ov  = document.getElementById('gcs-h-overlay');
+    var open = mob.classList.toggle('open');
+    ham.classList.toggle('open', open);
+    ov.classList.toggle('open', open);
+    document.body.style.overflow = open ? 'hidden' : '';
+  };
+
+  /* mobile sub */
+  window.gcsHSub = function(id, el){
+    var sub = document.getElementById(id);
+    if(!sub) return;
+    var isOpen = sub.classList.toggle('open');
+    el.classList.toggle('open', isOpen);
+  };
+
+  /* search */
+  window.gcsHSearch = function(){
+    var q = document.getElementById('gcs-h-q');
+    var c = document.getElementById('gcs-h-cat');
+    if(q && q.value.trim())
+      window.location.href = '/search?q='+encodeURIComponent(q.value.trim())+(c&&c.value?'&cat='+c.value:'');
+  };
+  var qi = document.getElementById('gcs-h-q');
+  if(qi) qi.addEventListener('keydown', function(e){ if(e.key==='Enter') gcsHSearch(); });
+
+  /* nav active */
+  var path = window.location.pathname;
+  document.querySelectorAll('.gcs-h-nav-links > li > a').forEach(function(a){
+    var li = a.closest('li');
+    li.classList.toggle('gcs-h-active', a.getAttribute('href') === path);
+  });
+
+  /* wishlist demo */
+  window.gcsHWishlist = function(btn){
+    var badge = document.getElementById('gcs-h-wish-count');
+    var n = parseInt(badge.textContent)||0;
+    badge.textContent = n+1;
+    badge.classList.add('bump');
+    setTimeout(function(){ badge.classList.remove('bump'); }, 500);
+  };
+})();
+</script>
