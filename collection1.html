@@ -1,0 +1,1609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Best Sellers | Idaho Clothing</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Poppins:wght@300;400;500;600;700&family=Great+Vibes&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #8B7355;
+            --secondary: #D4A574;
+            --accent: #C9A96E;
+            --dark: #2C2C2C;
+            --light: #FAF7F2;
+            --cream: #F5F0E8;
+            --gold: #B8956A;
+            --rose: #E8D5C4;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--light);
+            color: var(--dark);
+            overflow-x: hidden;
+        }
+
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--cream);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 4px;
+        }
+
+        /* ==================== ANNOUNCEMENT BAR ==================== */
+        .announcement-bar {
+            background: linear-gradient(90deg, #8B7355, #A0826D, #8B7355);
+            background-size: 200% 100%;
+            animation: gradientShift 3s ease infinite;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .announcement-bar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .announcement-bar span {
+            position: relative;
+            z-index: 1;
+        }
+
+        .announcement-bar .highlight {
+            color: #FFE4B5;
+            font-weight: 700;
+        }
+
+        /* ==================== HERO BANNER ==================== */
+        .hero-banner {
+            position: relative;
+            width: 100%;
+            height: 500px;
+            background: linear-gradient(135deg, #F5F0E8 0%, #E8DDD0 50%, #F0E6D8 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .hero-banner::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(201,169,110,0.1) 1px, transparent 1px);
+            background-size: 30px 30px;
+            animation: dotFloat 20s linear infinite;
+        }
+
+        @keyframes dotFloat {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(30px, 30px); }
+        }
+
+        .hero-content {
+            text-align: center;
+            z-index: 2;
+            position: relative;
+        }
+
+        .hero-content h1 {
+            font-family: 'Great Vibes', cursive;
+            font-size: 120px;
+            color: var(--primary);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            animation: titleFloat 3s ease-in-out infinite;
+            line-height: 1;
+        }
+
+        .hero-content h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 48px;
+            color: var(--dark);
+            letter-spacing: 15px;
+            text-transform: uppercase;
+            margin-top: -20px;
+            animation: fadeInUp 1s ease-out 0.5s both;
+        }
+
+        @keyframes titleFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Decorative flowers */
+        .flower-decoration {
+            position: absolute;
+            font-size: 40px;
+            opacity: 0.6;
+            animation: flowerSway 4s ease-in-out infinite;
+        }
+
+        .flower-1 { top: 10%; left: 5%; animation-delay: 0s; }
+        .flower-2 { top: 20%; right: 8%; animation-delay: 1s; }
+        .flower-3 { bottom: 15%; left: 10%; animation-delay: 2s; }
+        .flower-4 { bottom: 20%; right: 5%; animation-delay: 1.5s; }
+
+        @keyframes flowerSway {
+            0%, 100% { transform: rotate(-5deg) scale(1); }
+            50% { transform: rotate(5deg) scale(1.1); }
+        }
+
+        /* Floating particles */
+        .particle {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: var(--accent);
+            border-radius: 50%;
+            opacity: 0.4;
+            animation: particleFloat 8s infinite;
+        }
+
+        @keyframes particleFloat {
+            0%, 100% {
+                transform: translateY(0) translateX(0);
+                opacity: 0;
+            }
+            10% { opacity: 0.4; }
+            90% { opacity: 0.4; }
+            100% {
+                transform: translateY(-100px) translateX(50px);
+                opacity: 0;
+            }
+        }
+
+        /* ==================== FILTER BAR ==================== */
+        .filter-section {
+            background: white;
+            padding: 20px 0;
+            border-bottom: 1px solid #eee;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.05);
+        }
+
+        .filter-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .filter-left {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background: none;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            padding: 8px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .filter-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--primary);
+            transition: left 0.3s ease;
+            z-index: -1;
+        }
+
+        .filter-btn:hover::before,
+        .filter-btn.active::before {
+            left: 0;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(139,115,85,0.3);
+        }
+
+        .result-count {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .filter-right {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .sort-dropdown {
+            padding: 8px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .sort-dropdown:hover {
+            border-color: var(--primary);
+        }
+
+        .view-toggle {
+            display: flex;
+            gap: 5px;
+        }
+
+        .view-btn {
+            width: 35px;
+            height: 35px;
+            border: 1px solid #ddd;
+            background: white;
+            cursor: pointer;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .view-btn:hover,
+        .view-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        /* ==================== PRODUCT GRID ==================== */
+        .products-section {
+            max-width: 1400px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .product-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .product-image-wrapper {
+            position: relative;
+            overflow: hidden;
+            aspect-ratio: 3/4;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .product-card:hover .product-image {
+            transform: scale(1.1);
+        }
+
+        .product-badge {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: linear-gradient(135deg, #C9A96E, #B8956A);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            z-index: 2;
+            animation: badgePulse 2s infinite;
+        }
+
+        @keyframes badgePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .product-actions {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            opacity: 0;
+            transform: translateX(20px);
+            transition: all 0.3s ease;
+        }
+
+        .product-card:hover .product-actions {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .action-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: white;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+            font-size: 16px;
+            color: var(--dark);
+        }
+
+        .action-btn:hover {
+            background: var(--primary);
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .quick-add {
+            position: absolute;
+            bottom: -50px;
+            left: 0;
+            right: 0;
+            background: linear-gradient(135deg, var(--primary), var(--gold));
+            color: white;
+            text-align: center;
+            padding: 12px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: bottom 0.3s ease;
+            border: none;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .product-card:hover .quick-add {
+            bottom: 0;
+        }
+
+        .quick-add:hover {
+            background: linear-gradient(135deg, var(--gold), var(--primary));
+        }
+
+        .product-info {
+            padding: 20px;
+        }
+
+        .product-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+
+        .product-price {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .current-price {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .original-price {
+            font-size: 14px;
+            color: #999;
+            text-decoration: line-through;
+        }
+
+        .discount-badge {
+            background: #FF6B6B;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .product-rating {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-bottom: 10px;
+        }
+
+        .stars {
+            color: #FFB800;
+            font-size: 14px;
+        }
+
+        .review-count {
+            font-size: 12px;
+            color: #888;
+        }
+
+        .color-options {
+            display: flex;
+            gap: 6px;
+            margin-top: 10px;
+        }
+
+        .color-dot {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .color-dot:hover,
+        .color-dot.active {
+            border-color: var(--primary);
+            transform: scale(1.2);
+        }
+
+        .color-dot::after {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border-radius: 50%;
+            border: 1px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .color-dot:hover::after,
+        .color-dot.active::after {
+            border-color: var(--primary);
+        }
+
+        /* ==================== PAGINATION ==================== */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin: 60px 0;
+        }
+
+        .page-btn {
+            width: 45px;
+            height: 45px;
+            border: 2px solid #ddd;
+            background: white;
+            border-radius: 50%;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .page-btn:hover,
+        .page-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            transform: scale(1.1);
+        }
+
+        .page-btn.next {
+            width: auto;
+            padding: 0 25px;
+            border-radius: 25px;
+        }
+
+        /* ==================== INFO SECTIONS ==================== */
+        .info-section {
+            background: linear-gradient(135deg, var(--cream), var(--light));
+            padding: 80px 20px;
+            margin-top: 60px;
+        }
+
+        .info-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: start;
+        }
+
+        .info-block {
+            opacity: 0;
+            transform: translateX(-30px);
+            transition: all 0.6s ease;
+        }
+
+        .info-block.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .info-block:nth-child(2) {
+            transform: translateX(30px);
+        }
+
+        .info-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            color: var(--primary);
+            margin-bottom: 25px;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .info-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            border-radius: 2px;
+        }
+
+        .info-text {
+            font-size: 14px;
+            line-height: 1.8;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        .info-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .info-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+            padding: 5px 15px;
+            border: 1px solid var(--primary);
+            border-radius: 20px;
+            transition: all 0.3s;
+        }
+
+        .info-link:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .price-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .price-table th,
+        .price-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+            font-size: 14px;
+        }
+
+        .price-table th {
+            background: var(--primary);
+            color: white;
+            font-weight: 600;
+        }
+
+        .price-table tr {
+            transition: all 0.3s;
+        }
+
+        .price-table tr:hover {
+            background: rgba(201,169,110,0.1);
+            transform: translateX(5px);
+        }
+
+        /* ==================== FOOTER BANNER ==================== */
+        .footer-banner {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            background: linear-gradient(135deg, #E8DDD0, #F5F0E8);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .footer-banner::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="1" fill="rgba(139,115,85,0.1)"/></svg>');
+            background-size: 50px 50px;
+            animation: bgScroll 20s linear infinite;
+        }
+
+        @keyframes bgScroll {
+            0% { background-position: 0 0; }
+            100% { background-position: 50px 50px; }
+        }
+
+        .footer-content {
+            text-align: center;
+            z-index: 2;
+            position: relative;
+        }
+
+        .footer-content h3 {
+            font-family: 'Great Vibes', cursive;
+            font-size: 80px;
+            color: var(--primary);
+            margin-bottom: 10px;
+            animation: glow 3s ease-in-out infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% { text-shadow: 0 0 10px rgba(139,115,85,0.3); }
+            50% { text-shadow: 0 0 30px rgba(139,115,85,0.6), 0 0 60px rgba(201,169,110,0.3); }
+        }
+
+        .footer-content p {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            color: var(--dark);
+            letter-spacing: 5px;
+        }
+
+        /* Decorative elements */
+        .deco-circle {
+            position: absolute;
+            border-radius: 50%;
+            border: 2px solid rgba(139,115,85,0.2);
+            animation: circleExpand 4s ease-in-out infinite;
+        }
+
+        @keyframes circleExpand {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.2); opacity: 0.8; }
+        }
+
+        /* ==================== LOADING ANIMATION ==================== */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--light);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.5s, visibility 0.5s;
+        }
+
+        .loading-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loader {
+            width: 80px;
+            height: 80px;
+            border: 4px solid var(--cream);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            margin-top: 20px;
+            font-family: 'Playfair Display', serif;
+            font-size: 18px;
+            color: var(--primary);
+            letter-spacing: 3px;
+        }
+
+        /* ==================== RESPONSIVE ==================== */
+        @media (max-width: 1200px) {
+            .products-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 992px) {
+            .hero-content h1 { font-size: 80px; }
+            .hero-content h2 { font-size: 36px; letter-spacing: 10px; }
+            .info-container { grid-template-columns: 1fr; gap: 40px; }
+        }
+
+        @media (max-width: 768px) {
+            .products-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+            }
+            .hero-banner { height: 350px; }
+            .hero-content h1 { font-size: 60px; }
+            .hero-content h2 { font-size: 28px; letter-spacing: 5px; }
+            .filter-container { justify-content: center; }
+            .footer-content h3 { font-size: 50px; }
+            .announcement-bar { font-size: 11px; padding: 8px; }
+        }
+
+        @media (max-width: 480px) {
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+            .hero-content h1 { font-size: 45px; }
+            .hero-content h2 { font-size: 20px; }
+            .product-info { padding: 15px; }
+        }
+
+        /* ==================== SCROLL REVEAL ==================== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ==================== CUSTOM CURSOR ==================== */
+        .custom-cursor {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--primary);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.1s, opacity 0.3s;
+            mix-blend-mode: difference;
+        }
+
+        .custom-cursor.hover {
+            transform: scale(2);
+            background: rgba(139,115,85,0.1);
+        }
+
+        @media (pointer: coarse) {
+            .custom-cursor { display: none; }
+        }
+    </style>
+<base target="_blank">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <!-- <div class="loading-screen" id="loadingScreen">
+        <div class="loader"></div>
+        <div class="loading-text">Loading Collection...</div>
+    </div> -->
+
+    <!-- Custom Cursor -->
+    <div class="custom-cursor" id="cursor"></div>
+
+    <!-- Announcement Bar -->
+    <div class="announcement-bar">
+        <span>✨ Summer Sale: <span class="highlight">UPTO 50% OFF</span> | Free Shipping on Orders Above ₹4999 ✨</span>
+    </div>
+
+    <!-- Hero Banner -->
+    <section class="hero-banner">
+        <div class="flower-decoration flower-1">🌸</div>
+        <div class="flower-decoration flower-2">🌺</div>
+        <div class="flower-decoration flower-3">🌷</div>
+        <div class="flower-decoration flower-4">🌹</div>
+
+        <!-- Particles -->
+        <div class="particle" style="left: 10%; top: 20%; animation-delay: 0s;"></div>
+        <div class="particle" style="left: 30%; top: 60%; animation-delay: 2s;"></div>
+        <div class="particle" style="left: 50%; top: 30%; animation-delay: 4s;"></div>
+        <div class="particle" style="left: 70%; top: 70%; animation-delay: 1s;"></div>
+        <div class="particle" style="left: 90%; top: 40%; animation-delay: 3s;"></div>
+
+        <div class="hero-content">
+            <h1>Best</h1>
+            <h2>Sellers</h2>
+        </div>
+    </section>
+
+    <!-- Filter Section -->
+    <section class="filter-section">
+        <div class="filter-container">
+            <div class="filter-left">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="anarkali">Anarkali Sets</button>
+                <button class="filter-btn" data-filter="sharara">Sharara Sets</button>
+                <button class="filter-btn" data-filter="kurta">Kurta Sets</button>
+                <span class="result-count">Showing <strong id="productCount">24</strong> products</span>
+            </div>
+            <div class="filter-right">
+                <select class="sort-dropdown" id="sortSelect">
+                    <option value="featured">Featured</option>
+                    <option value="price-low">Price: Low to High</option>
+                    <option value="price-high">Price: High to Low</option>
+                    <option value="newest">Newest First</option>
+                </select>
+                <div class="view-toggle">
+                    <button class="view-btn active" data-view="grid"><i class="fas fa-th"></i></button>
+                    <button class="view-btn" data-view="list"><i class="fas fa-list"></i></button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section class="products-section">
+        <div class="products-grid" id="productsGrid">
+            <!-- Products will be inserted here by JavaScript -->
+        </div>
+    </section>
+
+    <!-- Pagination -->
+    <div class="pagination">
+        <button class="page-btn active">1</button>
+        <button class="page-btn">2</button>
+        <button class="page-btn">3</button>
+        <button class="page-btn next">Next <i class="fas fa-chevron-right"></i></button>
+    </div>
+
+    <!-- Info Sections -->
+    <section class="info-section">
+        <div class="info-container">
+            <div class="info-block">
+                <h3 class="info-title">Buy Best Sellers Online</h3>
+                <p class="info-text">
+                    Discover our curated collection of best-selling ethnic wear that combines traditional craftsmanship 
+                    with contemporary designs. Each piece is thoughtfully crafted to make you stand out on every occasion.
+                </p>
+                <div class="info-links">
+                    <a href="#" class="info-link">Anarkali Suits</a>
+                    <a href="#" class="info-link">Sharara Sets</a>
+                    <a href="#" class="info-link">Kurta Sets</a>
+                    <a href="#" class="info-link">Lehengas</a>
+                    <a href="#" class="info-link">Sarees</a>
+                    <a href="#" class="info-link">Gowns</a>
+                </div>
+            </div>
+            <div class="info-block">
+                <h3 class="info-title">Best Sellers Price List</h3>
+                <table class="price-table">
+                    <thead>
+                        <tr>
+                            <th>Product Name</th>
+                            <th>Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Starfall Blue Wedding Wear Anarkali Suit Set</td>
+                            <td>₹7,500.00</td>
+                        </tr>
+                        <tr>
+                            <td>Vanigold Embroidered Cosmos Anarkali Suit Set</td>
+                            <td>₹8,000.00</td>
+                        </tr>
+                        <tr>
+                            <td>Sangrida Organza Anarkali Suit Set</td>
+                            <td>₹7,000.00</td>
+                        </tr>
+                        <tr>
+                            <td>Mahveenah Cotton Anarkali Suit Set</td>
+                            <td>₹3,800.00</td>
+                        </tr>
+                        <tr>
+                            <td>Avyukta Printed Cotton Anarkali Suit Set</td>
+                            <td>₹3,800.00</td>
+                        </tr>
+                        <tr>
+                            <td>Nandita Cotton Anarkali Suit Set</td>
+                            <td>₹3,300.00</td>
+                        </tr>
+                        <tr>
+                            <td>Nausheen Sheesha Zari Silk Sharara Set</td>
+                            <td>₹7,000.00</td>
+                        </tr>
+                        <tr>
+                            <td>Ivory Sheeshmahal Sharara Set</td>
+                            <td>₹7,000.00</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Banner -->
+    <section class="footer-banner">
+        <div class="deco-circle" style="width: 200px; height: 200px; top: 10%; left: 10%;"></div>
+        <div class="deco-circle" style="width: 150px; height: 150px; bottom: 20%; right: 15%; animation-delay: 1s;"></div>
+        <div class="deco-circle" style="width: 100px; height: 100px; top: 50%; left: 50%; animation-delay: 2s;"></div>
+
+        <div class="footer-content">
+            <h3>Idaho</h3>
+            <p>COLLECTIONS</p>
+        </div>
+    </section>
+
+    <script>
+        // Product Data
+        const products = [
+            {
+                id: 1,
+                name: "Starfall Blue Wedding Wear Anarkali Suit Set",
+                price: 7500,
+                originalPrice: 9500,
+                image: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=600&h=800&fit=crop",
+                badge: "Bestseller",
+                rating: 4.8,
+                reviews: 124,
+                category: "anarkali",
+                colors: ["#1e3a5f", "#2d5a3d", "#8b4513"]
+            },
+            {
+                id: 2,
+                name: "Vanigold Embroidered Cosmos Anarkali Suit Set",
+                price: 8000,
+                originalPrice: 10000,
+                image: "https://images.unsplash.com/photo-1583391733952-6c78b0f07f5e?w=600&h=800&fit=crop",
+                badge: "New",
+                rating: 4.9,
+                reviews: 89,
+                category: "anarkali",
+                colors: ["#d4a574", "#c9a96e", "#8b7355"]
+            },
+            {
+                id: 3,
+                name: "Sangrida Organza Anarkali Suit Set",
+                price: 7000,
+                originalPrice: 8500,
+                image: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=600&h=800&fit=crop",
+                badge: "Popular",
+                rating: 4.7,
+                reviews: 156,
+                category: "anarkali",
+                colors: ["#f5f0e8", "#e8ddd0", "#d4c4a8"]
+            },
+            {
+                id: 4,
+                name: "Mahveenah Cotton Anarkali Suit Set",
+                price: 3800,
+                originalPrice: 4800,
+                image: "https://images.unsplash.com/photo-1594633313593-bab3825d0caf?w=600&h=800&fit=crop",
+                badge: "Sale",
+                rating: 4.5,
+                reviews: 203,
+                category: "anarkali",
+                colors: ["#2d5a3d", "#1e3a5f", "#8b4513"]
+            },
+            {
+                id: 5,
+                name: "Avyukta Printed Cotton Anarkali Suit Set",
+                price: 3800,
+                originalPrice: 4500,
+                image: "https://images.unsplash.com/photo-1605763240004-7e93b172d754?w=600&h=800&fit=crop",
+                badge: "Bestseller",
+                rating: 4.6,
+                reviews: 178,
+                category: "anarkali",
+                colors: ["#e8b4b8", "#f5f0e8", "#d4a574"]
+            },
+            {
+                id: 6,
+                name: "Nandita Cotton Anarkali Suit Set",
+                price: 3300,
+                originalPrice: 4000,
+                image: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=600&h=800&fit=crop",
+                badge: "",
+                rating: 4.4,
+                reviews: 145,
+                category: "anarkali",
+                colors: ["#8b4513", "#2d5a3d", "#1e3a5f"]
+            },
+            {
+                id: 7,
+                name: "Nausheen Sheesha Zari Silk Sharara Set",
+                price: 7000,
+                originalPrice: 9000,
+                image: "https://images.unsplash.com/photo-1583391733952-6c78b0f07f5e?w=600&h=800&fit=crop",
+                badge: "Premium",
+                rating: 4.9,
+                reviews: 67,
+                category: "sharara",
+                colors: ["#c9a96e", "#d4a574", "#8b7355"]
+            },
+            {
+                id: 8,
+                name: "Ivory Sheeshmahal Sharara Set",
+                price: 7000,
+                originalPrice: 8500,
+                image: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=600&h=800&fit=crop",
+                badge: "New",
+                rating: 4.7,
+                reviews: 92,
+                category: "sharara",
+                colors: ["#f5f0e8", "#e8ddd0", "#d4c4a8"]
+            },
+            {
+                id: 9,
+                name: "Luminous Silken Anarkali Suit Set",
+                price: 7000,
+                originalPrice: 8200,
+                image: "https://images.unsplash.com/photo-1594633313593-bab3825d0caf?w=600&h=800&fit=crop",
+                badge: "Bestseller",
+                rating: 4.8,
+                reviews: 134,
+                category: "anarkali",
+                colors: ["#1e3a5f", "#2d5a3d", "#8b4513"]
+            },
+            {
+                id: 10,
+                name: "Petaline Pink Cosmos Sharara Set",
+                price: 6300,
+                originalPrice: 7800,
+                image: "https://images.unsplash.com/photo-1605763240004-7e93b172d754?w=600&h=800&fit=crop",
+                badge: "Sale",
+                rating: 4.6,
+                reviews: 112,
+                category: "sharara",
+                colors: ["#e8b4b8", "#f5f0e8", "#d4a574"]
+            },
+            {
+                id: 11,
+                name: "Crimson Red Wedding Anarkali Set",
+                price: 8500,
+                originalPrice: 11000,
+                image: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=600&h=800&fit=crop",
+                badge: "Premium",
+                rating: 4.9,
+                reviews: 78,
+                category: "anarkali",
+                colors: ["#8b0000", "#dc143c", "#b22222"]
+            },
+            {
+                id: 12,
+                name: "Emerald Green Silk Kurta Set",
+                price: 5500,
+                originalPrice: 6800,
+                image: "https://images.unsplash.com/photo-1583391733952-6c78b0f07f5e?w=600&h=800&fit=crop",
+                badge: "Popular",
+                rating: 4.7,
+                reviews: 165,
+                category: "kurta",
+                colors: ["#2d5a3d", "#1e3a5f", "#8b4513"]
+            },
+            {
+                id: 13,
+                name: "Golden Hour Zari Work Anarkali",
+                price: 9200,
+                originalPrice: 12000,
+                image: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=600&h=800&fit=crop",
+                badge: "Premium",
+                rating: 4.9,
+                reviews: 45,
+                category: "anarkali",
+                colors: ["#c9a96e", "#d4a574", "#8b7355"]
+            },
+            {
+                id: 14,
+                name: "Royal Blue Velvet Sharara Set",
+                price: 7800,
+                originalPrice: 9500,
+                image: "https://images.unsplash.com/photo-1594633313593-bab3825d0caf?w=600&h=800&fit=crop",
+                badge: "New",
+                rating: 4.8,
+                reviews: 98,
+                category: "sharara",
+                colors: ["#1e3a5f", "#2d5a3d", "#8b4513"]
+            },
+            {
+                id: 15,
+                name: "Peach Blossom Cotton Kurta Set",
+                price: 3200,
+                originalPrice: 4000,
+                image: "https://images.unsplash.com/photo-1605763240004-7e93b172d754?w=600&h=800&fit=crop",
+                badge: "Sale",
+                rating: 4.5,
+                reviews: 234,
+                category: "kurta",
+                colors: ["#e8b4b8", "#f5f0e8", "#d4a574"]
+            },
+            {
+                id: 16,
+                name: "Midnight Black Anarkali Gown",
+                price: 6800,
+                originalPrice: 8200,
+                image: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=600&h=800&fit=crop",
+                badge: "Bestseller",
+                rating: 4.7,
+                reviews: 187,
+                category: "anarkali",
+                colors: ["#000000", "#1a1a1a", "#2d2d2d"]
+            },
+            {
+                id: 17,
+                name: "Sunset Orange Embroidered Kurta",
+                price: 4500,
+                originalPrice: 5500,
+                image: "https://images.unsplash.com/photo-1583391733952-6c78b0f07f5e?w=600&h=800&fit=crop",
+                badge: "",
+                rating: 4.4,
+                reviews: 156,
+                category: "kurta",
+                colors: ["#d4a574", "#c9a96e", "#8b7355"]
+            },
+            {
+                id: 18,
+                name: "Rose Gold Sequin Sharara Set",
+                price: 8900,
+                originalPrice: 11500,
+                image: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=600&h=800&fit=crop",
+                badge: "Premium",
+                rating: 4.9,
+                reviews: 56,
+                category: "sharara",
+                colors: ["#e8b4b8", "#f5f0e8", "#d4a574"]
+            },
+            {
+                id: 19,
+                name: "Mint Green Floral Anarkali",
+                price: 5200,
+                originalPrice: 6500,
+                image: "https://images.unsplash.com/photo-1594633313593-bab3825d0caf?w=600&h=800&fit=crop",
+                badge: "New",
+                rating: 4.6,
+                reviews: 123,
+                category: "anarkali",
+                colors: ["#2d5a3d", "#1e3a5f", "#8b4513"]
+            },
+            {
+                id: 20,
+                name: "Wine Red Silk Kurta Palazzo Set",
+                price: 4800,
+                originalPrice: 6000,
+                image: "https://images.unsplash.com/photo-1605763240004-7e93b172d754?w=600&h=800&fit=crop",
+                badge: "Popular",
+                rating: 4.7,
+                reviews: 198,
+                category: "kurta",
+                colors: ["#8b0000", "#dc143c", "#b22222"]
+            },
+            {
+                id: 21,
+                name: "Powder Blue Georgette Anarkali",
+                price: 6200,
+                originalPrice: 7800,
+                image: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=600&h=800&fit=crop",
+                badge: "Sale",
+                rating: 4.5,
+                reviews: 145,
+                category: "anarkali",
+                colors: ["#b0c4de", "#87ceeb", "#4682b4"]
+            },
+            {
+                id: 22,
+                name: "Mustard Yellow Cotton Kurta Set",
+                price: 3500,
+                originalPrice: 4200,
+                image: "https://images.unsplash.com/photo-1583391733952-6c78b0f07f5e?w=600&h=800&fit=crop",
+                badge: "Bestseller",
+                rating: 4.6,
+                reviews: 267,
+                category: "kurta",
+                colors: ["#d4a574", "#c9a96e", "#8b7355"]
+            },
+            {
+                id: 23,
+                name: "Lavender Dream Sharara Set",
+                price: 7200,
+                originalPrice: 8800,
+                image: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=600&h=800&fit=crop",
+                badge: "New",
+                rating: 4.8,
+                reviews: 89,
+                category: "sharara",
+                colors: ["#e6e6fa", "#d8bfd8", "#dda0dd"]
+            },
+            {
+                id: 24,
+                name: "Coral Pink Festive Anarkali",
+                price: 5800,
+                originalPrice: 7200,
+                image: "https://images.unsplash.com/photo-1594633313593-bab3825d0caf?w=600&h=800&fit=crop",
+                badge: "Popular",
+                rating: 4.7,
+                reviews: 134,
+                category: "anarkali",
+                colors: ["#e8b4b8", "#f5f0e8", "#d4a574"]
+            }
+        ];
+
+        // DOM Elements
+        const productsGrid = document.getElementById('productsGrid');
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const sortSelect = document.getElementById('sortSelect');
+        const viewBtns = document.query.querySelectorAll('.view-btn');
+        const productCount = document.getElementById('productCount');
+        const loadingScreen = document.getElementById('loadingScreen');
+        const cursor = document.getElementById('cursor');
+
+        // Custom Cursor
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX - 10 + 'px';
+            cursor.style.top = e.clientY - 10 + 'px';
+        });
+
+        document.querySelectorAll('a, button, .product-card').forEach(el => {
+            el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+            el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+        });
+
+        // Render Products
+        function renderProducts(productsToRender) {
+            productsGrid.innerHTML = '';
+
+            productsToRender.forEach((product, index) => {
+                const discount = Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100);
+                const colorsHtml = product.colors.map((color, i) => 
+                    `<div class="color-dot ${i === 0 ? 'active' : ''}" style="background: ${color};" data-color="${color}"></div>`
+                ).join('');
+
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                card.style.animationDelay = `${index * 0.05}s`;
+                card.innerHTML = `
+                    <div class="product-image-wrapper">
+                        ${product.badge ? `<span class="product-badge">${product.badge}</span>` : ''}
+                        <img src="${product.image}" alt="${product.name}" class="product-image" loading="lazy">
+                        <div class="product-actions">
+                            <button class="action-btn wishlist-btn" title="Add to Wishlist"><i class="far fa-heart"></i></button>
+                            <button class="action-btn quick-view-btn" title="Quick View"><i class="far fa-eye"></i></button>
+                            <button class="action-btn compare-btn" title="Compare"><i class="fas fa-exchange-alt"></i></button>
+                        </div>
+                        <button class="quick-add">Add to Cart</button>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">${product.name}</h3>
+                        <div class="product-price">
+                            <span class="current-price">₹${product.price.toLocaleString('en-IN')}.00</span>
+                            <span class="original-price">₹${product.originalPrice.toLocaleString('en-IN')}.00</span>
+                            ${discount > 0 ? `<span class="discount-badge">-${discount}%</span>` : ''}
+                        </div>
+                        <div class="product-rating">
+                            <span class="stars">${'★'.repeat(Math.floor(product.rating))}${'☆'.repeat(5 - Math.floor(product.rating))}</span>
+                            <span class="review-count">(${product.reviews} reviews)</span>
+                        </div>
+                        <div class="color-options">
+                            ${colorsHtml}
+                        </div>
+                    </div>
+                `;
+
+                productsGrid.appendChild(card);
+
+                // Staggered animation
+                setTimeout(() => {
+                    card.classList.add('visible');
+                }, index * 50);
+            });
+
+            productCount.textContent = productsToRender.length;
+
+            // Re-attach event listeners
+            attachCardEvents();
+        }
+
+        // Attach Card Events
+        function attachCardEvents() {
+            // Color selection
+            document.querySelectorAll('.color-dot').forEach(dot => {
+                dot.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    this.parentElement.querySelectorAll('.color-dot').forEach(d => d.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+
+            // Wishlist toggle
+            document.querySelectorAll('.wishlist-btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const icon = this.querySelector('i');
+                    icon.classList.toggle('far');
+                    icon.classList.toggle('fas');
+                    icon.style.color = icon.classList.contains('fas') ? '#e74c3c' : '';
+
+                    // Pulse animation
+                    this.style.transform = 'scale(1.3)';
+                    setTimeout(() => this.style.transform = 'scale(1)', 200);
+                });
+            });
+
+            // Quick add
+            document.querySelectorAll('.quick-add').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    this.textContent = '✓ Added!';
+                    this.style.background = '#27ae60';
+                    setTimeout(() => {
+                        this.textContent = 'Add to Cart';
+                        this.style.background = '';
+                    }, 2000);
+                });
+            });
+        }
+
+        // Filter Functionality
+        let currentFilter = 'all';
+        let currentSort = 'featured';
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                currentFilter = this.dataset.filter;
+                filterAndSortProducts();
+            });
+        });
+
+        // Sort Functionality
+        sortSelect.addEventListener('change', function() {
+            currentSort = this.value;
+            filterAndSortProducts();
+        });
+
+        // View Toggle
+        viewBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                viewBtns.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+
+                if (this.dataset.view === 'list') {
+                    productsGrid.style.gridTemplateColumns = '1fr';
+                } else {
+                    productsGrid.style.gridTemplateColumns = '';
+                }
+            });
+        });
+
+        function filterAndSortProducts() {
+            let filtered = currentFilter === 'all' 
+                ? [...products] 
+                : products.filter(p => p.category === currentFilter);
+
+            switch(currentSort) {
+                case 'price-low':
+                    filtered.sort((a, b) => a.price - b.price);
+                    break;
+                case 'price-high':
+                    filtered.sort((a, b) => b.price - a.price);
+                    break;
+                case 'newest':
+                    filtered.sort((a, b) => b.id - a.id);
+                    break;
+                default:
+                    // Featured - default order
+                    break;
+            }
+
+            renderProducts(filtered);
+        }
+
+        // Pagination
+        document.querySelectorAll('.page-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                if (!this.classList.contains('next')) {
+                    document.querySelectorAll('.page-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                }
+
+                // Scroll to top of products
+                document.querySelector('.products-section').scrollIntoView({ behavior: 'smooth' });
+
+                // Simulate page change animation
+                productsGrid.style.opacity = '0';
+                productsGrid.style.transform = 'translateY(20px)';
+                setTimeout(() => {
+                    productsGrid.style.opacity = '1';
+                    productsGrid.style.transform = 'translateY(0)';
+                }, 300);
+            });
+        });
+
+        // Scroll Reveal
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        // Observe info blocks
+        document.querySelectorAll('.info-block').forEach(block => {
+            observer.observe(block);
+        });
+
+        // Parallax Effect for Hero
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const hero = document.querySelector('.hero-banner');
+            if (hero) {
+                hero.style.transform = `translateY(${scrolled * 0.3}px)`;
+            }
+        });
+
+        // Loading Screen
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                loadingScreen.classList.add('hidden');
+                renderProducts(products);
+            }, 1500);
+        });
+
+        // Smooth Scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+
+        // Add to cart notification
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: linear-gradient(135deg, var(--primary), var(--gold));
+                color: white;
+                padding: 15px 25px;
+                border-radius: 10px;
+                font-weight: 600;
+                z-index: 10000;
+                transform: translateX(400px);
+                transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+                box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+
+            setTimeout(() => notification.style.transform = 'translateX(0)', 100);
+            setTimeout(() => {
+                notification.style.transform = 'translateX(400px)';
+                setTimeout(() => notification.remove(), 400);
+            }, 3000);
+        }
+
+        // Update quick add to show notification
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('quick-add')) {
+                showNotification('Item added to cart successfully! 🛍️');
+            }
+        });
+
+        // Filter button hover sound effect (visual feedback)
+        filterBtns.forEach(btn => {
+            btn.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-2px)';
+            });
+            btn.addEventListener('mouseleave', function() {
+                if (!this.classList.contains('active')) {
+                    this.style.transform = 'translateY(0)';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
