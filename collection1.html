@@ -2249,7 +2249,7 @@ updateCountdown();
 ═══════════════════════════════════════ */
 var toastTimer;
 function showToast(msg) {
-  clearTimeout(toastTimer);
+  clearTimeout(toastTimer);   
   document.getElementById('toast-msg').textContent = msg;
   var t = document.getElementById('toast');
   t.classList.add('show');
