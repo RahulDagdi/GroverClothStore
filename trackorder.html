@@ -1,575 +1,778 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Best Sellers —  Grover Clothing</title>
-<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<style>
-/* ══════════════════════════════════════
-   BASE
-══════════════════════════════════════ */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-:root {
-  --green:      #8fa87a;
-  --green-dk:   #6d8a5a;
-  --cream:      #f5f0e8;
-  --cream2:     #eae5d8;
-  --dark:       #2c2c2c;
-  --text:       #555;
-  --red:        #c0392b;
-  --gold:       #c9a227;
-  --pink:       #e8b4b8;
-  --ease:       cubic-bezier(.4,0,.2,1);
-}
-
-html { scroll-behavior: smooth; }
-
-body {
-  font-family: 'DM Sans', sans-serif;
-  background: #fff;
-  color: var(--dark);
-  overflow-x: hidden;
-}
-
-/* ══ LOADER ══ */
-#loader {
-  position: fixed; inset: 0;
-  background: var(--cream);
-  display: flex; align-items: center; justify-content: center;
-  z-index: 9999;
-  transition: opacity .6s ease;
-}
-#loader.out { opacity: 0; pointer-events: none; }
-.loader-ring {
-  width: 56px; height: 56px;
-  border: 4px solid rgba(143,168,122,.2);
-  border-top-color: var(--green);
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-}
-@keyframes spin { to { transform: rotate(360deg); } }
-
-/* ══ SALE BANNER ══ */
-.sale-banner {
-  background: linear-gradient(135deg,#1a1a2e,#16213e);
-  color: #fff;
-  padding: 11px 16px;
-  text-align: center;
-  overflow: hidden;
-  position: relative;
-}
-.sale-banner::after {
-  content: '';
-  position: absolute; inset: 0;
-  background: linear-gradient(90deg,transparent,rgba(255,255,255,.07),transparent);
-  animation: shimmer 3s infinite;
-}
-@keyframes shimmer { 0%{transform:translateX(-100%)} 100%{transform:translateX(100%)} }
-
-.banner-inner {
-  display: flex; align-items: center; justify-content: center;
-  gap: 24px; flex-wrap: wrap; position: relative; z-index: 1;
-}
-.banner-inner h3 { font-size: 13px; letter-spacing: 2px; font-weight: 600; text-transform: uppercase; }
-
-.countdown { display: flex; gap: 10px; align-items: center; }
-.cd-item {
-  background: rgba(255,255,255,.1);
-  border: 1px solid rgba(255,255,255,.15);
-  backdrop-filter: blur(8px);
-  padding: 4px 10px; border-radius: 6px;
-  text-align: center;
-  animation: float-sm 3s ease-in-out infinite;
-}
-.cd-item:nth-child(2){animation-delay:.4s}
-.cd-item:nth-child(3){animation-delay:.8s}
-.cd-item:nth-child(4){animation-delay:1.2s}
-.cd-item span { display:block; font-size:17px; font-weight:700; line-height:1; }
-.cd-item small { font-size:9px; opacity:.75; }
-@keyframes float-sm { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-4px)} }
-
-.coupon {
-  background: var(--green);
-  padding: 5px 14px; border-radius: 20px;
-  font-size: 11px; font-weight: 700; letter-spacing: .5px;
-  animation: pulse-glow 2s ease-in-out infinite;
-}
-@keyframes pulse-glow {
-  0%,100%{box-shadow:0 0 12px rgba(143,168,122,.3)}
-  50%{box-shadow:0 0 24px rgba(143,168,122,.7)}
-}
-
-/* ══ HERO HEADER ══ */
-.hero {
-  background: linear-gradient(160deg,#eaf2e6 0%,#f2f8ee 50%,#eaf2e6 100%);
-  position: relative; overflow: hidden;
-  padding: 48px 20px 40px;
-  display: flex; align-items: center; justify-content: center;
-  gap: 0;
-  min-height: 280px;
-}
-
-/* decorative blobs */
-.hero::before, .hero::after {
-  content: '';
-  position: absolute;
-  width: 300px; height: 300px;
-  border-radius: 50%;
-  background: radial-gradient(circle,rgba(143,168,122,.12) 0%,transparent 70%);
-}
-.hero::before { top:-80px; left:-80px; }
-.hero::after  { bottom:-80px; right:-80px; }
-
-/* side product images */
-.hero-img-panel {
-  flex-shrink: 0;
-  display: flex; gap: 10px;
-  align-items: flex-end;
-  position: relative; z-index: 1;
-}
-.hero-img-panel img {
-  width: 120px; height: 200px; object-fit: cover;
-  border-radius: 12px;
-  box-shadow: 0 8px 28px rgba(0,0,0,.14);
-  transition: transform .5s var(--ease);
-}
-.hero-img-panel img:hover { transform: scale(1.04) translateY(-4px); }
-.hero-img-panel img:first-child {
-  width: 140px; height: 220px;
-  animation: float-hero 5s ease-in-out infinite;
-}
-.hero-img-panel img:last-child {
-  width: 100px; height: 170px;
-  animation: float-hero 5s ease-in-out infinite .8s;
-}
-.hero-img-panel.right img:first-child { width:100px; height:170px; }
-.hero-img-panel.right img:last-child  { width:140px; height:220px; }
-@keyframes float-hero { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
-
-/* title block */
-.hero-title-block {
-  text-align: center;
-  flex: 1;
-  position: relative; z-index: 2;
-  padding: 0 24px;
-}
-.hero-script {
-  font-family: 'Great Vibes', cursive;
-  font-size: clamp(52px,8vw,96px);
-  color: var(--green-dk);
-  line-height: 1;
-  animation: float-hero 6s ease-in-out infinite .3s;
-  filter: drop-shadow(0 3px 6px rgba(0,0,0,.08));
-}
-.hero-caps {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(26px,4vw,52px);
-  letter-spacing: 10px;
-  text-transform: uppercase;
-  color: var(--green-dk);
-  margin-top: -10px;
-  font-weight: 700;
-}
-.hero-flowers {
-  position: absolute;
-  font-size: 48px; opacity: .35;
-  animation: float-hero 4s ease-in-out infinite;
-  pointer-events: none;
-}
-.hero-flowers.left  { left: 8%;  top: 18%; animation-delay: .3s; }
-.hero-flowers.right { right: 8%; top: 18%; animation-delay: 1s;  }
-
-/* ══ PRODUCTS SECTION ══ */
-.products-section {
-  max-width: 1380px; margin: 0 auto;
-  padding: 36px 20px 20px;
-}
-
-.products-grid {
-  display: grid;
-  grid-template-columns: repeat(4,1fr);
-  gap: 22px;
-}
-
-/* ── product card ── */
-.product-card {
-  background: #fff;
-  border-radius: 14px;
-  overflow: hidden;
-  box-shadow: 0 4px 18px rgba(0,0,0,.07);
-  cursor: pointer;
-  transition: transform .4s var(--ease), box-shadow .4s var(--ease);
-  position: relative;
-  opacity: 0;
-  transform: translateY(30px);
-}
-.product-card.visible {
-  opacity: 1; transform: translateY(0);
-  transition: opacity .5s var(--ease), transform .5s var(--ease),
-              box-shadow .4s var(--ease);
-}
-.product-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 18px 40px rgba(0,0,0,.14);
-}
-
-.product-image {
-  position: relative;
-  overflow: hidden;
-  aspect-ratio: 3/4;
-  background: #f0ede8;
-}
-.product-image img {
-  width: 100%; height: 100%; object-fit: cover;
-  transition: transform .55s var(--ease);
-  display: block;
-}
-.product-card:hover .product-image img { transform: scale(1.08); }
-
-/* badge */
-.p-badge {
-  position: absolute; top: 12px; left: 12px;
-  padding: 5px 12px; border-radius: 20px;
-  font-size: 10px; font-weight: 700; letter-spacing: .5px;
-  text-transform: uppercase; color: #fff; z-index: 2;
-  animation: bounce-badge 2.5s ease-in-out infinite;
-  box-shadow: 0 2px 8px rgba(0,0,0,.2);
-}
-.p-badge.bestseller { background: var(--green); }
-.p-badge.sale       { background: var(--red); }
-.p-badge.new        { background: #2980b9; }
-@keyframes bounce-badge { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-4px)} }
-
-/* wishlist */
-.wishlist-btn {
-  position: absolute; top: 12px; right: 12px;
-  width: 36px; height: 36px; border-radius: 50%;
-  background: #fff; border: none; cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  box-shadow: 0 2px 10px rgba(0,0,0,.12);
-  transition: all .3s var(--ease);
-  z-index: 2;
-  opacity: 0; transform: translateY(-8px);
-}
-.product-card:hover .wishlist-btn { opacity: 1; transform: translateY(0); }
-.wishlist-btn:hover { background: #ffebee; transform: scale(1.1); }
-.wishlist-btn.active i { color: var(--red); font-weight: 900; }
-
-/* quick view */
-.quick-view-btn {
-  position: absolute; bottom: -44px; left: 50%;
-  transform: translateX(-50%);
-  white-space: nowrap;
-  padding: 9px 22px; border-radius: 22px;
-  background: #fff; border: none; cursor: pointer;
-  font-size: 12px; font-weight: 600; font-family: 'DM Sans',sans-serif;
-  box-shadow: 0 4px 18px rgba(0,0,0,.18);
-  transition: all .35s var(--ease);
-  z-index: 2;
-}
-.product-card:hover .quick-view-btn { bottom: 16px; }
-.quick-view-btn:hover { background: var(--green); color: #fff; }
-
-/* info */
-.product-info { padding: 14px 16px 16px; }
-.product-name {
-  font-size: 12px; font-weight: 500; color: var(--dark);
-  line-height: 1.5; margin-bottom: 8px; min-height: 36px;
-  text-transform: uppercase; letter-spacing: .3px;
-}
-.product-rating {
-  display: flex; align-items: center; gap: 5px; margin-bottom: 7px;
-}
-.stars { color: #f39c12; font-size: 11px; }
-.review-count { font-size: 10px; color: #aaa; }
-.product-price { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-.price-now { font-size: 15px; font-weight: 700; color: var(--dark); }
-.price-was { font-size: 12px; color: #bbb; text-decoration: line-through; }
-.price-off {
-  background: #fdecea; color: #c0392b;
-  padding: 2px 7px; border-radius: 10px;
-  font-size: 10px; font-weight: 700;
-}
-
-/* ══ PAGINATION ══ */
-.pagination {
-  display: flex; justify-content: center; align-items: center;
-  gap: 10px; margin: 44px 0 10px;
-}
-.pg-btn {
-  width: 42px; height: 42px; border-radius: 50%;
-  border: 2px solid #e0e0e0; background: #fff;
-  display: flex; align-items: center; justify-content: center;
-  cursor: pointer; font-size: 13px; font-weight: 600;
-  font-family: 'DM Sans',sans-serif;
-  transition: all .3s var(--ease);
-}
-.pg-btn.nav { width: auto; padding: 0 18px; border-radius: 22px; font-size: 12px; }
-.pg-btn:hover, .pg-btn.active {
-  background: var(--green); border-color: var(--green);
-  color: #fff; transform: scale(1.08);
-}
-
-/* ══ DIVIDER ══ */
-.divider {
-  display: flex; align-items: center; justify-content: center;
-  gap: 16px; padding: 32px 20px;
-}
-.divider-line {
-  width: 120px; height: 1px;
-  background: linear-gradient(to right,transparent,var(--green),transparent);
-}
-.divider-icon {
-  color: var(--green); font-size: 22px;
-  animation: spin 12s linear infinite;
-}
-
-/* ══ PRICE LIST ══ */
-.price-list-section {
-  max-width: 1380px; margin: 0 auto;
-  padding: 20px 20px 60px;
-  display: grid; grid-template-columns: 1fr 1fr;
-  gap: 60px;
-}
-.pl-title {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 22px; font-weight: 700;
-  color: var(--dark); margin-bottom: 24px;
-  position: relative; padding-bottom: 12px;
-}
-.pl-title::after {
-  content: ''; position: absolute; bottom: 0; left: 0;
-  width: 48px; height: 3px; background: var(--green); border-radius: 2px;
-}
-.pl-list { list-style: none; }
-.pl-item {
-  display: flex; justify-content: space-between; align-items: flex-start;
-  padding: 13px 0; border-bottom: 1px solid #eee;
-  cursor: pointer;
-  transition: padding-left .25s var(--ease), color .25s;
-}
-.pl-item:hover { padding-left: 10px; color: var(--green); }
-.pl-item:hover .pl-price { color: var(--green); transform: scale(1.05); }
-.pl-name { font-size: 13px; color: #555; flex: 1; padding-right: 12px; line-height: 1.5; }
-.pl-price { font-size: 13px; font-weight: 600; color: var(--dark); white-space: nowrap; transition: all .25s; }
-.pl-note { font-size: 11px; color: #bbb; padding: 14px 0 0; }
-
-/* ══ SEO ══ */
-.seo-section {
-  background: linear-gradient(to bottom,#fff,var(--cream));
-  padding: 50px 20px 60px;
-}
-.seo-inner {
-  max-width: 1380px; margin: 0 auto;
-  columns: 2; column-gap: 48px;
-}
-.seo-inner h3 {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 19px; font-weight: 700;
-  color: var(--dark); margin: 28px 0 12px;
-  break-inside: avoid;
-}
-.seo-inner h3:first-child { margin-top: 0; }
-.seo-inner p {
-  font-size: 13.5px; color: #666; line-height: 1.8;
-  margin-bottom: 14px; break-inside: avoid;
-}
-.seo-inner a { color: var(--green); text-decoration: none; font-weight: 500; }
-.seo-inner a:hover { text-decoration: underline; }
-
-/* ══ ILLUSTRATION FOOTER ══ */
-.illus-footer {
-  width: 100%;
-  min-height: 340px;
-  background: linear-gradient(170deg,#ffe4e1 0%,#fff0f5 50%,#e6f3ec 100%);
-  position: relative; overflow: hidden;
-  display: flex; align-items: center; justify-content: center;
-}
-.illus-content {
-  text-align: center; position: relative; z-index: 2;
-  padding: 40px 20px;
-}
-.illus-title {
-  font-family: 'Great Vibes', cursive;
-  font-size: clamp(42px,7vw,72px);
-  color: var(--green-dk);
-  animation: float-hero 5s ease-in-out infinite;
-  filter: drop-shadow(0 2px 4px rgba(0,0,0,.08));
-}
-.illus-sub {
-  font-size: 13px; letter-spacing: 4px; text-transform: uppercase;
-  color: #888; margin-top: 6px;
-}
-.illus-float {
-  position: absolute;
-  animation: float-hero 7s ease-in-out infinite;
-  user-select: none; pointer-events: none;
-  font-size: 90px; opacity: .35;
-}
-.illus-float.palm-l { left: 4%; bottom: 0; animation-delay: 0s; }
-.illus-float.palm-r { right: 4%; bottom: 0; animation-delay: 2s; font-size: 80px; }
-.illus-float.fl1    { left: 20%; top: 16%; font-size: 36px; animation-delay: .8s; }
-.illus-float.fl2    { right: 22%; top: 12%; font-size: 30px; animation-delay: 2.5s; }
-.illus-float.fl3    { left: 40%; top: 10%; font-size: 24px; animation-delay: 1.5s; }
-
-/* ══ QUICK VIEW MODAL ══ */
-.modal-overlay {
-  display: none;
-  position: fixed; inset: 0;
-  background: rgba(0,0,0,.7);
-  z-index: 8000; align-items: center; justify-content: center;
-  backdrop-filter: blur(4px);
-}
-.modal-overlay.open { display: flex; animation: fadeIn .3s ease; }
-@keyframes fadeIn { from{opacity:0} to{opacity:1} }
-
-.modal-box {
-  background: #fff; border-radius: 20px;
-  max-width: 860px; width: 92%;
-  max-height: 90vh; overflow-y: auto;
-  position: relative;
-  animation: scaleIn .3s var(--ease);
-}
-@keyframes scaleIn { from{opacity:0;transform:scale(.88)} to{opacity:1;transform:scale(1)} }
-
-.modal-close-btn {
-  position: absolute; top: 16px; right: 16px;
-  width: 38px; height: 38px; border-radius: 50%;
-  background: var(--cream); border: none; cursor: pointer;
-  font-size: 18px; display: flex; align-items: center; justify-content: center;
-  transition: all .3s; z-index: 5;
-}
-.modal-close-btn:hover { background: var(--green); color: #fff; transform: rotate(90deg); }
-
-.modal-grid { display: grid; grid-template-columns: 1fr 1fr; }
-.modal-img { position: relative; min-height: 460px; overflow: hidden; }
-.modal-img img {
-  width: 100%; height: 100%; object-fit: cover;
-  border-radius: 20px 0 0 20px;
-  transition: transform .5s var(--ease);
-}
-.modal-img:hover img { transform: scale(1.04); }
-
-.modal-detail {
-  padding: 40px 36px;
-  display: flex; flex-direction: column; justify-content: center;
-}
-.modal-detail h2 {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 24px; font-weight: 700; margin-bottom: 10px;
-}
-.modal-detail .m-price {
-  font-size: 26px; color: var(--green); font-weight: 700; margin-bottom: 18px;
-}
-.modal-detail .m-was { text-decoration: line-through; color: #bbb; font-size: 16px; margin-right: 6px; }
-
-.m-rating { display:flex; align-items:center; gap:6px; margin-bottom:20px; }
-.m-rating .stars { font-size:14px; }
-
-.size-section { margin-bottom: 20px; }
-.size-section h4 { font-size: 12px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
-.size-opts { display: flex; gap: 8px; }
-.size-opt {
-  width: 42px; height: 42px; border: 2px solid #ddd; border-radius: 10px;
-  display: flex; align-items: center; justify-content: center;
-  cursor: pointer; font-weight: 600; font-size: 13px;
-  transition: all .25s;
-}
-.size-opt:hover, .size-opt.active {
-  border-color: var(--green); background: var(--green); color: #fff;
-}
-
-.atc-btn {
-  width: 100%; padding: 14px;
-  background: linear-gradient(135deg,var(--green),var(--green-dk));
-  color: #fff; border: none; border-radius: 30px;
-  font-size: 15px; font-weight: 700; cursor: pointer;
-  font-family: 'DM Sans',sans-serif; letter-spacing: 1px; text-transform: uppercase;
-  box-shadow: 0 4px 16px rgba(143,168,122,.35);
-  transition: all .3s var(--ease);
-}
-.atc-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(143,168,122,.5); }
-
-/* ══ TOAST ══ */
-#toast {
-  position: fixed; bottom: 28px; right: 28px;
-  background: var(--dark); color: #fff;
-  padding: 14px 26px; border-radius: 12px;
-  display: flex; align-items: center; gap: 12px;
-  font-size: 14px; font-weight: 500;
-  box-shadow: 0 8px 28px rgba(0,0,0,.28);
-  transform: translateX(140%);
-  transition: transform .4s cubic-bezier(.68,-.55,.265,1.55);
-  z-index: 9000;
-}
-#toast.show { transform: translateX(0); }
-#toast i { color: var(--green); font-size: 20px; }
-
-/* ══ SCROLL ANIMATIONS ══ */
-.reveal { opacity: 0; transform: translateY(28px); transition: opacity .6s var(--ease), transform .6s var(--ease); }
-.reveal.visible { opacity: 1; transform: translateY(0); }
-
-/* ══ RESPONSIVE ══ */
-@media (max-width:1100px) {
-  .products-grid { grid-template-columns: repeat(3,1fr); }
-}
-@media (max-width:860px) {
-  .products-grid { grid-template-columns: repeat(2,1fr); gap:16px; }
-  .price-list-section { grid-template-columns:1fr; gap:36px; }
-  .seo-inner { columns:1; }
-  .modal-grid { grid-template-columns:1fr; }
-  .modal-img { min-height:280px; }
-  .modal-img img { border-radius:20px 20px 0 0; }
-  .hero-img-panel img { width:90px !important; height:150px !important; }
-  .hero-img-panel img:first-child { height:170px !important; }
-}
-@media (max-width:600px) {
-  .products-grid { grid-template-columns: repeat(2,1fr); gap:12px; }
-  .product-info  { padding:10px 12px 12px; }
-  .product-name  { font-size:11px; }
-  .price-now     { font-size:13px; }
-  .hero-img-panel { display:none; }
-  .banner-inner h3 { font-size:11px; }
-  .countdown { gap:6px; }
-  .cd-item span { font-size:14px; }
-}
-@media (max-width:400px) {
-  .products-grid { grid-template-columns:1fr; }
-}
-
-
-
- /* Custom Cursor */
-        .custom-cursor {
-            width: 20px;
-            height: 20px;
-            border: 2px solid var(--primary);
-            border-radius: 50%;
-            position: fixed;
-            pointer-events: none;
-            z-index: 9999;
-            transition: transform 0.1s;
-            mix-blend-mode: difference;
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Track Your Order | Aaliyah Clothing</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-coral: #ff6b6b;
+            --primary-dark: #ee5a5a;
+            --navy: #2c3e50;
+            --cream: #faf8f5;
+            --gold: #d4a574;
+            --text-dark: #2d3436;
+            --text-muted: #636e72;
         }
 
-        @media (pointer: coarse) {
-            .custom-cursor {
-                display: none;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--cream);
+            overflow-x: hidden;
+            color: var(--text-dark);
+        }
+
+        /* Notification Bar */
+        .notification-bar {
+            background: linear-gradient(90deg, #fff5f5 0%, #ffe0e0 100%);
+            border-bottom: 1px solid #ffd0d0;
+            padding: 12px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .notification-bar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .notification-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            font-size: 0.9rem;
+            color: #c0392b;
+            position: relative;
+            z-index: 1;
+        }
+
+        .notification-label {
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--primary-dark);
+        }
+
+        .notification-icon {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        /* Logo Section */
+        .logo-section {
+            text-align: center;
+            padding: 20px 0 10px;
+            background: white;
+        }
+
+        .brand-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--navy);
+            text-decoration: none;
+            display: inline-block;
+            position: relative;
+        }
+
+        .brand-logo::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: var(--primary-coral);
+            border-radius: 2px;
+        }
+
+        .brand-tagline {
+            font-size: 0.75rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-top: 5px;
+        }
+
+        /* Main Content */
+        .main-container {
+            min-height: calc(100vh - 180px);
+            display: flex;
+            align-items: center;
+        }
+
+        .tracking-wrapper {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.08);
+            overflow: hidden;
+            margin: 30px auto;
+            max-width: 1200px;
+        }
+
+        /* Image Side */
+        .image-side {
+            position: relative;
+            min-height: 600px;
+            overflow: hidden;
+        }
+
+        .image-side img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.8s ease;
+        }
+
+        .image-side:hover img {
+            transform: scale(1.05);
+        }
+
+        .image-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 60px 30px 30px;
+            background: linear-gradient(to top, rgba(0,0,0,0.6), transparent);
+            color: white;
+        }
+
+        .image-overlay h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+        }
+
+        .image-overlay p {
+            opacity: 0.9;
+            font-size: 0.9rem;
+        }
+
+        .floating-badge {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            background: rgba(255,255,255,0.95);
+            padding: 12px 20px;
+            border-radius: 50px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .floating-badge i {
+            color: var(--primary-coral);
+            font-size: 1.2rem;
+        }
+
+        .floating-badge span {
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: var(--navy);
+        }
+
+        /* Form Side */
+        .form-side {
+            padding: 60px 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .form-header {
+            margin-bottom: 35px;
+        }
+
+        .form-header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            color: var(--navy);
+            margin-bottom: 10px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .form-header h1::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 50px;
+            height: 4px;
+            background: var(--primary-coral);
+            border-radius: 2px;
+        }
+
+        .form-header p {
+            color: var(--text-muted);
+            margin-top: 20px;
+            font-size: 0.95rem;
+        }
+
+        /* Radio Buttons */
+        .track-options {
+            display: flex;
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .radio-card {
+            flex: 1;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .radio-card input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .radio-content {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .radio-content:hover {
+            border-color: var(--primary-coral);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255,107,107,0.1);
+        }
+
+        .radio-card input:checked + .radio-content {
+            border-color: var(--primary-coral);
+            background: #fff5f5;
+            box-shadow: 0 5px 20px rgba(255,107,107,0.15);
+        }
+
+        .radio-dot {
+            width: 22px;
+            height: 22px;
+            border: 2px solid #ccc;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .radio-dot::after {
+            content: '';
+            width: 10px;
+            height: 10px;
+            background: var(--primary-coral);
+            border-radius: 50%;
+            transform: scale(0);
+            transition: transform 0.3s ease;
+        }
+
+        .radio-card input:checked + .radio-content .radio-dot {
+            border-color: var(--primary-coral);
+        }
+
+        .radio-card input:checked + .radio-content .radio-dot::after {
+            transform: scale(1);
+        }
+
+        .radio-label {
+            font-weight: 500;
+            color: var(--text-dark);
+            font-size: 0.95rem;
+        }
+
+        .radio-card input:checked + .radio-content .radio-label {
+            color: var(--primary-dark);
+            font-weight: 600;
+        }
+
+        /* Input Field */
+        .input-group-custom {
+            position: relative;
+            margin-bottom: 25px;
+        }
+
+        .input-group-custom input {
+            width: 100%;
+            padding: 16px 20px;
+            border: 2px solid #e8e8e8;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: #fafafa;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .input-group-custom input:focus {
+            outline: none;
+            border-color: var(--primary-coral);
+            background: white;
+            box-shadow: 0 0 0 4px rgba(255,107,107,0.1);
+        }
+
+        .input-group-custom label {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #aaa;
+            pointer-events: none;
+            transition: all 0.3s ease;
+            background: transparent;
+            padding: 0 5px;
+        }
+
+        .input-group-custom input:focus + label,
+        .input-group-custom input:not(:placeholder-shown) + label {
+            top: 0;
+            font-size: 0.8rem;
+            color: var(--primary-coral);
+            background: white;
+            font-weight: 500;
+        }
+
+        .input-icon {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #ccc;
+            transition: color 0.3s ease;
+        }
+
+        .input-group-custom input:focus ~ .input-icon {
+            color: var(--primary-coral);
+        }
+
+        /* Track Button */
+        .btn-track {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--primary-coral) 0%, var(--primary-dark) 100%);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-weight: 600;
+            font-size: 1.05rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .btn-track::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn-track:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .btn-track:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255,107,107,0.4);
+        }
+
+        .btn-track:active {
+            transform: translateY(0);
+        }
+
+        .btn-track i {
+            margin-left: 8px;
+            transition: transform 0.3s ease;
+        }
+
+        .btn-track:hover i {
+            transform: translateX(4px);
+        }
+
+        .btn-track.loading {
+            pointer-events: none;
+            opacity: 0.8;
+        }
+
+        .btn-track.loading i {
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Terms */
+        .terms-text {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .terms-text a {
+            color: var(--primary-coral);
+            text-decoration: none;
+            font-weight: 500;
+            position: relative;
+        }
+
+        .terms-text a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--primary-coral);
+            transition: width 0.3s ease;
+        }
+
+        .terms-text a:hover::after {
+            width: 100%;
+        }
+
+        /* Tracking Result */
+        .tracking-result {
+            display: none;
+            margin-top: 30px;
+            animation: slideUp 0.5s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
             }
         }
-</style>
+
+        .result-card {
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            border-radius: 16px;
+            padding: 25px;
+            border: 1px solid #e8e8e8;
+        }
+
+        .result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .result-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .status-delivered {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-transit {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-out {
+            background: #cce5ff;
+            color: #004085;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            animation: blink 2s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 8px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #e0e0e0;
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-bottom: 25px;
+            opacity: 0.6;
+            transition: opacity 0.3s ease;
+        }
+
+        .timeline-item.active {
+            opacity: 1;
+        }
+
+        .timeline-item:last-child {
+            padding-bottom: 0;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: -26px;
+            top: 2px;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: white;
+            border: 3px solid #ccc;
+            transition: all 0.3s ease;
+        }
+
+        .timeline-item.active .timeline-dot {
+            border-color: var(--primary-coral);
+            background: var(--primary-coral);
+            box-shadow: 0 0 0 4px rgba(255,107,107,0.2);
+        }
+
+        .timeline-item.completed .timeline-dot {
+            border-color: #28a745;
+            background: #28a745;
+        }
+
+        .timeline-content h5 {
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: var(--navy);
+        }
+
+        .timeline-content p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 2px;
+        }
+
+        .timeline-time {
+            font-size: 0.8rem;
+            color: var(--gold);
+            font-weight: 500;
+        }
+
+        /* Footer */
+        .powered-footer {
+            text-align: center;
+            padding: 20px;
+            background: white;
+            border-top: 1px solid #f0f0f0;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        .powered-footer img {
+            height: 20px;
+            margin-left: 8px;
+            vertical-align: middle;
+        }
+
+        .powered-footer i {
+            color: var(--primary-coral);
+            margin-right: 5px;
+        }
+
+        /* Decorative Elements */
+        .deco-circle {
+            position: fixed;
+            border-radius: 50%;
+            opacity: 0.03;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .deco-1 {
+            width: 400px;
+            height: 400px;
+            background: var(--primary-coral);
+            top: -100px;
+            right: -100px;
+        }
+
+        .deco-2 {
+            width: 300px;
+            height: 300px;
+            background: var(--navy);
+            bottom: -50px;
+            left: -50px;
+        }
+
+        /* Responsive */
+        @media (max-width: 991px) {
+            .image-side {
+                min-height: 300px;
+            }
+
+            .form-side {
+                padding: 40px 30px;
+            }
+
+            .form-header h1 {
+                font-size: 1.8rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .notification-content {
+                font-size: 0.8rem;
+                padding: 0 15px;
+                text-align: center;
+            }
+
+            .track-options {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .form-side {
+                padding: 30px 20px;
+            }
+
+            .form-header h1 {
+                font-size: 1.5rem;
+            }
+
+            .image-overlay h3 {
+                font-size: 1.3rem;
+            }
+
+            .floating-badge {
+                top: 15px;
+                right: 15px;
+                padding: 8px 14px;
+            }
+        }
+
+        /* Error Shake */
+        .shake {
+            animation: shake 0.5s ease;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        /* Confetti */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            top: -10px;
+            animation: confetti-fall 3s linear forwards;
+            z-index: 9999;
+        }
+
+        @keyframes confetti-fall {
+            to {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+    </style>
+<base target="_blank">
 </head>
 <body>
 
-<!-- LOADER -->
-<div id="loader"><div class="loader-ring"></div></div>
-    <!-- Custom Cursor -->
-    <div class="custom-cursor" id="cursor"></div>
 
-    <!-- GROVER CLOTH STORE — NAVBAR START         -->
+
+
+
+
+
+
+    <!-- Decorative Background -->
+    <div class="deco-circle deco-1"></div>
+    <div class="deco-circle deco-2"></div>
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- GROVER CLOTH STORE — NAVBAR START         -->
 
 <!-- ══════════════════════════════════════════════════════
      GROVER CLOTH STORE — NAVBAR
@@ -1503,7 +1706,7 @@ body {
 
 <!-- ══ NAVBAR END ══ -->
 
-    <!-- NAVBAR END -->
+<!-- NAVBAR END -->
 
 
 
@@ -1515,182 +1718,115 @@ body {
 
 
 
-
-
-
-<!-- SALE BANNER -->
-<div class="sale-banner">
-  <div class="banner-inner">
-    <h3>☀️ Summer Sale: UPTO 50% OFF</h3>
-    <div class="countdown">
-      <div class="cd-item"><span id="cd-d">05</span><small>Days</small></div>
-      <div class="cd-item"><span id="cd-h">10</span><small>Hrs</small></div>
-      <div class="cd-item"><span id="cd-m">50</span><small>Min</small></div>
-      <div class="cd-item"><span id="cd-s">34</span><small>Sec</small></div>
-    </div>
-    <div class="coupon"><i class="fas fa-tag"></i> USE CODE — SUMMER50</div>
-  </div>
-</div>
-
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-flowers left">🌸</div>
-  <div class="hero-flowers right">🌺</div>
-
-  <!-- Left panel -->
-  <div class="hero-img-panel left">
-    <img src="https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=400&h=600&fit=crop" alt="">
-    <img src="https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=400&h=600&fit=crop" alt="">
-  </div>
-
-  <div class="hero-title-block">
-    <div class="hero-script">Best</div>
-    <div class="hero-caps">Sellers</div>
-  </div>
-
-  <!-- Right panel -->
-  <div class="hero-img-panel right">
-    <img src="https://images.unsplash.com/photo-1609677870560-7e6aee15ed7b?w=400&h=600&fit=crop" alt="">
-    <img src="https://images.unsplash.com/photo-1610030469750-a7c80fbc2465?w=400&h=600&fit=crop" alt="">
-  </div>
-</section>
-
-<!-- PRODUCTS -->
-<section class="products-section">
-  <div class="products-grid" id="products-grid">
-    <!-- Cards injected by JS -->
-  </div>
-
-  <!-- PAGINATION -->
-  <div class="pagination reveal">
-    <button class="pg-btn nav" onclick="changePage('prev')"><i class="fas fa-chevron-left"></i> Prev</button>
-    <button class="pg-btn active" id="pg1" onclick="changePage(1)">1</button>
-    <button class="pg-btn" id="pg2" onclick="changePage(2)">2</button>
-    <button class="pg-btn" id="pg3" onclick="changePage(3)">3</button>
-    <button class="pg-btn nav" onclick="changePage('next')">Next <i class="fas fa-chevron-right"></i></button>
-  </div>
-</section>
-
-<!-- DIVIDER -->
-<div class="divider reveal">
-  <div class="divider-line"></div>
-  <i class="fas fa-gem divider-icon"></i>
-  <div class="divider-line"></div>
-</div>
-
-<!-- PRICE LIST -->
-<section class="price-list-section">
-  <div class="reveal">
-    <h3 class="pl-title">BUY BEST SELLERS ONLINE</h3>
-    <ul class="pl-list">
-      <li class="pl-item"><span class="pl-name">Popular Searches Women's Ethnic Wear</span></li>
-      <li class="pl-item"><span class="pl-name">Women Suit Sets | Maxis | Tops For Women | Co-ord Set</span></li>
-      <li class="pl-item"><span class="pl-name">Best Women's Suit Set</span></li>
-      <li class="pl-item"><span class="pl-name">Ladies Suit | White Suit For Women | Cotton Suit Sets | Stylish Suits | Yellow Suit | Organza Suit Set | Suit Set With Dupatta | Salwar Suit Set | Chanderi Suit | Kurta Set | Lavender Suit | Silk Suit | Party Wear Suits Under 2000</span></li>
-      <li class="pl-item"><span class="pl-name">Shrugs — Long Shrug | Cotton Shrug | Plus Size Shrugs | Short Shrugs</span></li>
-      <li class="pl-item"><span class="pl-name">Dupatta For Women |  Grover Clothing Best Seller |  Grover Raw Fabric |  Grover New Arrivals |  Grover Unstitched Suits | Bulk Order |  Grover Coupon Code |  Grover Blogs</span></li>
-      <li class="pl-item"><p class="pl-note">Data last updated on 2026-04-29</p></li>
-    </ul>
-  </div>
-  <div class="reveal">
-    <h3 class="pl-title">BEST SELLERS PRICE LIST</h3>
-    <ul class="pl-list" id="price-list-ul">
-      <!-- injected by JS -->
-    </ul>
-  </div>
-</section>
-
-<!-- SEO -->
-<section class="seo-section">
-  <div class="seo-inner reveal">
-    <h3> Grover Clothing: Trendy & Ethnic Women's Fashion Online</h3>
-    <p>Discover the essence of Indian fashion with <a href="#"> Grover Clothing</a>. We deliver top-quality women's dresses with the widest range that has something for everyone — quality, design, and tradition in every piece.</p>
-    <p>From elegant kurta sets to festive lehengas and chic maxis, we bring together style, comfort, and tradition. Whether you're dressing for everyday elegance or grand celebrations, our collections offer something for every modern woman.</p>
-
-    <h3>Why Choose  Grover Clothing: Our Vision & Values</h3>
-    <p> Grover fashion fills the void where everyone can find dresses they love. We work passionately to create the best customer-driven online shopping experience that gets your dresses to your doorstep with ease.</p>
-
-    <h3>Shop  Grover Clothing Online: Dresses, Suits, and More</h3>
-    <p>Our vast collection includes ethnic wear like the much-loved <a href="#"> Grover anarkali</a>. Free shipping and easy returns make shopping not only easy but also fun. Our styles are original, classy, and real — free from fake promises.</p>
-
-    <h3>Cotton Suit Sets</h3>
-    <p><a href="#">Cotton suit sets for women</a> are stylish and comfortable — the go-to for summers. We make suits that enhance your style and feel great on the skin. One of the best print designs to steal hearts wherever you go.</p>
-
-    <h3> Grover Lehengas: Festive & Wedding Wear</h3>
-    <p><a href="#">Lehengas</a> are regal and flamboyant — flagbearers of ethnic wear.  Grover Clothing makes curated styles that fill the space of a great festive lehenga in your wardrobe at great deals.</p>
-
-    <h3>Tops & Co-ord Sets</h3>
-    <p>Casual wear can't start without tops and can't end without co-ord sets. Lightweight, breathable tops and cute flowy co-ords — co-ord ethnic wear suits are a typical favorite for all body shapes.</p>
-
-    <h3> Grover Kurta Sets: Elegant Ethnic Wear</h3>
-    <p><a href="#">Kurta sets</a> are one of the most sought-after dresses for their beautiful ethnic look. Perfect for daily wear and formal events — with bright dupattas and top-quality ethnic embroideries.</p>
-
-    <h3>Maxis</h3>
-    <p>Maxi long dresses are the most comfortable and elegant. Sleek designs with ethnic and contemporary patterns — style them from everyday wear to specific events. Palazzo or leggings make the style even better.</p>
-
-    <h3>Dupattas</h3>
-    <p><a href="#">Dupattas</a> are the staple of Indian wardrobes. Our dupattas are made from the best fabrics in lovely colors — from ethnic embroideries for festive events to pastels for formal ones, all in one place.</p>
-
-    <h3>Raw Fabrics</h3>
-    <p>We create top-quality fabrics for your kurtas or suits. Custom-tailored clothing is a natural, perfect fit. The breathability and feel of our fabrics make them truly special.</p>
-  </div>
-</section>
-
-<!-- ILLUSTRATION FOOTER -->
-<div class="illus-footer">
-  <span class="illus-float palm-l">🌴</span>
-  <span class="illus-float palm-r">🌴</span>
-  <span class="illus-float fl1">🌸</span>
-  <span class="illus-float fl2">🌺</span>
-  <span class="illus-float fl3">🌼</span>
-  <div class="illus-content">
-    <div class="illus-title"> Grover's </div>
-    <div class="illus-sub">Wear the Story of India</div>
-  </div>
-</div>
-
-<!-- QUICK VIEW MODAL -->
-<div class="modal-overlay" id="modal" onclick="closeModal(event)">
-  <div class="modal-box" id="modal-box">
-    <button class="modal-close-btn" onclick="closeModal()"><i class="fas fa-times"></i></button>
-    <div class="modal-grid">
-      <div class="modal-img">
-        <img id="m-img" src="" alt="">
-      </div>
-      <div class="modal-detail">
-        <h2 id="m-name"></h2>
-        <div class="m-rating">
-          <span class="stars">
-            <i class="fas fa-star"></i><i class="fas fa-star"></i>
-            <i class="fas fa-star"></i><i class="fas fa-star"></i>
-            <i class="fas fa-star-half-alt"></i>
-          </span>
-          <span style="font-size:12px;color:#aaa">(12 reviews)</span>
+    <!-- Notification Bar -->
+    <div class="notification-bar">
+        <div class="container">
+            <div class="notification-content">
+                <span class="notification-label">Updates:</span>
+                <i class="fas fa-shield-alt notification-icon"></i>
+                <span>Beware of Fraud Calls: We at ShipDelight or our courier partners will never ask for OTP, bank details, or additional payments via calls, SMS, or QR codes.</span>
+            </div>
         </div>
-        <div class="m-price" id="m-price"></div>
-        <div class="size-section">
-          <h4>Select Size</h4>
-          <div class="size-opts">
-            <div class="size-opt" onclick="selectSize(this)">XS</div>
-            <div class="size-opt active" onclick="selectSize(this)">S</div>
-            <div class="size-opt" onclick="selectSize(this)">M</div>
-            <div class="size-opt" onclick="selectSize(this)">L</div>
-            <div class="size-opt" onclick="selectSize(this)">XL</div>
-          </div>
-        </div>
-        <button class="atc-btn" onclick="addToCart()">
-          <i class="fas fa-shopping-bag"></i> Add to Bag
-        </button>
-      </div>
     </div>
-  </div>
-</div>
 
-<!-- TOAST -->
-<div id="toast"><i class="fas fa-check-circle"></i><span id="toast-msg"></span></div>
+    <!-- Logo Section -->
+    <!-- <div class="logo-section">
+        <a href="index.html" class="brand-logo"><img src="images/logo.png" alt="" height="100px"  width="100px"></a>
+        <div class="brand-tagline">Ethnic Couture</div>
+    </div> -->
 
+    <!-- Main Content -->
+    <div class="container main-container">
+        <div class="row tracking-wrapper g-0">
+            <!-- Image Column -->
+            <div class="col-lg-6">
+                <div class="image-side">
+                    <img src="https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=800&q=80" alt="Traditional Fashion">
+                    <div class="floating-badge">
+                        <i class="fas fa-truck-fast"></i>
+                        <span>Free Shipping</span>
+                    </div>
+                    <div class="image-overlay">
+                        <h3>Elegant Traditions</h3>
+                        <p>Track your exclusive ethnic wear order with real-time updates</p>
+                    </div>
+                </div>
+            </div>
 
+            <!-- Form Column -->
+            <div class="col-lg-6">
+                <div class="form-side">
+                    <div class="form-header">
+                        <h1>Track Order By</h1>
+                        <p>Enter your tracking details below to get real-time shipment updates</p>
+                    </div>
 
+                    <form id="trackingForm">
+                        <!-- Radio Options -->
+                        <div class="track-options">
+                            <label class="radio-card">
+                                <input type="radio" name="trackType" value="awb" id="awbRadio">
+                                <div class="radio-content">
+                                    <div class="radio-dot"></div>
+                                    <span class="radio-label">AWB Number</span>
+                                </div>
+                            </label>
+                            <label class="radio-card">
+                                <input type="radio" name="trackType" value="order" id="orderRadio" checked>
+                                <div class="radio-content">
+                                    <div class="radio-dot"></div>
+                                    <span class="radio-label">Order Number</span>
+                                </div>
+                            </label>
+                        </div>
+
+                        <!-- Input Field -->
+                        <div class="input-group-custom">
+                            <input type="text" id="trackInput" placeholder=" " required>
+                            <label for="trackInput" id="inputLabel">Enter Order Number to search</label>
+                            <i class="fas fa-search input-icon"></i>
+                        </div>
+
+                        <!-- Track Button -->
+                        <button type="submit" class="btn-track" id="trackBtn">
+                            Track Order
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+
+                        <!-- Terms -->
+                        <div class="terms-text">
+                            By proceeding, you accept our <a href="#">Terms & Conditions</a>
+                        </div>
+                    </form>
+
+                    <!-- Tracking Result -->
+                    <div class="tracking-result" id="trackingResult">
+                        <div class="result-card">
+                            <div class="result-header">
+                                <div>
+                                    <h5 class="mb-1" id="resultId">Order #ORD123456</h5>
+                                    <small class="text-muted">Estimated Delivery: <strong id="estDate">Tomorrow</strong></small>
+                                </div>
+                                <span class="result-status" id="resultStatus">
+                                    <span class="status-dot"></span>
+                                    <span id="statusText">In Transit</span>
+                                </span>
+                            </div>
+                            <div class="timeline" id="timeline">
+                                <!-- Timeline items injected by JS -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- <div class="powered-footer">
+        <span>Powered By</span>
+        <i class="fas fa-truck"></i>
+        <strong>ShipDelight</strong>
+    </div> -->
 
 
   <!-- ║     GROVER CLOTH STORE — FOOTER START      -->
@@ -2031,255 +2167,177 @@ body {
 
 
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // DOM Elements
+        const trackForm = document.getElementById('trackingForm');
+        const trackInput = document.getElementById('trackInput');
+        const inputLabel = document.getElementById('inputLabel');
+        const awbRadio = document.getElementById('awbRadio');
+        const orderRadio = document.getElementById('orderRadio');
+        const trackBtn = document.getElementById('trackBtn');
+        const trackingResult = document.getElementById('trackingResult');
+        const timeline = document.getElementById('timeline');
 
+        // Update placeholder based on selection
+        function updateInputPlaceholder() {
+            if (awbRadio.checked) {
+                inputLabel.textContent = 'Enter AWB Number to search';
+                trackInput.placeholder = ' ';
+            } else {
+                inputLabel.textContent = 'Enter Order Number to search';
+                trackInput.placeholder = ' ';
+            }
+            trackInput.value = '';
+            trackInput.focus();
+        }
 
+        awbRadio.addEventListener('change', updateInputPlaceholder);
+        orderRadio.addEventListener('change', updateInputPlaceholder);
 
+        // Mock Tracking Data Generator
+        function generateTrackingData(type, id) {
+            const statuses = [
+                {
+                    status: 'Delivered',
+                    statusClass: 'status-delivered',
+                    estDate: 'Delivered on May 1, 2026',
+                    events: [
+                        { title: 'Delivered', desc: 'Package delivered to customer', time: 'Today, 2:30 PM', completed: true },
+                        { title: 'Out for Delivery', desc: 'Courier is on the way', time: 'Today, 9:00 AM', completed: true },
+                        { title: 'Arrived at Hub', desc: 'Nearest delivery hub', time: 'Yesterday, 6:45 PM', completed: true },
+                        { title: 'In Transit', desc: 'Moving to destination city', time: 'Apr 30, 11:20 AM', completed: true },
+                        { title: 'Shipped', desc: 'Picked up by courier', time: 'Apr 29, 4:00 PM', completed: true },
+                        { title: 'Order Placed', desc: 'Order confirmed by seller', time: 'Apr 29, 10:00 AM', completed: true }
+                    ]
+                },
+                {
+                    status: 'Out for Delivery',
+                    statusClass: 'status-out',
+                    estDate: 'Today by 8:00 PM',
+                    events: [
+                        { title: 'Out for Delivery', desc: 'Courier is on the way', time: 'Today, 9:00 AM', completed: true, active: true },
+                        { title: 'Arrived at Hub', desc: 'Nearest delivery hub', time: 'Yesterday, 6:45 PM', completed: true },
+                        { title: 'In Transit', desc: 'Moving to destination city', time: 'Yesterday, 11:20 AM', completed: true },
+                        { title: 'Shipped', desc: 'Picked up by courier', time: 'Apr 30, 4:00 PM', completed: true },
+                        { title: 'Order Placed', desc: 'Order confirmed by seller', time: 'Apr 30, 10:00 AM', completed: true }
+                    ]
+                },
+                {
+                    status: 'In Transit',
+                    statusClass: 'status-transit',
+                    estDate: 'May 3, 2026',
+                    events: [
+                        { title: 'In Transit', desc: 'Moving to destination city', time: 'Today, 8:00 AM', completed: true, active: true },
+                        { title: 'Shipped', desc: 'Picked up by courier', time: 'Yesterday, 4:00 PM', completed: true },
+                        { title: 'Order Placed', desc: 'Order confirmed by seller', time: 'Yesterday, 10:00 AM', completed: true }
+                    ]
+                }
+            ];
 
+            // Deterministic random based on input
+            const seed = id.split('').reduce((a, b) => a + b.charCodeAt(0), 0);
+            const index = seed % statuses.length;
+            return statuses[index];
+        }
 
+        // Create Confetti
+        function createConfetti() {
+            const colors = ['#ff6b6b', '#ffd93d', '#6bcb77', '#4d96ff', '#ff9f45'];
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + 'vw';
+                    confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                    confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+                    document.body.appendChild(confetti);
+                    setTimeout(() => confetti.remove(), 4000);
+                }, i * 30);
+            }
+        }
 
+        // Render Timeline
+        function renderTimeline(events) {
+            timeline.innerHTML = '';
+            events.forEach((event, index) => {
+                const item = document.createElement('div');
+                item.className = `timeline-item ${event.completed ? 'completed' : ''} ${event.active ? 'active' : ''}`;
+                item.innerHTML = `
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <h5>${event.title}</h5>
+                        <p>${event.desc}</p>
+                        <span class="timeline-time"><i class="far fa-clock"></i> ${event.time}</span>
+                    </div>
+                `;
+                timeline.appendChild(item);
+            });
+        }
 
+        // Form Submit
+        trackForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
 
+            const value = trackInput.value.trim();
+            if (!value) {
+                trackInput.parentElement.classList.add('shake');
+                setTimeout(() => trackInput.parentElement.classList.remove('shake'), 500);
+                return;
+            }
 
+            // Loading State
+            trackBtn.classList.add('loading');
+            trackBtn.innerHTML = 'Tracking... <i class="fas fa-spinner"></i>';
+            trackingResult.style.display = 'none';
 
+            // Simulate API Call
+            await new Promise(resolve => setTimeout(resolve, 1500));
 
+            // Generate Data
+            const type = awbRadio.checked ? 'AWB' : 'Order';
+            const data = generateTrackingData(type, value);
 
-<script>
+            // Update UI
+            document.getElementById('resultId').textContent = `${type} #${value.toUpperCase()}`;
+            document.getElementById('estDate').textContent = data.estDate;
+            document.getElementById('statusText').textContent = data.status;
 
-    // Custom Cursor
-        const cursor = document.getElementById('cursor');
-        document.addEventListener('mousemove', (e) => {
-            cursor.style.left = e.clientX - 10 + 'px';
-            cursor.style.top = e.clientY - 10 + 'px';
+            const statusEl = document.getElementById('resultStatus');
+            statusEl.className = `result-status ${data.statusClass}`;
+
+            renderTimeline(data.events);
+
+            // Show Result
+            trackBtn.classList.remove('loading');
+            trackBtn.innerHTML = 'Track Order <i class="fas fa-arrow-right"></i>';
+            trackingResult.style.display = 'block';
+
+            // Confetti if delivered
+            if (data.status === 'Delivered') {
+                createConfetti();
+            }
+
+            // Scroll to result on mobile
+            if (window.innerWidth < 992) {
+                trackingResult.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
         });
 
-        document.addEventListener('mousedown', () => {
-            cursor.style.transform = 'scale(0.8)';
+        // Input Animation on Load
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                trackInput.focus();
+            }, 500);
         });
 
-        document.addEventListener('mouseup', () => {
-            cursor.style.transform = 'scale(1)';
+        // Enter key support
+        trackInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                trackForm.dispatchEvent(new Event('submit'));
+            }
         });
-
-
-
-
-
-
-
-
-
-/* ═══════════════════════════════════════
-   PRODUCT DATA
-═══════════════════════════════════════ */
-var PRODUCTS = [
-  {name:"Starfall Blue Wedding Wear Anarkali Suit Set",     price:7500, was:null,  badge:"bestseller", img:"https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=600&h=800&fit=crop"},
-  {name:"Vangold Embroidered Cosmos Anarkali Suit Set",     price:8000, was:null,  badge:"bestseller", img:"https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=600&h=800&fit=crop"},
-  {name:"Sangrida Organza Anarkali Suit Set",               price:7000, was:null,  badge:"bestseller", img:"https://images.unsplash.com/photo-1609677870560-7e6aee15ed7b?w=600&h=800&fit=crop"},
-  {name:"Mahveen Cotton Anarkali Suit Set",                 price:3800, was:null,  badge:"bestseller", img:"https://images.unsplash.com/photo-1610030469750-a7c80fbc2465?w=600&h=800&fit=crop"},
-  {name:"Avyukta Printed Cotton Anarkali Suit Set",         price:3300, was:4500,  badge:"sale",       img:"https://images.unsplash.com/photo-1566174053879-31528523f8ae?w=600&h=800&fit=crop"},
-  {name:"Nandita Cotton Anarkali Suit Set",                 price:3300, was:null,  badge:"bestseller", img:"https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=600&h=800&fit=crop"},
-  {name:"Nausheen Sheesha Zari Silk Sharara Set",           price:7000, was:null,  badge:"bestseller", img:"https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=600&h=800&fit=crop"},
-  {name:"Ivory Sheeshmahal Sharara Set",                    price:7000, was:null,  badge:"bestseller", img:"https://images.unsplash.com/photo-1609677870560-7e6aee15ed7b?w=600&h=800&fit=crop"},
-  {name:"Luminous Silken Anarkali Suit Set",                price:7000, was:null,  badge:"bestseller", img:"https://images.unsplash.com/photo-1610030469750-a7c80fbc2465?w=600&h=800&fit=crop"},
-  {name:"Petaline Pink Cosmos Sharara Set",                 price:6500, was:7000,  badge:"sale",       img:"https://images.unsplash.com/photo-1566174053879-31528523f8ae?w=600&h=800&fit=crop"},
-  {name:"Crepe Mystic Black Anarkali Suit Set",             price:7500, was:null,  badge:"bestseller", img:"https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=600&h=800&fit=crop"},
-  {name:"Clover Glow Green Anarkali Suit Set",              price:3800, was:null,  badge:"bestseller", img:"https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=600&h=800&fit=crop"},
-  {name:"Satin Cotton Anarkali Suit Set",                   price:3800, was:null,  badge:"bestseller", img:"https://images.unsplash.com/photo-1609677870560-7e6aee15ed7b?w=600&h=800&fit=crop"},
-  {name:"Zeera Mustard Suit Set",                          price:5500, was:null,  badge:"bestseller", img:"https://images.unsplash.com/photo-1610030469750-a7c80fbc2465?w=600&h=800&fit=crop"},
-  {name:"Blossom Pink Suit Set",                           price:5500, was:null,  badge:"bestseller", img:"https://images.unsplash.com/photo-1566174053879-31528523f8ae?w=600&h=800&fit=crop"},
-  {name:"Zari Zikar Kurta Set",                            price:6500, was:null,  badge:"bestseller", img:"https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=600&h=800&fit=crop"},
-];
-
-var PER_PAGE = 8;
-var currentPage = 1;
-var totalPages = Math.ceil(PRODUCTS.length / PER_PAGE);
-
-/* ═══════════════════════════════════════
-   RENDER PRODUCTS
-═══════════════════════════════════════ */
-function renderProducts(page) {
-  var grid = document.getElementById('products-grid');
-  var start = (page - 1) * PER_PAGE;
-  var items = PRODUCTS.slice(start, start + PER_PAGE);
-  grid.innerHTML = '';
-
-  items.forEach(function(p, i) {
-    var off = p.was ? Math.round((1 - p.price / p.was) * 100) : 0;
-    var badgeLbl = p.badge === 'sale' ? off + '% OFF' : p.badge === 'new' ? 'NEW' : 'BESTSELLER';
-    var priceHTML = p.was
-      ? '<span class="price-was">₹' + p.was.toLocaleString('en-IN') + '</span>'
-        + '<span class="price-now">₹' + p.price.toLocaleString('en-IN') + '</span>'
-        + '<span class="price-off">' + off + '%</span>'
-      : '<span class="price-now">₹' + p.price.toLocaleString('en-IN') + '.00</span>';
-
-    var stars = '<i class="fas fa-star"></i><i class="fas fa-star"></i>'
-              + '<i class="fas fa-star"></i><i class="fas fa-star"></i>'
-              + '<i class="fas fa-star-half-alt"></i>';
-    var reviews = Math.floor(Math.random()*18)+3;
-
-    var card = document.createElement('div');
-    card.className = 'product-card';
-    card.style.transitionDelay = (i * 0.06) + 's';
-    card.innerHTML =
-      '<div class="product-image">'
-        + '<img src="' + p.img + '" alt="' + p.name + '" loading="lazy">'
-        + '<span class="p-badge ' + p.badge + '">' + badgeLbl + '</span>'
-        + '<button class="wishlist-btn" onclick="event.stopPropagation();toggleWishlist(this)">'
-            + '<i class="far fa-heart"></i></button>'
-        + '<button class="quick-view-btn" onclick="event.stopPropagation();openModal(' + (start+i) + ')">'
-            + 'Quick View</button>'
-      + '</div>'
-      + '<div class="product-info">'
-        + '<h3 class="product-name">' + p.name + '</h3>'
-        + '<div class="product-rating"><span class="stars">' + stars + '</span>'
-            + '<span class="review-count">(' + reviews + ')</span></div>'
-        + '<div class="product-price">' + priceHTML + '</div>'
-      + '</div>';
-    card.onclick = function(){ openModal(start + i); }; 
-    grid.appendChild(card);
-  });
-
-  // trigger reveal
-  setTimeout(function(){
-    document.querySelectorAll('.product-card').forEach(function(c){
-      c.classList.add('visible');
-    });
-  }, 60);
-
-  // price list
-  renderPriceList(items);
-}
-
-function renderPriceList(items) {
-  var ul = document.getElementById('price-list-ul');
-  ul.innerHTML = '';
-  items.forEach(function(p){
-    var li = document.createElement('li');
-    li.className = 'pl-item';
-    li.innerHTML = '<span class="pl-name">' + p.name + '</span>'
-      + '<span class="pl-price">₹ ' + p.price.toLocaleString('en-IN') + '.00</span>';
-    ul.appendChild(li);
-  });
-  var note = document.createElement('li');
-  note.innerHTML = '<p class="pl-note">Data last updated on 2026-04-29</p>';
-  ul.appendChild(note);
-}
-
-/* ═══════════════════════════════════════
-   PAGINATION
-═══════════════════════════════════════ */
-function changePage(val) {
-  if (val === 'prev') { if (currentPage > 1) currentPage--; }
-  else if (val === 'next') { if (currentPage < totalPages) currentPage++; }
-  else { currentPage = val; }
-
-  for (var i = 1; i <= 3; i++) {
-    var btn = document.getElementById('pg' + i);
-    if (btn) btn.classList.toggle('active', i === currentPage);
-  }
-  renderProducts(currentPage);
-  window.scrollTo({ top: document.querySelector('.products-section').offsetTop - 60, behavior: 'smooth' });
-}
-
-/* ═══════════════════════════════════════
-   WISHLIST
-═══════════════════════════════════════ */
-function toggleWishlist(btn) {
-  btn.classList.toggle('active');
-  var added = btn.classList.contains('active');
-  btn.innerHTML = added ? '<i class="fas fa-heart" style="color:#e74c3c"></i>' : '<i class="far fa-heart"></i>';
-  showToast(added ? '❤️ Added to Wishlist' : 'Removed from Wishlist');
-}
-
-/* ═══════════════════════════════════════
-   QUICK VIEW MODAL
-═══════════════════════════════════════ */
-function openModal(idx) {
-  var p = PRODUCTS[idx];
-  document.getElementById('m-img').src = p.img;
-  document.getElementById('m-name').textContent = p.name;
-  var priceStr = p.was
-    ? '<span class="m-was">₹' + p.was.toLocaleString('en-IN') + '</span> ₹' + p.price.toLocaleString('en-IN') + '.00'
-    : '₹' + p.price.toLocaleString('en-IN') + '.00';
-  document.getElementById('m-price').innerHTML = priceStr;
-  document.getElementById('modal').classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-
-function closeModal(e) {
-  if (!e || e.target === document.getElementById('modal') || e.currentTarget.classList.contains('modal-close-btn')) {
-    document.getElementById('modal').classList.remove('open');
-    document.body.style.overflow = '';
-  }
-}
-
-function selectSize(el) {
-  document.querySelectorAll('.size-opt').forEach(function(s){ s.classList.remove('active'); });
-  el.classList.add('active');
-}
-
-function addToCart() {
-  closeModal();
-  showToast('🛍️ Added to Bag!');
-}
-
-/* ═══════════════════════════════════════
-   COUNTDOWN
-═══════════════════════════════════════ */
-var endTime = new Date().getTime() + (5*86400 + 10*3600 + 50*60 + 34)*1000;
-
-function updateCountdown() {
-  var now = new Date().getTime();
-  var diff = endTime - now;
-  if (diff < 0) return;
-  var d = Math.floor(diff / 86400000);
-  var h = Math.floor((diff % 86400000) / 3600000);
-  var m = Math.floor((diff % 3600000) / 60000);
-  var s = Math.floor((diff % 60000) / 1000);
-  document.getElementById('cd-d').textContent = String(d).padStart(2,'0');
-  document.getElementById('cd-h').textContent = String(h).padStart(2,'0');
-  document.getElementById('cd-m').textContent = String(m).padStart(2,'0');
-  document.getElementById('cd-s').textContent = String(s).padStart(2,'0');
-}
-setInterval(updateCountdown, 1000);
-updateCountdown();
-
-/* ═══════════════════════════════════════
-   TOAST
-═══════════════════════════════════════ */
-var toastTimer;
-function showToast(msg) {
-  clearTimeout(toastTimer);
-  document.getElementById('toast-msg').textContent = msg;
-  var t = document.getElementById('toast');
-  t.classList.add('show');
-  toastTimer = setTimeout(function(){ t.classList.remove('show'); }, 2800);
-}
-
-/* ═══════════════════════════════════════
-   SCROLL REVEAL
-═══════════════════════════════════════ */
-var io = new IntersectionObserver(function(entries){
-  entries.forEach(function(e){
-    if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
-  });
-}, { threshold: 0.12 });
-
-document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
-
-/* ═══════════════════════════════════════
-   INIT
-═══════════════════════════════════════ */
-window.addEventListener('load', function() {
-  renderProducts(1);
-  setTimeout(function(){
-    document.getElementById('loader').classList.add('out');
-  }, 600);
-});
-
-
-
-
-</script>
+    </script>
 </body>
 </html>
