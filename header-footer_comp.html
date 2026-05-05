@@ -1,0 +1,45 @@
+
+<div id="header"></div>
+
+<h1>Content</h1>
+
+<div id="footer"></div>
+
+
+
+
+
+
+<script>
+  // HEADER fetch
+  fetch("header.html")
+    .then(res => res.text())
+    .then(data => {
+      const header = document.getElementById("header");
+      header.innerHTML = data;
+
+      // header ke scripts run karne ke liye
+      const scripts = header.querySelectorAll("script");
+      scripts.forEach(oldScript => {
+        const newScript = document.createElement("script");
+        newScript.textContent = oldScript.textContent;
+        document.body.appendChild(newScript);
+      });
+    });
+
+  // FOOTER fetch
+  fetch("footer.html")
+    .then(res => res.text())
+    .then(data => {
+      const footer = document.getElementById("footer");
+      footer.innerHTML = data;
+
+      // footer ke scripts run karne ke liye
+      const scripts = footer.querySelectorAll("script");
+      scripts.forEach(oldScript => {
+        const newScript = document.createElement("script");
+        newScript.textContent = oldScript.textContent;
+        document.body.appendChild(newScript);
+      });
+    });
+</script>

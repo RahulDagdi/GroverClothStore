@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Best Sellers —  Grover Clothing</title>
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+/* ══════════════════════════════════════
+   BASE
+══════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --green:      #8fa87a;
+  --green-dk:   #6d8a5a;
+  --cream:      #f5f0e8;
+  --cream2:     #eae5d8;
+  --dark:       #2c2c2c;
+  --text:       #555;
+  --red:        #c0392b;
+  --gold:       #c9a227;
+  --pink:       #e8b4b8;
+  --ease:       cubic-bezier(.4,0,.2,1);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: #fff;
+  color: var(--dark);
+  overflow-x: hidden;
+}
+
+/* ══ LOADER ══ */
+#loader {
+  position: fixed; inset: 0;
+  background: var(--cream);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 9999;
+  transition: opacity .6s ease;
+}
+#loader.out { opacity: 0; pointer-events: none; }
+.loader-ring {
+  width: 56px; height: 56px;
+  border: 4px solid rgba(143,168,122,.2);
+  border-top-color: var(--green);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ══ SALE BANNER ══ */
+.sale-banner {
+  background: linear-gradient(135deg,#1a1a2e,#16213e);
+  color: #fff;
+  padding: 11px 16px;
+  text-align: center;
+  overflow: hidden;
+  position: relative;
+}
+.sale-banner::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(90deg,transparent,rgba(255,255,255,.07),transparent);
+  animation: shimmer 3s infinite;
+}
+@keyframes shimmer { 0%{transform:translateX(-100%)} 100%{transform:translateX(100%)} }
+
+.banner-inner {
+  display: flex; align-items: center; justify-content: center;
+  gap: 24px; flex-wrap: wrap; position: relative; z-index: 1;
+}
+.banner-inner h3 { font-size: 13px; letter-spacing: 2px; font-weight: 600; text-transform: uppercase; }
+
+.countdown { display: flex; gap: 10px; align-items: center; }
+.cd-item {
+  background: rgba(255,255,255,.1);
+  border: 1px solid rgba(255,255,255,.15);
+  backdrop-filter: blur(8px);
+  padding: 4px 10px; border-radius: 6px;
+  text-align: center;
+  animation: float-sm 3s ease-in-out infinite;
+}
+.cd-item:nth-child(2){animation-delay:.4s}
+.cd-item:nth-child(3){animation-delay:.8s}
+.cd-item:nth-child(4){animation-delay:1.2s}
+.cd-item span { display:block; font-size:17px; font-weight:700; line-height:1; }
+.cd-item small { font-size:9px; opacity:.75; }
+@keyframes float-sm { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-4px)} }
+
+.coupon {
+  background: var(--green);
+  padding: 5px 14px; border-radius: 20px;
+  font-size: 11px; font-weight: 700; letter-spacing: .5px;
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+@keyframes pulse-glow {
+  0%,100%{box-shadow:0 0 12px rgba(143,168,122,.3)}
+  50%{box-shadow:0 0 24px rgba(143,168,122,.7)}
+}
+
+/* ══ HERO HEADER ══ */
+.hero {
+  background: linear-gradient(160deg,#eaf2e6 0%,#f2f8ee 50%,#eaf2e6 100%);
+  position: relative; overflow: hidden;
+  padding: 48px 20px 40px;
+  display: flex; align-items: center; justify-content: center;
+  gap: 0;
+  min-height: 280px;
+}
+
+/* decorative blobs */
+.hero::before, .hero::after {
+  content: '';
+  position: absolute;
+  width: 300px; height: 300px;
+  border-radius: 50%;
+  background: radial-gradient(circle,rgba(143,168,122,.12) 0%,transparent 70%);
+}
+.hero::before { top:-80px; left:-80px; }
+.hero::after  { bottom:-80px; right:-80px; }
+
+/* side product images */
+.hero-img-panel {
+  flex-shrink: 0;
+  display: flex; gap: 10px;
+  align-items: flex-end;
+  position: relative; z-index: 1;
+}
+.hero-img-panel img {
+  width: 120px; height: 200px; object-fit: cover;
+  border-radius: 12px;
+  box-shadow: 0 8px 28px rgba(0,0,0,.14);
+  transition: transform .5s var(--ease);
+}
+.hero-img-panel img:hover { transform: scale(1.04) translateY(-4px); }
+.hero-img-panel img:first-child {
+  width: 140px; height: 220px;
+  animation: float-hero 5s ease-in-out infinite;
+}
+.hero-img-panel img:last-child {
+  width: 100px; height: 170px;
+  animation: float-hero 5s ease-in-out infinite .8s;
+}
+.hero-img-panel.right img:first-child { width:100px; height:170px; }
+.hero-img-panel.right img:last-child  { width:140px; height:220px; }
+@keyframes float-hero { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+
+/* title block */
+.hero-title-block {
+  text-align: center;
+  flex: 1;
+  position: relative; z-index: 2;
+  padding: 0 24px;
+}
+.hero-script {
+  font-family: 'Great Vibes', cursive;
+  font-size: clamp(52px,8vw,96px);
+  color: var(--green-dk);
+  line-height: 1;
+  animation: float-hero 6s ease-in-out infinite .3s;
+  filter: drop-shadow(0 3px 6px rgba(0,0,0,.08));
+}
+.hero-caps {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(26px,4vw,52px);
+  letter-spacing: 10px;
+  text-transform: uppercase;
+  color: var(--green-dk);
+  margin-top: -10px;
+  font-weight: 700;
+}
+.hero-flowers {
+  position: absolute;
+  font-size: 48px; opacity: .35;
+  animation: float-hero 4s ease-in-out infinite;
+  pointer-events: none;
+}
+.hero-flowers.left  { left: 8%;  top: 18%; animation-delay: .3s; }
+.hero-flowers.right { right: 8%; top: 18%; animation-delay: 1s;  }
+
+/* ══ PRODUCTS SECTION ══ */
+.products-section {
+  max-width: 1380px; margin: 0 auto;
+  padding: 36px 20px 20px;
+}
+
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  gap: 22px;
+}
+
+/* ── product card ── */
+.product-card {
+  background: #fff;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 4px 18px rgba(0,0,0,.07);
+  cursor: pointer;
+  transition: transform .4s var(--ease), box-shadow .4s var(--ease);
+  position: relative;
+  opacity: 0;
+  transform: translateY(30px);
+}
+.product-card.visible {
+  opacity: 1; transform: translateY(0);
+  transition: opacity .5s var(--ease), transform .5s var(--ease),
+              box-shadow .4s var(--ease);
+}
+.product-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 18px 40px rgba(0,0,0,.14);
+}
+
+.product-image {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 3/4;
+  background: #f0ede8;
+}
+.product-image img {
+  width: 100%; height: 100%; object-fit: cover;
+  transition: transform .55s var(--ease);
+  display: block;
+}
+.product-card:hover .product-image img { transform: scale(1.08); }
+
+/* badge */
+.p-badge {
+  position: absolute; top: 12px; left: 12px;
+  padding: 5px 12px; border-radius: 20px;
+  font-size: 10px; font-weight: 700; letter-spacing: .5px;
+  text-transform: uppercase; color: #fff; z-index: 2;
+  animation: bounce-badge 2.5s ease-in-out infinite;
+  box-shadow: 0 2px 8px rgba(0,0,0,.2);
+}
+.p-badge.bestseller { background: var(--green); }
+.p-badge.sale       { background: var(--red); }
+.p-badge.new        { background: #2980b9; }
+@keyframes bounce-badge { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-4px)} }
+
+/* wishlist */
+.wishlist-btn {
+  position: absolute; top: 12px; right: 12px;
+  width: 36px; height: 36px; border-radius: 50%;
+  background: #fff; border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 2px 10px rgba(0,0,0,.12);
+  transition: all .3s var(--ease);
+  z-index: 2;
+  opacity: 0; transform: translateY(-8px);
+}
+.product-card:hover .wishlist-btn { opacity: 1; transform: translateY(0); }
+.wishlist-btn:hover { background: #ffebee; transform: scale(1.1); }
+.wishlist-btn.active i { color: var(--red); font-weight: 900; }
+
+/* quick view */
+.quick-view-btn {
+  position: absolute; bottom: -44px; left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  padding: 9px 22px; border-radius: 22px;
+  background: #fff; border: none; cursor: pointer;
+  font-size: 12px; font-weight: 600; font-family: 'DM Sans',sans-serif;
+  box-shadow: 0 4px 18px rgba(0,0,0,.18);
+  transition: all .35s var(--ease);
+  z-index: 2;
+}
+.product-card:hover .quick-view-btn { bottom: 16px; }
+.quick-view-btn:hover { background: var(--green); color: #fff; }
+
+/* info */
+.product-info { padding: 14px 16px 16px; }
+.product-name {
+  font-size: 12px; font-weight: 500; color: var(--dark);
+  line-height: 1.5; margin-bottom: 8px; min-height: 36px;
+  text-transform: uppercase; letter-spacing: .3px;
+}
+.product-rating {
+  display: flex; align-items: center; gap: 5px; margin-bottom: 7px;
+}
+.stars { color: #f39c12; font-size: 11px; }
+.review-count { font-size: 10px; color: #aaa; }
+.product-price { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.price-now { font-size: 15px; font-weight: 700; color: var(--dark); }
+.price-was { font-size: 12px; color: #bbb; text-decoration: line-through; }
+.price-off {
+  background: #fdecea; color: #c0392b;
+  padding: 2px 7px; border-radius: 10px;
+  font-size: 10px; font-weight: 700;
+}
+
+/* ══ PAGINATION ══ */
+.pagination {
+  display: flex; justify-content: center; align-items: center;
+  gap: 10px; margin: 44px 0 10px;
+}
+.pg-btn {
+  width: 42px; height: 42px; border-radius: 50%;
+  border: 2px solid #e0e0e0; background: #fff;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; font-size: 13px; font-weight: 600;
+  font-family: 'DM Sans',sans-serif;
+  transition: all .3s var(--ease);
+}
+.pg-btn.nav { width: auto; padding: 0 18px; border-radius: 22px; font-size: 12px; }
+.pg-btn:hover, .pg-btn.active {
+  background: var(--green); border-color: var(--green);
+  color: #fff; transform: scale(1.08);
+}
+
+/* ══ DIVIDER ══ */
+.divider {
+  display: flex; align-items: center; justify-content: center;
+  gap: 16px; padding: 32px 20px;
+}
+.divider-line {
+  width: 120px; height: 1px;
+  background: linear-gradient(to right,transparent,var(--green),transparent);
+}
+.divider-icon {
+  color: var(--green); font-size: 22px;
+  animation: spin 12s linear infinite;
+}
+
+/* ══ PRICE LIST ══ */
+.price-list-section {
+  max-width: 1380px; margin: 0 auto;
+  padding: 20px 20px 60px;
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 60px;
+}
+.pl-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px; font-weight: 700;
+  color: var(--dark); margin-bottom: 24px;
+  position: relative; padding-bottom: 12px;
+}
+.pl-title::after {
+  content: ''; position: absolute; bottom: 0; left: 0;
+  width: 48px; height: 3px; background: var(--green); border-radius: 2px;
+}
+.pl-list { list-style: none; }
+.pl-item {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  padding: 13px 0; border-bottom: 1px solid #eee;
+  cursor: pointer;
+  transition: padding-left .25s var(--ease), color .25s;
+}
+.pl-item:hover { padding-left: 10px; color: var(--green); }
+.pl-item:hover .pl-price { color: var(--green); transform: scale(1.05); }
+.pl-name { font-size: 13px; color: #555; flex: 1; padding-right: 12px; line-height: 1.5; }
+.pl-price { font-size: 13px; font-weight: 600; color: var(--dark); white-space: nowrap; transition: all .25s; }
+.pl-note { font-size: 11px; color: #bbb; padding: 14px 0 0; }
+
+/* ══ SEO ══ */
+.seo-section {
+  background: linear-gradient(to bottom,#fff,var(--cream));
+  padding: 50px 20px 60px;
+}
+.seo-inner {
+  max-width: 1380px; margin: 0 auto;
+  columns: 2; column-gap: 48px;
+}
+.seo-inner h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 19px; font-weight: 700;
+  color: var(--dark); margin: 28px 0 12px;
+  break-inside: avoid;
+}
+.seo-inner h3:first-child { margin-top: 0; }
+.seo-inner p {
+  font-size: 13.5px; color: #666; line-height: 1.8;
+  margin-bottom: 14px; break-inside: avoid;
+}
+.seo-inner a { color: var(--green); text-decoration: none; font-weight: 500; }
+.seo-inner a:hover { text-decoration: underline; }
+
+/* ══ ILLUSTRATION FOOTER ══ */
+.illus-footer {
+  width: 100%;
+  min-height: 340px;
+  background: linear-gradient(170deg,#ffe4e1 0%,#fff0f5 50%,#e6f3ec 100%);
+  position: relative; overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+}
+.illus-content {
+  text-align: center; position: relative; z-index: 2;
+  padding: 40px 20px;
+}
+.illus-title {
+  font-family: 'Great Vibes', cursive;
+  font-size: clamp(42px,7vw,72px);
+  color: var(--green-dk);
+  animation: float-hero 5s ease-in-out infinite;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,.08));
+}
+.illus-sub {
+  font-size: 13px; letter-spacing: 4px; text-transform: uppercase;
+  color: #888; margin-top: 6px;
+}
+.illus-float {
+  position: absolute;
+  animation: float-hero 7s ease-in-out infinite;
+  user-select: none; pointer-events: none;
+  font-size: 90px; opacity: .35;
+}
+.illus-float.palm-l { left: 4%; bottom: 0; animation-delay: 0s; }
+.illus-float.palm-r { right: 4%; bottom: 0; animation-delay: 2s; font-size: 80px; }
+.illus-float.fl1    { left: 20%; top: 16%; font-size: 36px; animation-delay: .8s; }
+.illus-float.fl2    { right: 22%; top: 12%; font-size: 30px; animation-delay: 2.5s; }
+.illus-float.fl3    { left: 40%; top: 10%; font-size: 24px; animation-delay: 1.5s; }
+
+/* ══ QUICK VIEW MODAL ══ */
+.modal-overlay {
+  display: none;
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,.7);
+  z-index: 8000; align-items: center; justify-content: center;
+  backdrop-filter: blur(4px);
+}
+.modal-overlay.open { display: flex; animation: fadeIn .3s ease; }
+@keyframes fadeIn { from{opacity:0} to{opacity:1} }
+
+.modal-box {
+  background: #fff; border-radius: 20px;
+  max-width: 860px; width: 92%;
+  max-height: 90vh; overflow-y: auto;
+  position: relative;
+  animation: scaleIn .3s var(--ease);
+}
+@keyframes scaleIn { from{opacity:0;transform:scale(.88)} to{opacity:1;transform:scale(1)} }
+
+.modal-close-btn {
+  position: absolute; top: 16px; right: 16px;
+  width: 38px; height: 38px; border-radius: 50%;
+  background: var(--cream); border: none; cursor: pointer;
+  font-size: 18px; display: flex; align-items: center; justify-content: center;
+  transition: all .3s; z-index: 5;
+}
+.modal-close-btn:hover { background: var(--green); color: #fff; transform: rotate(90deg); }
+
+.modal-grid { display: grid; grid-template-columns: 1fr 1fr; }
+.modal-img { position: relative; min-height: 460px; overflow: hidden; }
+.modal-img img {
+  width: 100%; height: 100%; object-fit: cover;
+  border-radius: 20px 0 0 20px;
+  transition: transform .5s var(--ease);
+}
+.modal-img:hover img { transform: scale(1.04); }
+
+.modal-detail {
+  padding: 40px 36px;
+  display: flex; flex-direction: column; justify-content: center;
+}
+.modal-detail h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 24px; font-weight: 700; margin-bottom: 10px;
+}
+.modal-detail .m-price {
+  font-size: 26px; color: var(--green); font-weight: 700; margin-bottom: 18px;
+}
+.modal-detail .m-was { text-decoration: line-through; color: #bbb; font-size: 16px; margin-right: 6px; }
+
+.m-rating { display:flex; align-items:center; gap:6px; margin-bottom:20px; }
+.m-rating .stars { font-size:14px; }
+
+.size-section { margin-bottom: 20px; }
+.size-section h4 { font-size: 12px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
+.size-opts { display: flex; gap: 8px; }
+.size-opt {
+  width: 42px; height: 42px; border: 2px solid #ddd; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; font-weight: 600; font-size: 13px;
+  transition: all .25s;
+}
+.size-opt:hover, .size-opt.active {
+  border-color: var(--green); background: var(--green); color: #fff;
+}
+
+.atc-btn {
+  width: 100%; padding: 14px;
+  background: linear-gradient(135deg,var(--green),var(--green-dk));
+  color: #fff; border: none; border-radius: 30px;
+  font-size: 15px; font-weight: 700; cursor: pointer;
+  font-family: 'DM Sans',sans-serif; letter-spacing: 1px; text-transform: uppercase;
+  box-shadow: 0 4px 16px rgba(143,168,122,.35);
+  transition: all .3s var(--ease);
+}
+.atc-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(143,168,122,.5); }
+
+/* ══ TOAST ══ */
+#toast {
+  position: fixed; bottom: 28px; right: 28px;
+  background: var(--dark); color: #fff;
+  padding: 14px 26px; border-radius: 12px;
+  display: flex; align-items: center; gap: 12px;
+  font-size: 14px; font-weight: 500;
+  box-shadow: 0 8px 28px rgba(0,0,0,.28);
+  transform: translateX(140%);
+  transition: transform .4s cubic-bezier(.68,-.55,.265,1.55);
+  z-index: 9000;
+}
+#toast.show { transform: translateX(0); }
+#toast i { color: var(--green); font-size: 20px; }
+
+/* ══ SCROLL ANIMATIONS ══ */
+.reveal { opacity: 0; transform: translateY(28px); transition: opacity .6s var(--ease), transform .6s var(--ease); }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* ══ RESPONSIVE ══ */
+@media (max-width:1100px) {
+  .products-grid { grid-template-columns: repeat(3,1fr); }
+}
+@media (max-width:860px) {
+  .products-grid { grid-template-columns: repeat(2,1fr); gap:16px; }
+  .price-list-section { grid-template-columns:1fr; gap:36px; }
+  .seo-inner { columns:1; }
+  .modal-grid { grid-template-columns:1fr; }
+  .modal-img { min-height:280px; }
+  .modal-img img { border-radius:20px 20px 0 0; }
+  .hero-img-panel img { width:90px !important; height:150px !important; }
+  .hero-img-panel img:first-child { height:170px !important; }
+}
+@media (max-width:600px) {
+  .products-grid { grid-template-columns: repeat(2,1fr); gap:12px; }
+  .product-info  { padding:10px 12px 12px; }
+  .product-name  { font-size:11px; }
+  .price-now     { font-size:13px; }
+  .hero-img-panel { display:none; }
+  .banner-inner h3 { font-size:11px; }
+  .countdown { gap:6px; }
+  .cd-item span { font-size:14px; }
+}
+@media (max-width:400px) {
+  .products-grid { grid-template-columns:1fr; }
+}
+
+
+
+ /* Custom Cursor */
+        .custom-cursor {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--primary);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.1s;
+            mix-blend-mode: difference;
+        }
+
+        @media (pointer: coarse) {
+            .custom-cursor {
+                display: none;
+            }
+        }
+</style>
+</head>
+<body>
+
+<!-- LOADER -->
+<div id="loader"><div class="loader-ring"></div></div>
+    <!-- Custom Cursor -->
+    <div class="custom-cursor" id="cursor"></div>
+
+    <!-- GROVER CLOTH STORE — NAVBAR START         -->
+
+<div id="header"></div>
+
+    <!-- NAVBAR END -->
+
+
+
+
+
+
+
+<!-- SALE BANNER -->
+<div class="sale-banner">
+  <div class="banner-inner">
+    <h3>☀️ Summer Sale: UPTO 50% OFF</h3>
+    <div class="countdown">
+      <div class="cd-item"><span id="cd-d">05</span><small>Days</small></div>
+      <div class="cd-item"><span id="cd-h">10</span><small>Hrs</small></div>
+      <div class="cd-item"><span id="cd-m">50</span><small>Min</small></div>
+      <div class="cd-item"><span id="cd-s">34</span><small>Sec</small></div>
+    </div>
+    <div class="coupon"><i class="fas fa-tag"></i> USE CODE — SUMMER50</div>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-flowers left">🌸</div>
+  <div class="hero-flowers right">🌺</div>
+
+  <!-- Left panel -->
+  <div class="hero-img-panel left">
+    <img src="https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=400&h=600&fit=crop" alt="">
+    <img src="https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=400&h=600&fit=crop" alt="">
+  </div>
+
+  <div class="hero-title-block">
+    <div class="hero-script">Best</div>
+    <div class="hero-caps">Sellers</div>
+  </div>
+
+  <!-- Right panel -->
+  <div class="hero-img-panel right">
+    <img src="https://images.unsplash.com/photo-1609677870560-7e6aee15ed7b?w=400&h=600&fit=crop" alt="">
+    <img src="https://images.unsplash.com/photo-1610030469750-a7c80fbc2465?w=400&h=600&fit=crop" alt="">
+  </div>
+</section>
+
+<!-- PRODUCTS -->
+<section class="products-section">
+  <div class="products-grid" id="products-grid">
+    <!-- Cards injected by JS -->
+  </div>
+
+  <!-- PAGINATION -->
+  <div class="pagination reveal">
+    <button class="pg-btn nav" onclick="changePage('prev')"><i class="fas fa-chevron-left"></i> Prev</button>
+    <button class="pg-btn active" id="pg1" onclick="changePage(1)">1</button>
+    <button class="pg-btn" id="pg2" onclick="changePage(2)">2</button>
+    <button class="pg-btn" id="pg3" onclick="changePage(3)">3</button>
+    <button class="pg-btn nav" onclick="changePage('next')">Next <i class="fas fa-chevron-right"></i></button>
+  </div>
+</section>
+
+<!-- DIVIDER -->
+<div class="divider reveal">
+  <div class="divider-line"></div>
+  <i class="fas fa-gem divider-icon"></i>
+  <div class="divider-line"></div>
+</div>
+
+<!-- PRICE LIST -->
+<section class="price-list-section">
+  <div class="reveal">
+    <h3 class="pl-title">BUY BEST SELLERS ONLINE</h3>
+    <ul class="pl-list">
+      <li class="pl-item"><span class="pl-name">Popular Searches Women's Ethnic Wear</span></li>
+      <li class="pl-item"><span class="pl-name">Women Suit Sets | Maxis | Tops For Women | Co-ord Set</span></li>
+      <li class="pl-item"><span class="pl-name">Best Women's Suit Set</span></li>
+      <li class="pl-item"><span class="pl-name">Ladies Suit | White Suit For Women | Cotton Suit Sets | Stylish Suits | Yellow Suit | Organza Suit Set | Suit Set With Dupatta | Salwar Suit Set | Chanderi Suit | Kurta Set | Lavender Suit | Silk Suit | Party Wear Suits Under 2000</span></li>
+      <li class="pl-item"><span class="pl-name">Shrugs — Long Shrug | Cotton Shrug | Plus Size Shrugs | Short Shrugs</span></li>
+      <li class="pl-item"><span class="pl-name">Dupatta For Women |  Grover Clothing Best Seller |  Grover Raw Fabric |  Grover New Arrivals |  Grover Unstitched Suits | Bulk Order |  Grover Coupon Code |  Grover Blogs</span></li>
+      <li class="pl-item"><p class="pl-note">Data last updated on 2026-04-29</p></li>
+    </ul>
+  </div>
+  <div class="reveal">
+    <h3 class="pl-title">BEST SELLERS PRICE LIST</h3>
+    <ul class="pl-list" id="price-list-ul">
+      <!-- injected by JS -->
+    </ul>
+  </div>
+</section>
+
+<!-- SEO -->
+<section class="seo-section">
+  <div class="seo-inner reveal">
+    <h3> Grover Clothing: Trendy & Ethnic Women's Fashion Online</h3>
+    <p>Discover the essence of Indian fashion with <a href="#"> Grover Clothing</a>. We deliver top-quality women's dresses with the widest range that has something for everyone — quality, design, and tradition in every piece.</p>
+    <p>From elegant kurta sets to festive lehengas and chic maxis, we bring together style, comfort, and tradition. Whether you're dressing for everyday elegance or grand celebrations, our collections offer something for every modern woman.</p>
+
+    <h3>Why Choose  Grover Clothing: Our Vision & Values</h3>
+    <p> Grover fashion fills the void where everyone can find dresses they love. We work passionately to create the best customer-driven online shopping experience that gets your dresses to your doorstep with ease.</p>
+
+    <h3>Shop  Grover Clothing Online: Dresses, Suits, and More</h3>
+    <p>Our vast collection includes ethnic wear like the much-loved <a href="#"> Grover anarkali</a>. Free shipping and easy returns make shopping not only easy but also fun. Our styles are original, classy, and real — free from fake promises.</p>
+
+    <h3>Cotton Suit Sets</h3>
+    <p><a href="#">Cotton suit sets for women</a> are stylish and comfortable — the go-to for summers. We make suits that enhance your style and feel great on the skin. One of the best print designs to steal hearts wherever you go.</p>
+
+    <h3> Grover Lehengas: Festive & Wedding Wear</h3>
+    <p><a href="#">Lehengas</a> are regal and flamboyant — flagbearers of ethnic wear.  Grover Clothing makes curated styles that fill the space of a great festive lehenga in your wardrobe at great deals.</p>
+
+    <h3>Tops & Co-ord Sets</h3>
+    <p>Casual wear can't start without tops and can't end without co-ord sets. Lightweight, breathable tops and cute flowy co-ords — co-ord ethnic wear suits are a typical favorite for all body shapes.</p>
+
+    <h3> Grover Kurta Sets: Elegant Ethnic Wear</h3>
+    <p><a href="#">Kurta sets</a> are one of the most sought-after dresses for their beautiful ethnic look. Perfect for daily wear and formal events — with bright dupattas and top-quality ethnic embroideries.</p>
+
+    <h3>Maxis</h3>
+    <p>Maxi long dresses are the most comfortable and elegant. Sleek designs with ethnic and contemporary patterns — style them from everyday wear to specific events. Palazzo or leggings make the style even better.</p>
+
+    <h3>Dupattas</h3>
+    <p><a href="#">Dupattas</a> are the staple of Indian wardrobes. Our dupattas are made from the best fabrics in lovely colors — from ethnic embroideries for festive events to pastels for formal ones, all in one place.</p>
+
+    <h3>Raw Fabrics</h3>
+    <p>We create top-quality fabrics for your kurtas or suits. Custom-tailored clothing is a natural, perfect fit. The breathability and feel of our fabrics make them truly special.</p>
+  </div>
+</section>
+
+<!-- ILLUSTRATION FOOTER -->
+<div class="illus-footer">
+  <span class="illus-float palm-l">🌴</span>
+  <span class="illus-float palm-r">🌴</span>
+  <span class="illus-float fl1">🌸</span>
+  <span class="illus-float fl2">🌺</span>
+  <span class="illus-float fl3">🌼</span>
+  <div class="illus-content">
+    <div class="illus-title"> Grover's </div>
+    <div class="illus-sub">Wear the Story of India</div>
+  </div>
+</div>
+
+<!-- QUICK VIEW MODAL -->
+<div class="modal-overlay" id="modal" onclick="closeModal(event)">
+  <div class="modal-box" id="modal-box">
+    <button class="modal-close-btn" onclick="closeModal()"><i class="fas fa-times"></i></button>
+    <div class="modal-grid">
+      <div class="modal-img">
+        <img id="m-img" src="" alt="">
+      </div>
+      <div class="modal-detail">
+        <h2 id="m-name"></h2>
+        <div class="m-rating">
+          <span class="stars">
+            <i class="fas fa-star"></i><i class="fas fa-star"></i>
+            <i class="fas fa-star"></i><i class="fas fa-star"></i>
+            <i class="fas fa-star-half-alt"></i>
+          </span>
+          <span style="font-size:12px;color:#aaa">(12 reviews)</span>
+        </div>
+        <div class="m-price" id="m-price"></div>
+        <div class="size-section">
+          <h4>Select Size</h4>
+          <div class="size-opts">
+            <div class="size-opt" onclick="selectSize(this)">XS</div>
+            <div class="size-opt active" onclick="selectSize(this)">S</div>
+            <div class="size-opt" onclick="selectSize(this)">M</div>
+            <div class="size-opt" onclick="selectSize(this)">L</div>
+            <div class="size-opt" onclick="selectSize(this)">XL</div>
+          </div>
+        </div>
+        <button class="atc-btn" onclick="addToCart()">
+          <i class="fas fa-shopping-bag"></i> Add to Bag
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast"><i class="fas fa-check-circle"></i><span id="toast-msg"></span></div>
+
+
+
+
+
+  <!-- ║     GROVER CLOTH STORE — FOOTER START      -->
+
+  <div id="footer"></div>
+
+
+<!-- FOOTER END  -->
+
+
+
+<script>
+
+    // Custom Cursor
+        const cursor = document.getElementById('cursor');
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX - 10 + 'px';
+            cursor.style.top = e.clientY - 10 + 'px';
+        });
+
+        document.addEventListener('mousedown', () => {
+            cursor.style.transform = 'scale(0.8)';
+        });
+
+        document.addEventListener('mouseup', () => {
+            cursor.style.transform = 'scale(1)';
+        });
+
+
+           // <!--  NAVBAR START         -->
+  // HEADER fetch
+  fetch("header.html")
+    .then(res => res.text())
+    .then(data => {
+      const header = document.getElementById("header");
+      header.innerHTML = data;
+
+      // header ke scripts run karne ke liye
+      const scripts = header.querySelectorAll("script");
+      scripts.forEach(oldScript => {
+        const newScript = document.createElement("script");
+        newScript.textContent = oldScript.textContent;
+        document.body.appendChild(newScript);
+      });
+    });
+    // <!-- ══ NAVBAR END ══ -->
+
+
+/* ═══════════════════════════════════════
+   PRODUCT DATA
+═══════════════════════════════════════ */
+var PRODUCTS = [
+  {name:"Starfall Blue Wedding Wear Anarkali Suit Set",     price:7500, was:null,  badge:"bestseller", img:"https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=600&h=800&fit=crop"},
+  {name:"Vangold Embroidered Cosmos Anarkali Suit Set",     price:8000, was:null,  badge:"bestseller", img:"https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=600&h=800&fit=crop"},
+  {name:"Sangrida Organza Anarkali Suit Set",               price:7000, was:null,  badge:"bestseller", img:"https://images.unsplash.com/photo-1609677870560-7e6aee15ed7b?w=600&h=800&fit=crop"},
+  {name:"Mahveen Cotton Anarkali Suit Set",                 price:3800, was:null,  badge:"bestseller", img:"https://images.unsplash.com/photo-1610030469750-a7c80fbc2465?w=600&h=800&fit=crop"},
+  {name:"Avyukta Printed Cotton Anarkali Suit Set",         price:3300, was:4500,  badge:"sale",       img:"https://images.unsplash.com/photo-1566174053879-31528523f8ae?w=600&h=800&fit=crop"},
+  {name:"Nandita Cotton Anarkali Suit Set",                 price:3300, was:null,  badge:"bestseller", img:"https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=600&h=800&fit=crop"},
+  {name:"Nausheen Sheesha Zari Silk Sharara Set",           price:7000, was:null,  badge:"bestseller", img:"https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=600&h=800&fit=crop"},
+  {name:"Ivory Sheeshmahal Sharara Set",                    price:7000, was:null,  badge:"bestseller", img:"https://images.unsplash.com/photo-1609677870560-7e6aee15ed7b?w=600&h=800&fit=crop"},
+  {name:"Luminous Silken Anarkali Suit Set",                price:7000, was:null,  badge:"bestseller", img:"https://images.unsplash.com/photo-1610030469750-a7c80fbc2465?w=600&h=800&fit=crop"},
+  {name:"Petaline Pink Cosmos Sharara Set",                 price:6500, was:7000,  badge:"sale",       img:"https://images.unsplash.com/photo-1566174053879-31528523f8ae?w=600&h=800&fit=crop"},
+  {name:"Crepe Mystic Black Anarkali Suit Set",             price:7500, was:null,  badge:"bestseller", img:"https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=600&h=800&fit=crop"},
+  {name:"Clover Glow Green Anarkali Suit Set",              price:3800, was:null,  badge:"bestseller", img:"https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=600&h=800&fit=crop"},
+  {name:"Satin Cotton Anarkali Suit Set",                   price:3800, was:null,  badge:"bestseller", img:"https://images.unsplash.com/photo-1609677870560-7e6aee15ed7b?w=600&h=800&fit=crop"},
+  {name:"Zeera Mustard Suit Set",                          price:5500, was:null,  badge:"bestseller", img:"https://images.unsplash.com/photo-1610030469750-a7c80fbc2465?w=600&h=800&fit=crop"},
+  {name:"Blossom Pink Suit Set",                           price:5500, was:null,  badge:"bestseller", img:"https://images.unsplash.com/photo-1566174053879-31528523f8ae?w=600&h=800&fit=crop"},
+  {name:"Zari Zikar Kurta Set",                            price:6500, was:null,  badge:"bestseller", img:"https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=600&h=800&fit=crop"},
+];
+
+var PER_PAGE = 8;
+var currentPage = 1;
+var totalPages = Math.ceil(PRODUCTS.length / PER_PAGE);
+
+/* ═══════════════════════════════════════
+   RENDER PRODUCTS
+═══════════════════════════════════════ */
+function renderProducts(page) {
+  var grid = document.getElementById('products-grid');
+  var start = (page - 1) * PER_PAGE;
+  var items = PRODUCTS.slice(start, start + PER_PAGE);
+  grid.innerHTML = '';
+
+  items.forEach(function(p, i) {
+    var off = p.was ? Math.round((1 - p.price / p.was) * 100) : 0;
+    var badgeLbl = p.badge === 'sale' ? off + '% OFF' : p.badge === 'new' ? 'NEW' : 'BESTSELLER';
+    var priceHTML = p.was
+      ? '<span class="price-was">₹' + p.was.toLocaleString('en-IN') + '</span>'
+        + '<span class="price-now">₹' + p.price.toLocaleString('en-IN') + '</span>'
+        + '<span class="price-off">' + off + '%</span>'
+      : '<span class="price-now">₹' + p.price.toLocaleString('en-IN') + '.00</span>';
+
+    var stars = '<i class="fas fa-star"></i><i class="fas fa-star"></i>'
+              + '<i class="fas fa-star"></i><i class="fas fa-star"></i>'
+              + '<i class="fas fa-star-half-alt"></i>';
+    var reviews = Math.floor(Math.random()*18)+3;
+
+    var card = document.createElement('div');
+    card.className = 'product-card';
+    card.style.transitionDelay = (i * 0.06) + 's';
+    card.innerHTML =
+      '<div class="product-image">'
+        + '<img src="' + p.img + '" alt="' + p.name + '" loading="lazy">'
+        + '<span class="p-badge ' + p.badge + '">' + badgeLbl + '</span>'
+        + '<button class="wishlist-btn" onclick="event.stopPropagation();toggleWishlist(this)">'
+            + '<i class="far fa-heart"></i></button>'
+        + '<button class="quick-view-btn" onclick="event.stopPropagation();openModal(' + (start+i) + ')">'
+            + 'Quick View</button>'
+      + '</div>'
+      + '<div class="product-info">'
+        + '<h3 class="product-name">' + p.name + '</h3>'
+        + '<div class="product-rating"><span class="stars">' + stars + '</span>'
+            + '<span class="review-count">(' + reviews + ')</span></div>'
+        + '<div class="product-price">' + priceHTML + '</div>'
+      + '</div>';
+    card.onclick = function(){ openModal(start + i); }; 
+    grid.appendChild(card);
+  });
+
+  // trigger reveal
+  setTimeout(function(){
+    document.querySelectorAll('.product-card').forEach(function(c){
+      c.classList.add('visible');
+    });
+  }, 60);
+
+  // price list
+  renderPriceList(items);
+}
+
+function renderPriceList(items) {
+  var ul = document.getElementById('price-list-ul');
+  ul.innerHTML = '';
+  items.forEach(function(p){
+    var li = document.createElement('li');
+    li.className = 'pl-item';
+    li.innerHTML = '<span class="pl-name">' + p.name + '</span>'
+      + '<span class="pl-price">₹ ' + p.price.toLocaleString('en-IN') + '.00</span>';
+    ul.appendChild(li);
+  });
+  var note = document.createElement('li');
+  note.innerHTML = '<p class="pl-note">Data last updated on 2026-04-29</p>';
+  ul.appendChild(note);
+}
+
+/* ═══════════════════════════════════════
+   PAGINATION
+═══════════════════════════════════════ */
+function changePage(val) {
+  if (val === 'prev') { if (currentPage > 1) currentPage--; }
+  else if (val === 'next') { if (currentPage < totalPages) currentPage++; }
+  else { currentPage = val; }
+
+  for (var i = 1; i <= 3; i++) {
+    var btn = document.getElementById('pg' + i);
+    if (btn) btn.classList.toggle('active', i === currentPage);
+  }
+  renderProducts(currentPage);
+  window.scrollTo({ top: document.querySelector('.products-section').offsetTop - 60, behavior: 'smooth' });
+}
+
+/* ═══════════════════════════════════════
+   WISHLIST
+═══════════════════════════════════════ */
+function toggleWishlist(btn) {
+  btn.classList.toggle('active');
+  var added = btn.classList.contains('active');
+  btn.innerHTML = added ? '<i class="fas fa-heart" style="color:#e74c3c"></i>' : '<i class="far fa-heart"></i>';
+  showToast(added ? '❤️ Added to Wishlist' : 'Removed from Wishlist');
+}
+
+/* ═══════════════════════════════════════
+   QUICK VIEW MODAL
+═══════════════════════════════════════ */
+function openModal(idx) {
+  var p = PRODUCTS[idx];
+  document.getElementById('m-img').src = p.img;
+  document.getElementById('m-name').textContent = p.name;
+  var priceStr = p.was
+    ? '<span class="m-was">₹' + p.was.toLocaleString('en-IN') + '</span> ₹' + p.price.toLocaleString('en-IN') + '.00'
+    : '₹' + p.price.toLocaleString('en-IN') + '.00';
+  document.getElementById('m-price').innerHTML = priceStr;
+  document.getElementById('modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal(e) {
+  if (!e || e.target === document.getElementById('modal') || e.currentTarget.classList.contains('modal-close-btn')) {
+    document.getElementById('modal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+}
+
+function selectSize(el) {
+  document.querySelectorAll('.size-opt').forEach(function(s){ s.classList.remove('active'); });
+  el.classList.add('active');
+}
+
+function addToCart() {
+  closeModal();
+  showToast('🛍️ Added to Bag!');
+}
+
+/* ═══════════════════════════════════════
+   COUNTDOWN
+═══════════════════════════════════════ */
+var endTime = new Date().getTime() + (5*86400 + 10*3600 + 50*60 + 34)*1000;
+
+function updateCountdown() {
+  var now = new Date().getTime();
+  var diff = endTime - now;
+  if (diff < 0) return;
+  var d = Math.floor(diff / 86400000);
+  var h = Math.floor((diff % 86400000) / 3600000);
+  var m = Math.floor((diff % 3600000) / 60000);
+  var s = Math.floor((diff % 60000) / 1000);
+  document.getElementById('cd-d').textContent = String(d).padStart(2,'0');
+  document.getElementById('cd-h').textContent = String(h).padStart(2,'0');
+  document.getElementById('cd-m').textContent = String(m).padStart(2,'0');
+  document.getElementById('cd-s').textContent = String(s).padStart(2,'0');
+}
+setInterval(updateCountdown, 1000);
+updateCountdown();
+
+/* ═══════════════════════════════════════
+   TOAST
+═══════════════════════════════════════ */
+var toastTimer;
+function showToast(msg) {
+  clearTimeout(toastTimer);   
+  document.getElementById('toast-msg').textContent = msg;
+  var t = document.getElementById('toast');
+  t.classList.add('show');
+  toastTimer = setTimeout(function(){ t.classList.remove('show'); }, 2800);
+}
+
+/* ═══════════════════════════════════════
+   SCROLL REVEAL
+═══════════════════════════════════════ */
+var io = new IntersectionObserver(function(entries){
+  entries.forEach(function(e){
+    if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+  });
+}, { threshold: 0.12 });
+
+document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+
+/* ═══════════════════════════════════════
+   INIT
+═══════════════════════════════════════ */
+window.addEventListener('load', function() {
+  renderProducts(1);
+  setTimeout(function(){
+    document.getElementById('loader').classList.add('out');
+  }, 600);
+});
+
+  // <!-- ║     GROVER CLOTH STORE — FOOTER START      -->
+
+
+fetch("footer.html")
+  .then(res => res.text())
+  .then(data => {
+    const footer = document.getElementById("footer");
+    footer.innerHTML = data;
+
+    // script ko run karne ka hack
+    const scripts = footer.querySelectorAll("script");
+    scripts.forEach(oldScript => {
+      const newScript = document.createElement("script");
+      newScript.textContent = oldScript.textContent;
+      document.body.appendChild(newScript);
+    });
+  });
+
+// <!-- FOOTER END  -->
+
+
+</script>
+</body>
+</html>
