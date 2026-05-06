@@ -2252,6 +2252,22 @@
         </div>
     </div>
 
+
+
+
+<!-- // whatsapp-banner carousal START -->
+
+<div id="whatsapp-banner"></div>
+
+<!-- // whatsapp-banner carousal END -->
+
+
+
+
+
+
+
+    
     <!-- Categories -->
     <section class="categories-section">
         <div class="categories-container">
@@ -5119,6 +5135,37 @@
                 this.style.transform = 'scale(1) rotate(0deg)';
             });
         });
+
+
+
+
+
+
+// whatsapp-banner carousal START
+ 
+function loadComponent(file, id) {
+  fetch(file)
+    .then(res => res.text())
+    .then(data => {
+      const el = document.getElementById(id);
+      el.innerHTML = data;
+
+      // script run karne ke liye
+      const scripts = el.querySelectorAll("script");
+      scripts.forEach(oldScript => {
+        const newScript = document.createElement("script");
+        newScript.textContent = oldScript.textContent;
+        document.body.appendChild(newScript);
+      });
+    });
+}
+
+// load banner
+loadComponent("whatsapp-banner.html", "whatsapp-banner");
+
+// whatsapp-banner carousal END 
+
+
 
         // <!--     
         //   ╔══════════════════════════════════════════════════════════╗
