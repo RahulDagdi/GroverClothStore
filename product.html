@@ -2240,7 +2240,14 @@
 
 <body>
 
-
+// <!-- floating In=con Whatsapp instagram -->
+<script src="floating-buttons.js"></script>
+<script>
+  FloatingButtons.init({
+    instagram: 'https://www.instagram.com/grover_cloth__store',
+    whatsapp: 'https://api.whatsapp.com/send/?phone=918619375610&text&type=phone_number&app_absent=0',
+  });
+</script>
 
 
 
@@ -2373,7 +2380,7 @@
             </div>
 
             <!-- SIZE -->
-            <div class="selector-label">
+            <!-- <div class="selector-label">
                 <span>Size: <strong id="sizeName">S</strong></span>
                 <a onclick="openSizeChart()"><i class="fas fa-ruler-horizontal" style="margin-right:4px;"></i>Size
                     Chart</a>
@@ -2386,7 +2393,7 @@
                 <button class="sz-btn" onclick="selectSize(this,'XL')"><span>XL</span></button>
                 <button class="sz-btn" onclick="selectSize(this,'2XL')"><span>2XL</span></button>
                 <button class="sz-btn oos" title="Out of stock"><span>3XL</span></button>
-            </div>
+            </div> -->
 
             <!-- CART ACTIONS -->
             <div class="cart-actions">
@@ -2417,9 +2424,9 @@
                     <div class="trust-ico"><i class="fas fa-shipping-fast"></i></div>
                     <span>Express Shipping</span>
                 </div>
-                <div class="trust-item" onclick="toast('Trusted by 25,000+ happy customers')">
+                <div class="trust-item" onclick="toast('Trusted by 50,000+ happy customers')">
                     <div class="trust-ico"><i class="fas fa-users"></i></div>
-                    <span>25K+ Family</span>
+                    <span>50K+ Family</span>
                 </div>
             </div>
 
@@ -3029,7 +3036,7 @@
     </div>
 
     <!-- ═══ SIZE CHART MODAL ═══ -->
-    <div class="modal-overlay" id="sizeModal" onclick="handleModalClick(event)">
+    <!-- <div class="modal-overlay" id="sizeModal" onclick="handleModalClick(event)">
         <div class="modal-box">
             <button class="modal-close" onclick="closeSizeChart()"><i class="fas fa-times"></i></button>
             <div class="modal-title">Size Guide</div>
@@ -3098,7 +3105,7 @@
                 </tbody>
             </table>
         </div>
-    </div>
+    </div> -->
 
     <!-- ═══ STICKY MOBILE CART ═══ -->
     <div class="sticky-cart">
@@ -3341,15 +3348,15 @@
         function handleLbClick(e) { if (e.target === document.getElementById('lightbox')) closeLightbox(); }
 
         /* ─── Size Chart Modal ─── */
-        function openSizeChart() {
-            document.getElementById('sizeModal').classList.add('open');
-            document.body.style.overflow = 'hidden';
-        }
-        function closeSizeChart() {
-            document.getElementById('sizeModal').classList.remove('open');
-            document.body.style.overflow = '';
-        }
-        function handleModalClick(e) { if (e.target === document.getElementById('sizeModal')) closeSizeChart(); }
+        // function openSizeChart() {
+        //     document.getElementById('sizeModal').classList.add('open');
+        //     document.body.style.overflow = 'hidden';
+        // }
+        // function closeSizeChart() {
+        //     document.getElementById('sizeModal').classList.remove('open');
+        //     document.body.style.overflow = '';
+        // }
+        // function handleModalClick(e) { if (e.target === document.getElementById('sizeModal')) closeSizeChart(); }
 
         /* ─── Keyboard ─── */
         document.addEventListener('keydown', e => {
