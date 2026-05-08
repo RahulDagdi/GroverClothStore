@@ -1,1233 +1,1572 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Track Your Order | Aaliyah Clothing</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary-coral: #ff6b6b;
-            --primary-dark: #ee5a5a;
-            --navy: #2c3e50;
-            --cream: #faf8f5;
-            --gold: #d4a574;
-            --text-dark: #2d3436;
-            --text-muted: #636e72;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: var(--cream);
-            overflow-x: hidden;
-            color: var(--text-dark);
-        }
-
-        /* Notification Bar */
-        .notification-bar {
-            background: linear-gradient(90deg, #fff5f5 0%, #ffe0e0 100%);
-            border-bottom: 1px solid #ffd0d0;
-            padding: 12px 0;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .notification-bar::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
-            animation: shimmer 3s infinite;
-        }
-
-        @keyframes shimmer {
-            0% { left: -100%; }
-            100% { left: 100%; }
-        }
-
-        .notification-content {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            flex-wrap: wrap;
-            font-size: 0.9rem;
-            color: #c0392b;
-            position: relative;
-            z-index: 1;
-        }
-
-        .notification-label {
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--primary-dark);
-        }
-
-        .notification-icon {
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.2); }
-        }
-
-        /* Logo Section */
-        .logo-section {
-            text-align: center;
-            padding: 20px 0 10px;
-            background: white;
-        }
-
-        .brand-logo {
-            font-family: 'Playfair Display', serif;
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: var(--navy);
-            text-decoration: none;
-            display: inline-block;
-            position: relative;
-        }
-
-        .brand-logo::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60px;
-            height: 3px;
-            background: var(--primary-coral);
-            border-radius: 2px;
-        }
-
-        .brand-tagline {
-            font-size: 0.75rem;
-            letter-spacing: 4px;
-            text-transform: uppercase;
-            color: var(--gold);
-            margin-top: 5px;
-        }
-
-        /* Main Content */
-        .main-container {
-            min-height: calc(100vh - 180px);
-            display: flex;
-            align-items: center;
-        }
-
-        .tracking-wrapper {
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.08);
-            overflow: hidden;
-            margin: 30px auto;
-            max-width: 1200px;
-        }
-
-        /* Image Side */
-        .image-side {
-            position: relative;
-            min-height: 600px;
-            overflow: hidden;
-        }
-
-        .image-side img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.8s ease;
-        }
-
-        .image-side:hover img {
-            transform: scale(1.05);
-        }
-
-        .image-overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            padding: 60px 30px 30px;
-            background: linear-gradient(to top, rgba(0,0,0,0.6), transparent);
-            color: white;
-        }
-
-        .image-overlay h3 {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.8rem;
-            margin-bottom: 8px;
-        }
-
-        .image-overlay p {
-            opacity: 0.9;
-            font-size: 0.9rem;
-        }
-
-        .floating-badge {
-            position: absolute;
-            top: 30px;
-            right: 30px;
-            background: rgba(255,255,255,0.95);
-            padding: 12px 20px;
-            border-radius: 50px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            animation: float 3s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-
-        .floating-badge i {
-            color: var(--primary-coral);
-            font-size: 1.2rem;
-        }
-
-        .floating-badge span {
-            font-weight: 600;
-            font-size: 0.85rem;
-            color: var(--navy);
-        }
-
-        /* Form Side */
-        .form-side {
-            padding: 60px 50px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .form-header {
-            margin-bottom: 35px;
-        }
-
-        .form-header h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: 2.2rem;
-            color: var(--navy);
-            margin-bottom: 10px;
-            position: relative;
-            display: inline-block;
-        }
-
-        .form-header h1::after {
-            content: '';
-            position: absolute;
-            bottom: -8px;
-            left: 0;
-            width: 50px;
-            height: 4px;
-            background: var(--primary-coral);
-            border-radius: 2px;
-        }
-
-        .form-header p {
-            color: var(--text-muted);
-            margin-top: 20px;
-            font-size: 0.95rem;
-        }
-
-        /* Radio Buttons */
-        .track-options {
-            display: flex;
-            gap: 25px;
-            margin-bottom: 30px;
-        }
-
-        .radio-card {
-            flex: 1;
-            position: relative;
-            cursor: pointer;
-        }
-
-        .radio-card input {
-            position: absolute;
-            opacity: 0;
-            cursor: pointer;
-        }
-
-        .radio-content {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 15px 20px;
-            border: 2px solid #e0e0e0;
-            border-radius: 12px;
-            transition: all 0.3s ease;
-            background: white;
-        }
-
-        .radio-content:hover {
-            border-color: var(--primary-coral);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(255,107,107,0.1);
-        }
-
-        .radio-card input:checked + .radio-content {
-            border-color: var(--primary-coral);
-            background: #fff5f5;
-            box-shadow: 0 5px 20px rgba(255,107,107,0.15);
-        }
-
-        .radio-dot {
-            width: 22px;
-            height: 22px;
-            border: 2px solid #ccc;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-            flex-shrink: 0;
-        }
-
-        .radio-dot::after {
-            content: '';
-            width: 10px;
-            height: 10px;
-            background: var(--primary-coral);
-            border-radius: 50%;
-            transform: scale(0);
-            transition: transform 0.3s ease;
-        }
-
-        .radio-card input:checked + .radio-content .radio-dot {
-            border-color: var(--primary-coral);
-        }
-
-        .radio-card input:checked + .radio-content .radio-dot::after {
-            transform: scale(1);
-        }
-
-        .radio-label {
-            font-weight: 500;
-            color: var(--text-dark);
-            font-size: 0.95rem;
-        }
-
-        .radio-card input:checked + .radio-content .radio-label {
-            color: var(--primary-dark);
-            font-weight: 600;
-        }
-
-        /* Input Field */
-        .input-group-custom {
-            position: relative;
-            margin-bottom: 25px;
-        }
-
-        .input-group-custom input {
-            width: 100%;
-            padding: 16px 20px;
-            border: 2px solid #e8e8e8;
-            border-radius: 12px;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            background: #fafafa;
-            font-family: 'Poppins', sans-serif;
-        }
-
-        .input-group-custom input:focus {
-            outline: none;
-            border-color: var(--primary-coral);
-            background: white;
-            box-shadow: 0 0 0 4px rgba(255,107,107,0.1);
-        }
-
-        .input-group-custom label {
-            position: absolute;
-            left: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #aaa;
-            pointer-events: none;
-            transition: all 0.3s ease;
-            background: transparent;
-            padding: 0 5px;
-        }
-
-        .input-group-custom input:focus + label,
-        .input-group-custom input:not(:placeholder-shown) + label {
-            top: 0;
-            font-size: 0.8rem;
-            color: var(--primary-coral);
-            background: white;
-            font-weight: 500;
-        }
-
-        .input-icon {
-            position: absolute;
-            right: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #ccc;
-            transition: color 0.3s ease;
-        }
-
-        .input-group-custom input:focus ~ .input-icon {
-            color: var(--primary-coral);
-        }
-
-        /* Track Button */
-        .btn-track {
-            width: 100%;
-            padding: 16px;
-            background: linear-gradient(135deg, var(--primary-coral) 0%, var(--primary-dark) 100%);
-            border: none;
-            border-radius: 12px;
-            color: white;
-            font-weight: 600;
-            font-size: 1.05rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-            font-family: 'Poppins', sans-serif;
-        }
-
-        .btn-track::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.3);
-            transform: translate(-50%, -50%);
-            transition: width 0.6s, height 0.6s;
-        }
-
-        .btn-track:hover::before {
-            width: 300px;
-            height: 300px;
-        }
-
-        .btn-track:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(255,107,107,0.4);
-        }
-
-        .btn-track:active {
-            transform: translateY(0);
-        }
-
-        .btn-track i {
-            margin-left: 8px;
-            transition: transform 0.3s ease;
-        }
-
-        .btn-track:hover i {
-            transform: translateX(4px);
-        }
-
-        .btn-track.loading {
-            pointer-events: none;
-            opacity: 0.8;
-        }
-
-        .btn-track.loading i {
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        /* Terms */
-        .terms-text {
-            text-align: center;
-            margin-top: 20px;
-            font-size: 0.85rem;
-            color: var(--text-muted);
-        }
-
-        .terms-text a {
-            color: var(--primary-coral);
-            text-decoration: none;
-            font-weight: 500;
-            position: relative;
-        }
-
-        .terms-text a::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            width: 0;
-            height: 1px;
-            background: var(--primary-coral);
-            transition: width 0.3s ease;
-        }
-
-        .terms-text a:hover::after {
-            width: 100%;
-        }
-
-        /* Tracking Result */
-        .tracking-result {
-            display: none;
-            margin-top: 30px;
-            animation: slideUp 0.5s ease;
-        }
-
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .result-card {
-            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
-            border-radius: 16px;
-            padding: 25px;
-            border: 1px solid #e8e8e8;
-        }
-
-        .result-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .result-status {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 8px 16px;
-            border-radius: 50px;
-            font-size: 0.85rem;
-            font-weight: 600;
-        }
-
-        .status-delivered {
-            background: #d4edda;
-            color: #155724;
-        }
-
-        .status-transit {
-            background: #fff3cd;
-            color: #856404;
-        }
-
-        .status-out {
-            background: #cce5ff;
-            color: #004085;
-        }
-
-        .status-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            animation: blink 2s infinite;
-        }
-
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.4; }
-        }
-
-        /* Timeline */
-        .timeline {
-            position: relative;
-            padding-left: 30px;
-        }
-
-        .timeline::before {
-            content: '';
-            position: absolute;
-            left: 8px;
-            top: 0;
-            bottom: 0;
-            width: 2px;
-            background: #e0e0e0;
-        }
-
-        .timeline-item {
-            position: relative;
-            padding-bottom: 25px;
-            opacity: 0.6;
-            transition: opacity 0.3s ease;
-        }
-
-        .timeline-item.active {
-            opacity: 1;
-        }
-
-        .timeline-item:last-child {
-            padding-bottom: 0;
-        }
-
-        .timeline-dot {
-            position: absolute;
-            left: -26px;
-            top: 2px;
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            background: white;
-            border: 3px solid #ccc;
-            transition: all 0.3s ease;
-        }
-
-        .timeline-item.active .timeline-dot {
-            border-color: var(--primary-coral);
-            background: var(--primary-coral);
-            box-shadow: 0 0 0 4px rgba(255,107,107,0.2);
-        }
-
-        .timeline-item.completed .timeline-dot {
-            border-color: #28a745;
-            background: #28a745;
-        }
-
-        .timeline-content h5 {
-            font-size: 0.95rem;
-            font-weight: 600;
-            margin-bottom: 4px;
-            color: var(--navy);
-        }
-
-        .timeline-content p {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            margin-bottom: 2px;
-        }
-
-        .timeline-time {
-            font-size: 0.8rem;
-            color: var(--gold);
-            font-weight: 500;
-        }
-
-        /* Footer */
-        .powered-footer {
-            text-align: center;
-            padding: 20px;
-            background: white;
-            border-top: 1px solid #f0f0f0;
-            color: var(--text-muted);
-            font-size: 0.85rem;
-        }
-
-        .powered-footer img {
-            height: 20px;
-            margin-left: 8px;
-            vertical-align: middle;
-        }
-
-        .powered-footer i {
-            color: var(--primary-coral);
-            margin-right: 5px;
-        }
-
-        /* Decorative Elements */
-        .deco-circle {
-            position: fixed;
-            border-radius: 50%;
-            opacity: 0.03;
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        .deco-1 {
-            width: 400px;
-            height: 400px;
-            background: var(--primary-coral);
-            top: -100px;
-            right: -100px;
-        }
-
-        .deco-2 {
-            width: 300px;
-            height: 300px;
-            background: var(--navy);
-            bottom: -50px;
-            left: -50px;
-        }
-
-        /* Responsive */
-        @media (max-width: 991px) {
-            .image-side {
-                min-height: 300px;
-            }
-
-            .form-side {
-                padding: 40px 30px;
-            }
-
-            .form-header h1 {
-                font-size: 1.8rem;
-            }
-        }
-
-        @media (max-width: 576px) {
-            .notification-content {
-                font-size: 0.8rem;
-                padding: 0 15px;
-                text-align: center;
-            }
-
-            .track-options {
-                flex-direction: column;
-                gap: 15px;
-            }
-
-            .form-side {
-                padding: 30px 20px;
-            }
-
-            .form-header h1 {
-                font-size: 1.5rem;
-            }
-
-            .image-overlay h3 {
-                font-size: 1.3rem;
-            }
-
-            .floating-badge {
-                top: 15px;
-                right: 15px;
-                padding: 8px 14px;
-            }
-        }
-
-        /* Error Shake */
-        .shake {
-            animation: shake 0.5s ease;
-        }
-
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-10px); }
-            75% { transform: translateX(10px); }
-        }
-
-        /* Confetti */
-        .confetti {
-            position: fixed;
-            width: 10px;
-            height: 10px;
-            top: -10px;
-            animation: confetti-fall 3s linear forwards;
-            z-index: 9999;
-        }
-
-        @keyframes confetti-fall {
-            to {
-                transform: translateY(100vh) rotate(720deg);
-                opacity: 0;
-            }
-        }
-    </style>
-<base target="_blank">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Track Your Order | Aaliyah Clothing</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Poppins:wght@300;400;500;600&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --primary-coral: #ff6b6b;
+      --primary-dark: #ee5a5a;
+      --navy: #2c3e50;
+      --cream: #faf8f5;
+      --gold: #d4a574;
+      --text-dark: #2d3436;
+      --text-muted: #636e72;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--cream);
+      overflow-x: hidden;
+      color: var(--text-dark);
+    }
+
+    /* Notification Bar */
+    .notification-bar {
+      background: linear-gradient(90deg, #fff5f5 0%, #ffe0e0 100%);
+      border-bottom: 1px solid #ffd0d0;
+      padding: 12px 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .notification-bar::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+      animation: shimmer 3s infinite;
+    }
+
+    @keyframes shimmer {
+      0% {
+        left: -100%;
+      }
+
+      100% {
+        left: 100%;
+      }
+    }
+
+    .notification-content {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      font-size: 0.9rem;
+      color: #c0392b;
+      position: relative;
+      z-index: 1;
+    }
+
+    .notification-label {
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--primary-dark);
+    }
+
+    .notification-icon {
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.2);
+      }
+    }
+
+    /* Logo Section */
+    .logo-section {
+      text-align: center;
+      padding: 20px 0 10px;
+      background: white;
+    }
+
+    .brand-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--navy);
+      text-decoration: none;
+      display: inline-block;
+      position: relative;
+    }
+
+    .brand-logo::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 3px;
+      background: var(--primary-coral);
+      border-radius: 2px;
+    }
+
+    .brand-tagline {
+      font-size: 0.75rem;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-top: 5px;
+    }
+
+    /* Main Content */
+    .main-container {
+      min-height: calc(100vh - 180px);
+      display: flex;
+      align-items: center;
+    }
+
+    .tracking-wrapper {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+      overflow: hidden;
+      margin: 30px auto;
+      max-width: 1200px;
+    }
+
+    /* Image Side */
+    .image-side {
+      position: relative;
+      min-height: 600px;
+      overflow: hidden;
+    }
+
+    .image-side img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.8s ease;
+    }
+
+    .image-side:hover img {
+      transform: scale(1.05);
+    }
+
+    .image-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 60px 30px 30px;
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.6), transparent);
+      color: white;
+    }
+
+    .image-overlay h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      margin-bottom: 8px;
+    }
+
+    .image-overlay p {
+      opacity: 0.9;
+      font-size: 0.9rem;
+    }
+
+    .floating-badge {
+      position: absolute;
+      top: 30px;
+      right: 30px;
+      background: rgba(255, 255, 255, 0.95);
+      padding: 12px 20px;
+      border-radius: 50px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+
+    .floating-badge i {
+      color: var(--primary-coral);
+      font-size: 1.2rem;
+    }
+
+    .floating-badge span {
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: var(--navy);
+    }
+
+    /* Form Side */
+    .form-side {
+      padding: 60px 50px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .form-header {
+      margin-bottom: 35px;
+    }
+
+    .form-header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.2rem;
+      color: var(--navy);
+      margin-bottom: 10px;
+      position: relative;
+      display: inline-block;
+    }
+
+    .form-header h1::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      width: 50px;
+      height: 4px;
+      background: var(--primary-coral);
+      border-radius: 2px;
+    }
+
+    .form-header p {
+      color: var(--text-muted);
+      margin-top: 20px;
+      font-size: 0.95rem;
+    }
+
+    /* Radio Buttons */
+    .track-options {
+      display: flex;
+      gap: 25px;
+      margin-bottom: 30px;
+    }
+
+    .radio-card {
+      flex: 1;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .radio-card input {
+      position: absolute;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    .radio-content {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 15px 20px;
+      border: 2px solid #e0e0e0;
+      border-radius: 12px;
+      transition: all 0.3s ease;
+      background: white;
+    }
+
+    .radio-content:hover {
+      border-color: var(--primary-coral);
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(255, 107, 107, 0.1);
+    }
+
+    .radio-card input:checked+.radio-content {
+      border-color: var(--primary-coral);
+      background: #fff5f5;
+      box-shadow: 0 5px 20px rgba(255, 107, 107, 0.15);
+    }
+
+    .radio-dot {
+      width: 22px;
+      height: 22px;
+      border: 2px solid #ccc;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      flex-shrink: 0;
+    }
+
+    .radio-dot::after {
+      content: '';
+      width: 10px;
+      height: 10px;
+      background: var(--primary-coral);
+      border-radius: 50%;
+      transform: scale(0);
+      transition: transform 0.3s ease;
+    }
+
+    .radio-card input:checked+.radio-content .radio-dot {
+      border-color: var(--primary-coral);
+    }
+
+    .radio-card input:checked+.radio-content .radio-dot::after {
+      transform: scale(1);
+    }
+
+    .radio-label {
+      font-weight: 500;
+      color: var(--text-dark);
+      font-size: 0.95rem;
+    }
+
+    .radio-card input:checked+.radio-content .radio-label {
+      color: var(--primary-dark);
+      font-weight: 600;
+    }
+
+    /* Input Field */
+    .input-group-custom {
+      position: relative;
+      margin-bottom: 25px;
+    }
+
+    .input-group-custom input {
+      width: 100%;
+      padding: 16px 20px;
+      border: 2px solid #e8e8e8;
+      border-radius: 12px;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      background: #fafafa;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .input-group-custom input:focus {
+      outline: none;
+      border-color: var(--primary-coral);
+      background: white;
+      box-shadow: 0 0 0 4px rgba(255, 107, 107, 0.1);
+    }
+
+    .input-group-custom label {
+      position: absolute;
+      left: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #aaa;
+      pointer-events: none;
+      transition: all 0.3s ease;
+      background: transparent;
+      padding: 0 5px;
+    }
+
+    .input-group-custom input:focus+label,
+    .input-group-custom input:not(:placeholder-shown)+label {
+      top: 0;
+      font-size: 0.8rem;
+      color: var(--primary-coral);
+      background: white;
+      font-weight: 500;
+    }
+
+    .input-icon {
+      position: absolute;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #ccc;
+      transition: color 0.3s ease;
+    }
+
+    .input-group-custom input:focus~.input-icon {
+      color: var(--primary-coral);
+    }
+
+    /* Track Button */
+    .btn-track {
+      width: 100%;
+      padding: 16px;
+      background: linear-gradient(135deg, var(--primary-coral) 0%, var(--primary-dark) 100%);
+      border: none;
+      border-radius: 12px;
+      color: white;
+      font-weight: 600;
+      font-size: 1.05rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .btn-track::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.3);
+      transform: translate(-50%, -50%);
+      transition: width 0.6s, height 0.6s;
+    }
+
+    .btn-track:hover::before {
+      width: 300px;
+      height: 300px;
+    }
+
+    .btn-track:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(255, 107, 107, 0.4);
+    }
+
+    .btn-track:active {
+      transform: translateY(0);
+    }
+
+    .btn-track i {
+      margin-left: 8px;
+      transition: transform 0.3s ease;
+    }
+
+    .btn-track:hover i {
+      transform: translateX(4px);
+    }
+
+    .btn-track.loading {
+      pointer-events: none;
+      opacity: 0.8;
+    }
+
+    .btn-track.loading i {
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      from {
+        transform: rotate(0deg);
+      }
+
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* Terms */
+    .terms-text {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .terms-text a {
+      color: var(--primary-coral);
+      text-decoration: none;
+      font-weight: 500;
+      position: relative;
+    }
+
+    .terms-text a::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: var(--primary-coral);
+      transition: width 0.3s ease;
+    }
+
+    .terms-text a:hover::after {
+      width: 100%;
+    }
+
+    /* Tracking Result */
+    .tracking-result {
+      display: none;
+      margin-top: 30px;
+      animation: slideUp 0.5s ease;
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .result-card {
+      background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+      border-radius: 16px;
+      padding: 25px;
+      border: 1px solid #e8e8e8;
+    }
+
+    .result-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .result-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      border-radius: 50px;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    .status-delivered {
+      background: #d4edda;
+      color: #155724;
+    }
+
+    .status-transit {
+      background: #fff3cd;
+      color: #856404;
+    }
+
+    .status-out {
+      background: #cce5ff;
+      color: #004085;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      animation: blink 2s infinite;
+    }
+
+    @keyframes blink {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0.4;
+      }
+    }
+
+    /* Timeline */
+    .timeline {
+      position: relative;
+      padding-left: 30px;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 8px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: #e0e0e0;
+    }
+
+    .timeline-item {
+      position: relative;
+      padding-bottom: 25px;
+      opacity: 0.6;
+      transition: opacity 0.3s ease;
+    }
+
+    .timeline-item.active {
+      opacity: 1;
+    }
+
+    .timeline-item:last-child {
+      padding-bottom: 0;
+    }
+
+    .timeline-dot {
+      position: absolute;
+      left: -26px;
+      top: 2px;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: white;
+      border: 3px solid #ccc;
+      transition: all 0.3s ease;
+    }
+
+    .timeline-item.active .timeline-dot {
+      border-color: var(--primary-coral);
+      background: var(--primary-coral);
+      box-shadow: 0 0 0 4px rgba(255, 107, 107, 0.2);
+    }
+
+    .timeline-item.completed .timeline-dot {
+      border-color: #28a745;
+      background: #28a745;
+    }
+
+    .timeline-content h5 {
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: var(--navy);
+    }
+
+    .timeline-content p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 2px;
+    }
+
+    .timeline-time {
+      font-size: 0.8rem;
+      color: var(--gold);
+      font-weight: 500;
+    }
+
+    /* Footer */
+    .powered-footer {
+      text-align: center;
+      padding: 20px;
+      background: white;
+      border-top: 1px solid #f0f0f0;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    .powered-footer img {
+      height: 20px;
+      margin-left: 8px;
+      vertical-align: middle;
+    }
+
+    .powered-footer i {
+      color: var(--primary-coral);
+      margin-right: 5px;
+    }
+
+    /* Decorative Elements */
+    .deco-circle {
+      position: fixed;
+      border-radius: 50%;
+      opacity: 0.03;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .deco-1 {
+      width: 400px;
+      height: 400px;
+      background: var(--primary-coral);
+      top: -100px;
+      right: -100px;
+    }
+
+    .deco-2 {
+      width: 300px;
+      height: 300px;
+      background: var(--navy);
+      bottom: -50px;
+      left: -50px;
+    }
+
+    /* Responsive */
+    @media (max-width: 991px) {
+      .image-side {
+        min-height: 300px;
+      }
+
+      .form-side {
+        padding: 40px 30px;
+      }
+
+      .form-header h1 {
+        font-size: 1.8rem;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .notification-content {
+        font-size: 0.8rem;
+        padding: 0 15px;
+        text-align: center;
+      }
+
+      .track-options {
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .form-side {
+        padding: 30px 20px;
+      }
+
+      .form-header h1 {
+        font-size: 1.5rem;
+      }
+
+      .image-overlay h3 {
+        font-size: 1.3rem;
+      }
+
+      .floating-badge {
+        top: 15px;
+        right: 15px;
+        padding: 8px 14px;
+      }
+    }
+
+    /* Error Shake */
+    .shake {
+      animation: shake 0.5s ease;
+    }
+
+    @keyframes shake {
+
+      0%,
+      100% {
+        transform: translateX(0);
+      }
+
+      25% {
+        transform: translateX(-10px);
+      }
+
+      75% {
+        transform: translateX(10px);
+      }
+    }
+
+    /* Confetti */
+    .confetti {
+      position: fixed;
+      width: 10px;
+      height: 10px;
+      top: -10px;
+      animation: confetti-fall 3s linear forwards;
+      z-index: 9999;
+    }
+
+    @keyframes confetti-fall {
+      to {
+        transform: translateY(100vh) rotate(720deg);
+        opacity: 0;
+      }
+    }
+  </style>
+  <base target="_blank">
 </head>
+
 <body>
 
 
 
 
-   
-
-    <!-- Decorative Background -->
-    <div class="deco-circle deco-1"></div>
-    <div class="deco-circle deco-2"></div>
 
 
-    <!-- floating In=con Whatsapp instagram -->
-
- <script src="floating-buttons.js"></script>
-<script>
-  FloatingButtons.init({
-    instagram: 'https://www.instagram.com/grover_cloth__store',
-    whatsapp: 'https://api.whatsapp.com/send/?phone=918619375610&text&type=phone_number&app_absent=0',
-  });
-</script>
+  <!-- Decorative Background -->
+  <div class="deco-circle deco-1"></div>
+  <div class="deco-circle deco-2"></div>
 
 
+  <!-- floating In=con Whatsapp instagram -->
+
+  <script src="floating-buttons.js"></script>
+  <script>
+    FloatingButtons.init({
+      instagram: 'https://www.instagram.com/grover_cloth__store',
+      whatsapp: 'https://api.whatsapp.com/send/?phone=918619375610&text&type=phone_number&app_absent=0',
+    });
+  </script>
 
 
-<!-- GROVER CLOTH STORE — NAVBAR START         -->
 
-<!-- ══════════════════════════════════════════════════════
+
+  <!-- GROVER CLOTH STORE — NAVBAR START         -->
+
+  <!-- ══════════════════════════════════════════════════════
      GROVER CLOTH STORE — NAVBAR
      Drop this block anywhere in your HTML page.
      Requires: Font Awesome 6, Google Fonts (already linked below)
 ══════════════════════════════════════════════════════ -->
 
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,500&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,500&family=DM+Sans:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-<style>
-/* ══════════════ SCOPED RESET ══════════════ */
-.gcs-h *, .gcs-h *::before, .gcs-h *::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+  <style>
+    /* ══════════════ SCOPED RESET ══════════════ */
+    .gcs-h *,
+    .gcs-h *::before,
+    .gcs-h *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-.gcs-h {
-  --hr: #CC0D39;
-  --hn: #1a2044;
-  --hg: #c9a227;
-  --hw: #ffffff;
-  --hc: #fffaf3;
-  --hb: #e8ddd4;
-  --hy: #fff3b0;
-  --ht: #2c2c2c;
-  --hm: #777;
-  font-family: 'DM Sans', sans-serif;
-  width: 100%;
-  position: relative;
-  z-index: 1000;
-}
+    .gcs-h {
+      --hr: #CC0D39;
+      --hn: #1a2044;
+      --hg: #c9a227;
+      --hw: #ffffff;
+      --hc: #fffaf3;
+      --hb: #e8ddd4;
+      --hy: #fff3b0;
+      --ht: #2c2c2c;
+      --hm: #777;
+      font-family: 'DM Sans', sans-serif;
+      width: 100%;
+      position: relative;
+      z-index: 1000;
+    }
 
-/* ══════════════ KEYFRAMES ══════════════ */
-@keyframes gcs-shimmer      { 0%{background-position:-200% center} 100%{background-position:200% center} }
-@keyframes gcs-float        { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-5px)} }
-@keyframes gcs-spin-slow    { to{transform:rotate(360deg)} }
-@keyframes gcs-pulse-ring   { 0%{box-shadow:0 0 0 0 rgba(201,162,39,.5)} 70%{box-shadow:0 0 0 10px rgba(201,162,39,0)} 100%{box-shadow:0 0 0 0 rgba(201,162,39,0)} }
-@keyframes gcs-fade-in      { from{opacity:0;transform:translateY(-8px)} to{opacity:1;transform:translateY(0)} }
-@keyframes gcs-logo-pop     { 0%{opacity:0;transform:scale(.5) rotate(-15deg)} 60%{transform:scale(1.1) rotate(4deg)} 80%{transform:scale(.97) rotate(-1deg)} 100%{opacity:1;transform:scale(1) rotate(0)} }
-@keyframes gcs-nav-item     { from{opacity:0;transform:translateY(-14px)} to{opacity:1;transform:translateY(0)} }
-@keyframes gcs-cart-bounce  { 0%,100%{transform:scale(1)} 30%{transform:scale(1.35) rotate(-8deg)} 60%{transform:scale(.9) rotate(4deg)} }
-@keyframes gcs-topbar-slide { from{opacity:0;transform:translateY(-100%)} to{opacity:1;transform:translateY(0)} }
-@keyframes gcs-dropdown-in  { from{opacity:0;transform:translateY(10px) scale(.97)} to{opacity:1;transform:translateY(0) scale(1)} }
-@keyframes gcs-mb-slide     { from{transform:translateX(-100%)} to{transform:translateX(0)} }
-@keyframes gcs-search-glow  { 0%,100%{box-shadow:0 0 0 0 rgba(204,13,57,0)} 50%{box-shadow:0 0 0 4px rgba(204,13,57,.15)} }
-@keyframes gcs-sticky-drop  { from{transform:translateY(-100%);opacity:0} to{transform:translateY(0);opacity:1} }
+    /* ══════════════ KEYFRAMES ══════════════ */
+    @keyframes gcs-shimmer {
+      0% {
+        background-position: -200% center
+      }
 
-/* ══════════════ TOP BAR ══════════════ */
-.gcs-h-topbar {
-  background: linear-gradient(90deg, #a50929, var(--hr), #cc1a44, var(--hr), #a50929);
-  background-size: 300% 100%;
-  animation: gcs-shimmer 4s linear infinite, gcs-topbar-slide .5s ease both;
-  color: #fff;
-  padding: 9px 20px;
-  text-align: center;
-  font-size: 12.5px;
-  font-weight: 600;
-  letter-spacing: .6px;
-  position: relative;
-  overflow: hidden;
-}
-.gcs-h-topbar-inner {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  position: relative;
-  z-index: 1;
-}
-.gcs-h-topbar i { animation: gcs-float 2s ease-in-out infinite; }
-.gcs-h-topbar a {
-  color: var(--hy);
-  text-decoration: none;
-  font-weight: 800;
-  position: relative;
-  transition: color .2s;
-}
-.gcs-h-topbar a::after {
-  content: '';
-  position: absolute;
-  bottom: -1px; left: 0; right: 0;
-  height: 1px;
-  background: var(--hy);
-  transform: scaleX(0);
-  transition: transform .3s;
-}
-.gcs-h-topbar a:hover::after { transform: scaleX(1); }
+      100% {
+        background-position: 200% center
+      }
+    }
 
-/* ══════════════ MAIN HEADER ══════════════ */
-.gcs-h-main {
-  background: var(--hy);
-  padding: 10px 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 18px;
-  position: sticky;
-  top: 0;
-  z-index: 998;
-  transition: background .35s, box-shadow .35s, padding .35s;
-}
-.gcs-h-main.gcs-h-scrolled {
-  background: rgba(255,255,255,.97);
-  backdrop-filter: blur(12px);
-  box-shadow: 0 4px 28px rgba(0,0,0,.1);
-  padding: 7px 24px;
-  animation: gcs-sticky-drop .35s cubic-bezier(.4,0,.2,1) both;
-}
+    @keyframes gcs-float {
 
-/* Logo */
-.gcs-h-logo {
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  text-decoration: none;
-  position: relative;
-}
-.gcs-h-logo img {
-  width: 66px;
-  height: 66px;
-  object-fit: contain;
-  border-radius: 50%;
-  animation: gcs-logo-pop .8s .2s cubic-bezier(.34,1.56,.64,1) both;
-  filter: drop-shadow(0 3px 10px rgba(0,0,0,.2));
-  transition: transform .4s cubic-bezier(.34,1.56,.64,1), filter .3s;
-  position: relative;
-  z-index: 1;
-}
-.gcs-h-scrolled .gcs-h-logo img { width: 52px; height: 52px; }
-.gcs-h-logo:hover img {
-  transform: scale(1.1) rotate(5deg);
-  filter: drop-shadow(0 6px 18px rgba(201,162,39,.5));
-}
+      0%,
+      100% {
+        transform: translateY(0)
+      }
 
-/* Search */
-.gcs-h-search {
-  flex: 1;
-  max-width: 580px;
-  display: flex;
-  border: 1.5px solid var(--hb);
-  border-radius: 10px;
-  overflow: hidden;
-  background: var(--hw);
-  animation: gcs-fade-in .5s .3s both;
-  transition: box-shadow .25s, border-color .25s, transform .25s;
-}
-.gcs-h-search:focus-within {
-  border-color: var(--hr);
-  box-shadow: 0 0 0 4px rgba(204,13,57,.1);
-  transform: translateY(-1px);
-}
-.gcs-h-search-cat {
-  border: none;
-  border-right: 1.5px solid var(--hb);
-  background: #f5f0e8;
-  padding: 0 26px 0 12px;
-  font-size: 12px;
-  font-family: 'DM Sans', sans-serif;
-  color: var(--ht);
-  min-width: 96px;
-  cursor: pointer;
-  appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23999'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 8px center;
-  background-color: #f5f0e8;
-  transition: background .2s;
-}
-.gcs-h-search-cat:focus { outline: none; background-color: #ffe9ec; }
-.gcs-h-search-input {
-  flex: 1;
-  border: none;
-  outline: none;
-  padding: 11px 14px;
-  font-size: 13px;
-  font-family: 'DM Sans', sans-serif;
-  color: var(--ht);
-  background: transparent;
-}
-.gcs-h-search-input::placeholder { color: #ccc; }
-.gcs-h-search-btn {
-  background: var(--hr);
-  border: none;
-  padding: 0 18px;
-  cursor: pointer;
-  color: #fff;
-  font-size: 14px;
-  transition: background .2s, transform .15s;
-  position: relative;
-  overflow: hidden;
-}
-.gcs-h-search-btn::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: rgba(255,255,255,.15);
-  transform: translateX(-100%);
-  transition: transform .3s;
-}
-.gcs-h-search-btn:hover { background: #a50929; }
-.gcs-h-search-btn:hover::after { transform: translateX(100%); }
-.gcs-h-search-btn:active { transform: scale(.95); }
+      50% {
+        transform: translateY(-5px)
+      }
+    }
 
-/* Support */
-.gcs-h-support {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-shrink: 0;
-  animation: gcs-fade-in .5s .45s both;
-}
-.gcs-h-support-icon {
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  background: var(--hn);
-  color: var(--hg);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 18px;
-  flex-shrink: 0;
-  animation: gcs-pulse-ring 2.5s ease-in-out infinite;
-  transition: transform .3s;
-}
-.gcs-h-support:hover .gcs-h-support-icon { transform: scale(1.1) rotate(-10deg); }
-.gcs-h-support-text span {
-  display: block;
-  font-size: 9.5px;
-  color: var(--hm);
-  letter-spacing: .7px;
-  text-transform: uppercase;
-}
-.gcs-h-support-text strong { font-size: 13px; color: var(--hn); font-weight: 700; }
+    @keyframes gcs-spin-slow {
+      to {
+        transform: rotate(360deg)
+      }
+    }
 
-/* ══ Hamburger button — ONLY trigger ══
+    @keyframes gcs-pulse-ring {
+      0% {
+        box-shadow: 0 0 0 0 rgba(201, 162, 39, .5)
+      }
+
+      70% {
+        box-shadow: 0 0 0 10px rgba(201, 162, 39, 0)
+      }
+
+      100% {
+        box-shadow: 0 0 0 0 rgba(201, 162, 39, 0)
+      }
+    }
+
+    @keyframes gcs-fade-in {
+      from {
+        opacity: 0;
+        transform: translateY(-8px)
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0)
+      }
+    }
+
+    @keyframes gcs-logo-pop {
+      0% {
+        opacity: 0;
+        transform: scale(.5) rotate(-15deg)
+      }
+
+      60% {
+        transform: scale(1.1) rotate(4deg)
+      }
+
+      80% {
+        transform: scale(.97) rotate(-1deg)
+      }
+
+      100% {
+        opacity: 1;
+        transform: scale(1) rotate(0)
+      }
+    }
+
+    @keyframes gcs-nav-item {
+      from {
+        opacity: 0;
+        transform: translateY(-14px)
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0)
+      }
+    }
+
+    @keyframes gcs-cart-bounce {
+
+      0%,
+      100% {
+        transform: scale(1)
+      }
+
+      30% {
+        transform: scale(1.35) rotate(-8deg)
+      }
+
+      60% {
+        transform: scale(.9) rotate(4deg)
+      }
+    }
+
+    @keyframes gcs-topbar-slide {
+      from {
+        opacity: 0;
+        transform: translateY(-100%)
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0)
+      }
+    }
+
+    @keyframes gcs-dropdown-in {
+      from {
+        opacity: 0;
+        transform: translateY(10px) scale(.97)
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1)
+      }
+    }
+
+    @keyframes gcs-mb-slide {
+      from {
+        transform: translateX(-100%)
+      }
+
+      to {
+        transform: translateX(0)
+      }
+    }
+
+    @keyframes gcs-search-glow {
+
+      0%,
+      100% {
+        box-shadow: 0 0 0 0 rgba(204, 13, 57, 0)
+      }
+
+      50% {
+        box-shadow: 0 0 0 4px rgba(204, 13, 57, .15)
+      }
+    }
+
+    @keyframes gcs-sticky-drop {
+      from {
+        transform: translateY(-100%);
+        opacity: 0
+      }
+
+      to {
+        transform: translateY(0);
+        opacity: 1
+      }
+    }
+
+    /* ══════════════ TOP BAR ══════════════ */
+    .gcs-h-topbar {
+      background: linear-gradient(90deg, #a50929, var(--hr), #cc1a44, var(--hr), #a50929);
+      background-size: 300% 100%;
+      animation: gcs-shimmer 4s linear infinite, gcs-topbar-slide .5s ease both;
+      color: #fff;
+      padding: 9px 20px;
+      text-align: center;
+      font-size: 12.5px;
+      font-weight: 600;
+      letter-spacing: .6px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .gcs-h-topbar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .gcs-h-topbar i {
+      animation: gcs-float 2s ease-in-out infinite;
+    }
+
+    .gcs-h-topbar a {
+      color: var(--hy);
+      text-decoration: none;
+      font-weight: 800;
+      position: relative;
+      transition: color .2s;
+    }
+
+    .gcs-h-topbar a::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: var(--hy);
+      transform: scaleX(0);
+      transition: transform .3s;
+    }
+
+    .gcs-h-topbar a:hover::after {
+      transform: scaleX(1);
+    }
+
+    /* ══════════════ MAIN HEADER ══════════════ */
+    .gcs-h-main {
+      background: var(--hy);
+      padding: 10px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+      position: sticky;
+      top: 0;
+      z-index: 998;
+      transition: background .35s, box-shadow .35s, padding .35s;
+    }
+
+    .gcs-h-main.gcs-h-scrolled {
+      background: rgba(255, 255, 255, .97);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 4px 28px rgba(0, 0, 0, .1);
+      padding: 7px 24px;
+      animation: gcs-sticky-drop .35s cubic-bezier(.4, 0, .2, 1) both;
+    }
+
+    /* Logo */
+    .gcs-h-logo {
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      position: relative;
+    }
+
+    .gcs-h-logo img {
+      width: 66px;
+      height: 66px;
+      object-fit: contain;
+      border-radius: 50%;
+      animation: gcs-logo-pop .8s .2s cubic-bezier(.34, 1.56, .64, 1) both;
+      filter: drop-shadow(0 3px 10px rgba(0, 0, 0, .2));
+      transition: transform .4s cubic-bezier(.34, 1.56, .64, 1), filter .3s;
+      position: relative;
+      z-index: 1;
+    }
+
+    .gcs-h-scrolled .gcs-h-logo img {
+      width: 52px;
+      height: 52px;
+    }
+
+    .gcs-h-logo:hover img {
+      transform: scale(1.1) rotate(5deg);
+      filter: drop-shadow(0 6px 18px rgba(201, 162, 39, .5));
+    }
+
+    /* Search */
+    .gcs-h-search {
+      flex: 1;
+      max-width: 580px;
+      display: flex;
+      border: 1.5px solid var(--hb);
+      border-radius: 10px;
+      overflow: hidden;
+      background: var(--hw);
+      animation: gcs-fade-in .5s .3s both;
+      transition: box-shadow .25s, border-color .25s, transform .25s;
+    }
+
+    .gcs-h-search:focus-within {
+      border-color: var(--hr);
+      box-shadow: 0 0 0 4px rgba(204, 13, 57, .1);
+      transform: translateY(-1px);
+    }
+
+    .gcs-h-search-cat {
+      border: none;
+      border-right: 1.5px solid var(--hb);
+      background: #f5f0e8;
+      padding: 0 26px 0 12px;
+      font-size: 12px;
+      font-family: 'DM Sans', sans-serif;
+      color: var(--ht);
+      min-width: 96px;
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23999'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 8px center;
+      background-color: #f5f0e8;
+      transition: background .2s;
+    }
+
+    .gcs-h-search-cat:focus {
+      outline: none;
+      background-color: #ffe9ec;
+    }
+
+    .gcs-h-search-input {
+      flex: 1;
+      border: none;
+      outline: none;
+      padding: 11px 14px;
+      font-size: 13px;
+      font-family: 'DM Sans', sans-serif;
+      color: var(--ht);
+      background: transparent;
+    }
+
+    .gcs-h-search-input::placeholder {
+      color: #ccc;
+    }
+
+    .gcs-h-search-btn {
+      background: var(--hr);
+      border: none;
+      padding: 0 18px;
+      cursor: pointer;
+      color: #fff;
+      font-size: 14px;
+      transition: background .2s, transform .15s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .gcs-h-search-btn::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(255, 255, 255, .15);
+      transform: translateX(-100%);
+      transition: transform .3s;
+    }
+
+    .gcs-h-search-btn:hover {
+      background: #a50929;
+    }
+
+    .gcs-h-search-btn:hover::after {
+      transform: translateX(100%);
+    }
+
+    .gcs-h-search-btn:active {
+      transform: scale(.95);
+    }
+
+    /* Support */
+    .gcs-h-support {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+      animation: gcs-fade-in .5s .45s both;
+    }
+
+    .gcs-h-support-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: var(--hn);
+      color: var(--hg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+      animation: gcs-pulse-ring 2.5s ease-in-out infinite;
+      transition: transform .3s;
+    }
+
+    .gcs-h-support:hover .gcs-h-support-icon {
+      transform: scale(1.1) rotate(-10deg);
+    }
+
+    .gcs-h-support-text span {
+      display: block;
+      font-size: 9.5px;
+      color: var(--hm);
+      letter-spacing: .7px;
+      text-transform: uppercase;
+    }
+
+    .gcs-h-support-text strong {
+      font-size: 13px;
+      color: var(--hn);
+      font-weight: 700;
+    }
+
+    /* ══ Hamburger button — ONLY trigger ══
    pointer-events: auto ensures only THIS button is clickable for menu toggle.
    The overlay is purely a visual dim layer — it closes the menu safely.        */
-.gcs-h-ham {
-  display: none;
-  flex-direction: column;
-  gap: 5px;
-  cursor: pointer;
-  padding: 8px;
-  border: none;
-  background: none;
-  margin-left: auto;
-  /* IMPORTANT: isolated z-index so overlay can never sit on top of it */
-  position: relative;
-  z-index: 10000;
-}
-.gcs-h-ham span {
-  display: block;
-  width: 24px;
-  height: 2px;
-  background: var(--ht);
-  border-radius: 2px;
-  transition: all .35s cubic-bezier(.4,0,.2,1);
-  pointer-events: none; /* clicks pass to the button, not the spans */
-}
-.gcs-h-ham.open span:nth-child(1) { transform: rotate(45deg) translate(5px,5px); background: var(--hr); }
-.gcs-h-ham.open span:nth-child(2) { opacity: 0; transform: translateX(-12px); }
-.gcs-h-ham.open span:nth-child(3) { transform: rotate(-45deg) translate(5px,-5px); background: var(--hr); }
+    .gcs-h-ham {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 8px;
+      border: none;
+      background: none;
+      margin-left: auto;
+      /* IMPORTANT: isolated z-index so overlay can never sit on top of it */
+      position: relative;
+      z-index: 10000;
+    }
 
-/* ══════════════ NAV BAR ══════════════ */
-.gcs-h-nav {
-  background: var(--hw);
-  position: relative;
-  animation: gcs-fade-in .5s .2s both;
-}
-.gcs-h-nav::after {
-  content: '';
-  position: absolute;
-  bottom: 0; left: 0; right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, var(--hr), var(--hg), var(--hr), transparent);
-  background-size: 200% 100%;
-  animation: gcs-shimmer 3s linear infinite;
-}
-.gcs-h-nav-inner {
-  max-width: 1400px;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 24px;
-}
-.gcs-h-nav-links {
-  display: flex;
-  list-style: none;
-  align-items: center;
-}
-.gcs-h-nav-links > li {
-  position: relative;
-  animation: gcs-nav-item .5s both;
-}
-.gcs-h-nav-links > li:nth-child(1) { animation-delay: .15s }
-.gcs-h-nav-links > li:nth-child(2) { animation-delay: .20s }
-.gcs-h-nav-links > li:nth-child(3) { animation-delay: .25s }
-.gcs-h-nav-links > li:nth-child(4) { animation-delay: .30s }
-.gcs-h-nav-links > li:nth-child(5) { animation-delay: .35s }
-.gcs-h-nav-links > li:nth-child(6) { animation-delay: .40s }
+    .gcs-h-ham span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--ht);
+      border-radius: 2px;
+      transition: all .35s cubic-bezier(.4, 0, .2, 1);
+      pointer-events: none;
+      /* clicks pass to the button, not the spans */
+    }
 
-.gcs-h-nav-links > li > a,
-.gcs-h-nav-links > li > span {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  padding: 15px 16px;
-  font-size: 12px;
-  font-weight: 700;
-  color: var(--ht);
-  text-decoration: none;
-  letter-spacing: .8px;
-  text-transform: uppercase;
-  position: relative;
-  cursor: pointer;
-  transition: color .25s;
-}
-.gcs-h-nav-links > li > a::before,
-.gcs-h-nav-links > li > span::before {
-  content: '';
-  position: absolute;
-  bottom: 0; left: 16px; right: 16px;
-  height: 2px;
-  background: var(--hr);
-  transform: scaleX(0);
-  transform-origin: right;
-  transition: transform .35s cubic-bezier(.4,0,.2,1);
-}
-.gcs-h-nav-links > li:hover > a::before,
-.gcs-h-nav-links > li:hover > span::before,
-.gcs-h-nav-links > li.gcs-h-active > a::before { transform: scaleX(1); transform-origin: left; }
-.gcs-h-nav-links > li:hover > a,
-.gcs-h-nav-links > li:hover > span,
-.gcs-h-nav-links > li.gcs-h-active > a { color: var(--hr); }
+    .gcs-h-ham.open span:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 5px);
+      background: var(--hr);
+    }
 
-.gcs-h-hot {
-  background: var(--hr);
-  color: #fff;
-  font-size: 8px;
-  font-weight: 800;
-  padding: 1px 5px;
-  border-radius: 4px;
-  letter-spacing: .5px;
-  animation: gcs-float 1.5s ease-in-out infinite;
-  margin-left: 2px;
-}
+    .gcs-h-ham.open span:nth-child(2) {
+      opacity: 0;
+      transform: translateX(-12px);
+    }
 
-/* Dropdown */
-.gcs-h-drop {
-  position: absolute;
-  top: calc(100% + 2px);
-  left: 0;
-  background: var(--hw);
-  border: 1px solid var(--hb);
-  border-radius: 0 0 12px 12px;
-  min-width: 190px;
-  box-shadow: 0 12px 40px rgba(0,0,0,.12);
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-  transform: translateY(8px) scale(.97);
-  transform-origin: top left;
-  transition: all .25s cubic-bezier(.4,0,.2,1);
-  z-index: 200;
-  overflow: hidden;
-}
-.gcs-h-nav-links > li:hover .gcs-h-drop {
-  opacity: 1;
-  visibility: visible;
-  pointer-events: auto;
-  transform: translateY(0) scale(1);
-  animation: gcs-dropdown-in .25s cubic-bezier(.4,0,.2,1) both;
-}
-.gcs-h-drop a {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 11px 18px;
-  font-size: 12.5px;
-  color: var(--ht);
-  text-decoration: none;
-  font-weight: 500;
-  border-bottom: 1px solid #faf5ef;
-  transition: background .2s, padding-left .2s, color .2s;
-  position: relative;
-  overflow: hidden;
-}
-.gcs-h-drop a::before {
-  content: '';
-  position: absolute;
-  left: 0; top: 0; bottom: 0;
-  width: 3px;
-  background: var(--hr);
-  transform: translateX(-3px);
-  transition: transform .2s;
-}
-.gcs-h-drop a:hover { background: #fff5f7; color: var(--hr); padding-left: 24px; }
-.gcs-h-drop a:hover::before { transform: translateX(0); }
-.gcs-h-drop a:last-child { border-bottom: none; }
-.gcs-h-drop a i { font-size: 13px; color: var(--hg); width: 16px; }
+    .gcs-h-ham.open span:nth-child(3) {
+      transform: rotate(-45deg) translate(5px, -5px);
+      background: var(--hr);
+    }
 
-/* Right icons */
-.gcs-h-nav-right {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  animation: gcs-fade-in .5s .45s both;
-}
-.gcs-h-icon-btn {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 9px 12px;
-  border-radius: 10px;
-  color: var(--ht);
-  text-decoration: none;
-  font-size: 12px;
-  font-weight: 600;
-  border: none;
-  background: none;
-  cursor: pointer;
-  font-family: 'DM Sans', sans-serif;
-  position: relative;
-  transition: all .25s;
-  white-space: nowrap;
-}
-.gcs-h-icon-btn i { font-size: 15px; transition: transform .3s cubic-bezier(.34,1.56,.64,1); }
-.gcs-h-icon-btn:hover { background: #fff5f7; color: var(--hr); }
-.gcs-h-icon-btn:hover i { transform: scale(1.25) rotate(-8deg); }
+    /* ══════════════ NAV BAR ══════════════ */
+    .gcs-h-nav {
+      background: var(--hw);
+      position: relative;
+      animation: gcs-fade-in .5s .2s both;
+    }
 
-.gcs-h-badge {
-  position: absolute;
-  top: 4px; right: 4px;
-  background: var(--hr);
-  color: #fff;
-  width: 16px; height: 16px;
-  border-radius: 50%;
-  font-size: 9px;
-  font-weight: 800;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: transform .3s cubic-bezier(.34,1.56,.64,1);
-}
-.gcs-h-icon-btn:hover .gcs-h-badge { transform: scale(1.2); }
-.gcs-h-badge.bump { animation: gcs-cart-bounce .5s cubic-bezier(.34,1.56,.64,1); }
+    .gcs-h-nav::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--hr), var(--hg), var(--hr), transparent);
+      background-size: 200% 100%;
+      animation: gcs-shimmer 3s linear infinite;
+    }
 
-.gcs-h-nav-div { width: 1px; height: 20px; background: var(--hb); margin: 0 4px; }
+    .gcs-h-nav-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 24px;
+    }
 
-/* ══════════════════════════════════════════════════
+    .gcs-h-nav-links {
+      display: flex;
+      list-style: none;
+      align-items: center;
+    }
+
+    .gcs-h-nav-links>li {
+      position: relative;
+      animation: gcs-nav-item .5s both;
+    }
+
+    .gcs-h-nav-links>li:nth-child(1) {
+      animation-delay: .15s
+    }
+
+    .gcs-h-nav-links>li:nth-child(2) {
+      animation-delay: .20s
+    }
+
+    .gcs-h-nav-links>li:nth-child(3) {
+      animation-delay: .25s
+    }
+
+    .gcs-h-nav-links>li:nth-child(4) {
+      animation-delay: .30s
+    }
+
+    .gcs-h-nav-links>li:nth-child(5) {
+      animation-delay: .35s
+    }
+
+    .gcs-h-nav-links>li:nth-child(6) {
+      animation-delay: .40s
+    }
+
+    .gcs-h-nav-links>li>a,
+    .gcs-h-nav-links>li>span {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 15px 16px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--ht);
+      text-decoration: none;
+      letter-spacing: .8px;
+      text-transform: uppercase;
+      position: relative;
+      cursor: pointer;
+      transition: color .25s;
+    }
+
+    .gcs-h-nav-links>li>a::before,
+    .gcs-h-nav-links>li>span::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 16px;
+      right: 16px;
+      height: 2px;
+      background: var(--hr);
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform .35s cubic-bezier(.4, 0, .2, 1);
+    }
+
+    .gcs-h-nav-links>li:hover>a::before,
+    .gcs-h-nav-links>li:hover>span::before,
+    .gcs-h-nav-links>li.gcs-h-active>a::before {
+      transform: scaleX(1);
+      transform-origin: left;
+    }
+
+    .gcs-h-nav-links>li:hover>a,
+    .gcs-h-nav-links>li:hover>span,
+    .gcs-h-nav-links>li.gcs-h-active>a {
+      color: var(--hr);
+    }
+
+    .gcs-h-hot {
+      background: var(--hr);
+      color: #fff;
+      font-size: 8px;
+      font-weight: 800;
+      padding: 1px 5px;
+      border-radius: 4px;
+      letter-spacing: .5px;
+      animation: gcs-float 1.5s ease-in-out infinite;
+      margin-left: 2px;
+    }
+
+    /* Dropdown */
+    .gcs-h-drop {
+      position: absolute;
+      top: calc(100% + 2px);
+      left: 0;
+      background: var(--hw);
+      border: 1px solid var(--hb);
+      border-radius: 0 0 12px 12px;
+      min-width: 190px;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, .12);
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transform: translateY(8px) scale(.97);
+      transform-origin: top left;
+      transition: all .25s cubic-bezier(.4, 0, .2, 1);
+      z-index: 200;
+      overflow: hidden;
+    }
+
+    .gcs-h-nav-links>li:hover .gcs-h-drop {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      transform: translateY(0) scale(1);
+      animation: gcs-dropdown-in .25s cubic-bezier(.4, 0, .2, 1) both;
+    }
+
+    .gcs-h-drop a {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 11px 18px;
+      font-size: 12.5px;
+      color: var(--ht);
+      text-decoration: none;
+      font-weight: 500;
+      border-bottom: 1px solid #faf5ef;
+      transition: background .2s, padding-left .2s, color .2s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .gcs-h-drop a::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: var(--hr);
+      transform: translateX(-3px);
+      transition: transform .2s;
+    }
+
+    .gcs-h-drop a:hover {
+      background: #fff5f7;
+      color: var(--hr);
+      padding-left: 24px;
+    }
+
+    .gcs-h-drop a:hover::before {
+      transform: translateX(0);
+    }
+
+    .gcs-h-drop a:last-child {
+      border-bottom: none;
+    }
+
+    .gcs-h-drop a i {
+      font-size: 13px;
+      color: var(--hg);
+      width: 16px;
+    }
+
+    /* Right icons */
+    .gcs-h-nav-right {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      animation: gcs-fade-in .5s .45s both;
+    }
+
+    .gcs-h-icon-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 12px;
+      border-radius: 10px;
+      color: var(--ht);
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: 600;
+      border: none;
+      background: none;
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      position: relative;
+      transition: all .25s;
+      white-space: nowrap;
+    }
+
+    .gcs-h-icon-btn i {
+      font-size: 15px;
+      transition: transform .3s cubic-bezier(.34, 1.56, .64, 1);
+    }
+
+    .gcs-h-icon-btn:hover {
+      background: #fff5f7;
+      color: var(--hr);
+    }
+
+    .gcs-h-icon-btn:hover i {
+      transform: scale(1.25) rotate(-8deg);
+    }
+
+    .gcs-h-badge {
+      position: absolute;
+      top: 4px;
+      right: 4px;
+      background: var(--hr);
+      color: #fff;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      font-size: 9px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform .3s cubic-bezier(.34, 1.56, .64, 1);
+    }
+
+    .gcs-h-icon-btn:hover .gcs-h-badge {
+      transform: scale(1.2);
+    }
+
+    .gcs-h-badge.bump {
+      animation: gcs-cart-bounce .5s cubic-bezier(.34, 1.56, .64, 1);
+    }
+
+    .gcs-h-nav-div {
+      width: 1px;
+      height: 20px;
+      background: var(--hb);
+      margin: 0 4px;
+    }
+
+    /* ══════════════════════════════════════════════════
    OVERLAY — FIX:
    - pointer-events: none by default so it NEVER
      accidentally catches clicks on the page.
@@ -1238,592 +1577,660 @@
    - z-index is below the ham button (9999 < 10000)
      so the button is always reachable.
 ══════════════════════════════════════════════════ */
-.gcs-h-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,.5);
-  z-index: 9997;          /* below ham (10000) & menu (9998) */
-  opacity: 0;
-  pointer-events: none;   /* ← KEY FIX: invisible to clicks unless open */
-  transition: opacity .35s;
-  backdrop-filter: blur(3px);
-  /* display is always block — we use opacity + pointer-events instead
+    .gcs-h-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, .5);
+      z-index: 9997;
+      /* below ham (10000) & menu (9998) */
+      opacity: 0;
+      pointer-events: none;
+      /* ← KEY FIX: invisible to clicks unless open */
+      transition: opacity .35s;
+      backdrop-filter: blur(3px);
+      /* display is always block — we use opacity + pointer-events instead
      so there's no flash or layout shift */
-}
-.gcs-h-overlay.open {
-  opacity: 1;
-  pointer-events: auto;   /* only now does it catch clicks */
-}
+    }
 
-/* ══════════════════════════════════════════════════
+    .gcs-h-overlay.open {
+      opacity: 1;
+      pointer-events: auto;
+      /* only now does it catch clicks */
+    }
+
+    /* ══════════════════════════════════════════════════
    MOBILE MENU — FIX:
    - Use transform + visibility instead of
      display:none/block so transition works correctly.
    - pointer-events: none when closed so nothing
      beneath the hidden drawer is blocked.
 ══════════════════════════════════════════════════ */
-.gcs-h-mob-menu {
-  position: fixed;
-  top: 0; left: 0; bottom: 0;
-  width: min(320px, 88vw);
-  background: var(--hw);
-  z-index: 9998;           /* above overlay, below ham */
-  transform: translateX(-100%);
-  visibility: hidden;      /* ← hides from screen readers & prevents focus */
-  pointer-events: none;    /* ← KEY FIX: no accidental clicks through */
-  transition: transform .4s cubic-bezier(.4,0,.2,1), visibility .4s;
-  overflow-y: auto;
-  box-shadow: 8px 0 40px rgba(0,0,0,.2);
-}
-.gcs-h-mob-menu.open {
-  transform: translateX(0);
-  visibility: visible;
-  pointer-events: auto;
-  animation: gcs-mb-slide .4s cubic-bezier(.4,0,.2,1) both;
-}
+    .gcs-h-mob-menu {
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      width: min(320px, 88vw);
+      background: var(--hw);
+      z-index: 9998;
+      /* above overlay, below ham */
+      transform: translateX(-100%);
+      visibility: hidden;
+      /* ← hides from screen readers & prevents focus */
+      pointer-events: none;
+      /* ← KEY FIX: no accidental clicks through */
+      transition: transform .4s cubic-bezier(.4, 0, .2, 1), visibility .4s;
+      overflow-y: auto;
+      box-shadow: 8px 0 40px rgba(0, 0, 0, .2);
+    }
 
-.gcs-h-mob-head {
-  background: linear-gradient(135deg, var(--hn), #2a3260);
-  padding: 24px 20px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  position: relative;
-}
-.gcs-h-mob-head img {
-  width: 52px; height: 52px;
-  border-radius: 50%;
-  border: 2px solid var(--hg);
-  animation: gcs-logo-pop .6s both;
-}
-.gcs-h-mob-head-text strong { display: block; color: #fff; font-size: 15px; }
-.gcs-h-mob-head-text span   { color: var(--hg); font-size: 11px; letter-spacing: .5px; }
+    .gcs-h-mob-menu.open {
+      transform: translateX(0);
+      visibility: visible;
+      pointer-events: auto;
+      animation: gcs-mb-slide .4s cubic-bezier(.4, 0, .2, 1) both;
+    }
 
-.gcs-h-mob-close {
-  position: absolute;
-  top: 16px; right: 16px;
-  width: 32px; height: 32px;
-  border-radius: 50%;
-  background: rgba(255,255,255,.15);
-  border: none;
-  color: #fff;
-  font-size: 14px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all .25s;
-}
-.gcs-h-mob-close:hover { background: var(--hr); transform: rotate(90deg); }
+    .gcs-h-mob-head {
+      background: linear-gradient(135deg, var(--hn), #2a3260);
+      padding: 24px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      position: relative;
+    }
 
-.gcs-h-mob-search {
-  display: flex;
-  margin: 16px;
-  border: 1.5px solid var(--hb);
-  border-radius: 8px;
-  overflow: hidden;
-}
-.gcs-h-mob-search input {
-  flex: 1;
-  border: none;
-  outline: none;
-  padding: 10px 14px;
-  font-size: 13px;
-  font-family: 'DM Sans', sans-serif;
-}
-.gcs-h-mob-search button {
-  background: var(--hr);
-  border: none;
-  padding: 0 14px;
-  color: #fff;
-  cursor: pointer;
-}
+    .gcs-h-mob-head img {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      border: 2px solid var(--hg);
+      animation: gcs-logo-pop .6s both;
+    }
 
-.gcs-h-mob-links { padding: 0 0 24px; }
+    .gcs-h-mob-head-text strong {
+      display: block;
+      color: #fff;
+      font-size: 15px;
+    }
 
-.gcs-h-mob-link {
-  display: flex;
-  align-items: center;
-  padding: 14px 20px;
-  border-bottom: 1px solid #f5f0ea;
-  font-size: 13.5px;
-  font-weight: 600;
-  color: var(--ht);
-  text-decoration: none;
-  text-transform: uppercase;
-  letter-spacing: .5px;
-  cursor: pointer;
-  transition: all .2s;
-}
-.gcs-h-mob-link:hover { color: var(--hr); padding-left: 26px; background: #fff5f7; }
-.gcs-h-mob-link:hover i.fa-chevron-down { color: var(--hr); }
-.gcs-h-mob-link i.fa-chevron-down { font-size: 11px; color: var(--hm); transition: transform .25s; margin-left: auto; }
-.gcs-h-mob-link.gcs-sub-open i.fa-chevron-down { transform: rotate(180deg); }
+    .gcs-h-mob-head-text span {
+      color: var(--hg);
+      font-size: 11px;
+      letter-spacing: .5px;
+    }
 
-.gcs-h-mob-sub {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height .35s cubic-bezier(.4,0,.2,1);
-  background: #faf7f3;
-}
-.gcs-h-mob-sub.open { max-height: 400px; }
-.gcs-h-mob-sub a {
-  display: block;
-  padding: 11px 28px;
-  font-size: 13px;
-  color: #666;
-  text-decoration: none;
-  border-bottom: 1px solid #f0ece6;
-  transition: all .2s;
-}
-.gcs-h-mob-sub a:hover { color: var(--hr); padding-left: 36px; }
+    .gcs-h-mob-close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, .15);
+      border: none;
+      color: #fff;
+      font-size: 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all .25s;
+    }
 
-/* ══════════════ RESPONSIVE ══════════════ */
-@media (max-width: 900px) {
-  .gcs-h-support { display: none; }
-}
-@media (max-width: 768px) {
-  .gcs-h-nav-links,
-  .gcs-h-nav-right,
-  .gcs-h-search    { display: none; }
-  .gcs-h-ham        { display: flex; }
-}
-@media (max-width: 480px) {
-  .gcs-h-main      { padding: 8px 14px; }
-  .gcs-h-logo img  { width: 52px; height: 52px; }
-}
-</style>
+    .gcs-h-mob-close:hover {
+      background: var(--hr);
+      transform: rotate(90deg);
+    }
 
-<!-- ══════════════ HTML ══════════════ -->
-<div class="gcs-h">
+    .gcs-h-mob-search {
+      display: flex;
+      margin: 16px;
+      border: 1.5px solid var(--hb);
+      border-radius: 8px;
+      overflow: hidden;
+    }
 
-  <!-- Top bar -->
-  <div class="gcs-h-topbar">
-    <div class="gcs-h-topbar-inner">
-      <i class="fab fa-whatsapp"></i>
-      Get express shipping on WhatsApp —
-      <a href="https://wa.me/8619375610">8619375610</a>
-      &nbsp;|&nbsp;
-      <i class="fas fa-truck"></i> Free shipping above ₹999
-    </div>
-  </div>
+    .gcs-h-mob-search input {
+      flex: 1;
+      border: none;
+      outline: none;
+      padding: 10px 14px;
+      font-size: 13px;
+      font-family: 'DM Sans', sans-serif;
+    }
 
-  <!-- Main header -->
-  <div class="gcs-h-main" id="gcs-h-main">
+    .gcs-h-mob-search button {
+      background: var(--hr);
+      border: none;
+      padding: 0 14px;
+      color: #fff;
+      cursor: pointer;
+    }
 
-    <a href="/" class="gcs-h-logo">
-      <img src="images/logo.png" alt="Grover Cloth Store">
-    </a>
+    .gcs-h-mob-links {
+      padding: 0 0 24px;
+    }
 
-    <div class="gcs-h-search">
-      <select class="gcs-h-search-cat" id="gcs-h-cat">
-        <option value="">All</option>
-        <option value="printed">Printed</option>
-        <option value="cotton">Cotton Wear</option>
-        <option value="suits">Suit Sets</option>
-        <option value="sarees">Sarees</option>
-        <option value="lehengas">Lehengas</option>
-      </select>
-      <input class="gcs-h-search-input" id="gcs-h-q" type="text"
-             placeholder="Search for products…" autocomplete="off">
-      <button class="gcs-h-search-btn" onclick="gcsHSearch()">
-        <i class="fas fa-search"></i>
-      </button>
-    </div>
+    .gcs-h-mob-link {
+      display: flex;
+      align-items: center;
+      padding: 14px 20px;
+      border-bottom: 1px solid #f5f0ea;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--ht);
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      cursor: pointer;
+      transition: all .2s;
+    }
 
-    <div class="gcs-h-support">
-      <div class="gcs-h-support-icon"><i class="fas fa-headset"></i></div>
-      <div class="gcs-h-support-text">
-        <span>24/7 Support</span>
-        <strong>8619375610</strong>
+    .gcs-h-mob-link:hover {
+      color: var(--hr);
+      padding-left: 26px;
+      background: #fff5f7;
+    }
+
+    .gcs-h-mob-link:hover i.fa-chevron-down {
+      color: var(--hr);
+    }
+
+    .gcs-h-mob-link i.fa-chevron-down {
+      font-size: 11px;
+      color: var(--hm);
+      transition: transform .25s;
+      margin-left: auto;
+    }
+
+    .gcs-h-mob-link.gcs-sub-open i.fa-chevron-down {
+      transform: rotate(180deg);
+    }
+
+    .gcs-h-mob-sub {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height .35s cubic-bezier(.4, 0, .2, 1);
+      background: #faf7f3;
+    }
+
+    .gcs-h-mob-sub.open {
+      max-height: 400px;
+    }
+
+    .gcs-h-mob-sub a {
+      display: block;
+      padding: 11px 28px;
+      font-size: 13px;
+      color: #666;
+      text-decoration: none;
+      border-bottom: 1px solid #f0ece6;
+      transition: all .2s;
+    }
+
+    .gcs-h-mob-sub a:hover {
+      color: var(--hr);
+      padding-left: 36px;
+    }
+
+    /* ══════════════ RESPONSIVE ══════════════ */
+    @media (max-width: 900px) {
+      .gcs-h-support {
+        display: none;
+      }
+    }
+
+    @media (max-width: 768px) {
+
+      .gcs-h-nav-links,
+      .gcs-h-nav-right,
+      .gcs-h-search {
+        display: none;
+      }
+
+      .gcs-h-ham {
+        display: flex;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .gcs-h-main {
+        padding: 8px 14px;
+      }
+
+      .gcs-h-logo img {
+        width: 52px;
+        height: 52px;
+      }
+    }
+  </style>
+
+  <!-- ══════════════ HTML ══════════════ -->
+  <div class="gcs-h">
+
+    <!-- Top bar -->
+    <div class="gcs-h-topbar">
+      <div class="gcs-h-topbar-inner">
+        <i class="fab fa-whatsapp"></i>
+        Get express shipping on WhatsApp —
+        <a href="https://wa.me/8619375610">8619375610</a>
+        &nbsp;|&nbsp;
+        <i class="fas fa-truck"></i> Free shipping above ₹999
       </div>
     </div>
 
-    <!--
+    <!-- Main header -->
+    <div class="gcs-h-main" id="gcs-h-main">
+
+      <a href="/" class="gcs-h-logo">
+        <img src="images/logo.png" alt="Grover Cloth Store">
+      </a>
+
+      <div class="gcs-h-search">
+        <select class="gcs-h-search-cat" id="gcs-h-cat">
+          <option value="">All</option>
+          <option value="printed">Printed</option>
+          <option value="cotton">Cotton Wear</option>
+          <option value="suits">Suit Sets</option>
+          <option value="sarees">Sarees</option>
+          <option value="lehengas">Lehengas</option>
+        </select>
+        <input class="gcs-h-search-input" id="gcs-h-q" type="text" placeholder="Search for products…"
+          autocomplete="off">
+        <button class="gcs-h-search-btn" onclick="gcsHSearch()">
+          <i class="fas fa-search"></i>
+        </button>
+      </div>
+
+      <div class="gcs-h-support">
+        <div class="gcs-h-support-icon"><i class="fas fa-headset"></i></div>
+        <div class="gcs-h-support-text">
+          <span>24/7 Support</span>
+          <strong>8619375610</strong>
+        </div>
+      </div>
+
+      <!--
       HAMBURGER — the ONLY element whose click opens the mobile menu.
       stopPropagation() inside gcsHToggle() ensures the click
       does NOT bubble to the overlay or the document.
     -->
-    <button class="gcs-h-ham" id="gcs-h-ham"
-            onclick="gcsHToggle(event)"
-            aria-label="Open menu"
-            aria-expanded="false"
-            aria-controls="gcs-h-mob">
-      <span></span><span></span><span></span>
-    </button>
-  </div>
-
-  <!-- Nav -->
-  <nav class="gcs-h-nav" aria-label="Main navigation">
-    <div class="gcs-h-nav-inner">
-      <ul class="gcs-h-nav-links" id="gcs-h-navlinks">
-        <li class="gcs-h-active">
-          <a href="/"><i class="fas fa-home" style="font-size:11px"></i> Home</a>
-        </li>
-        <li>
-          <span>All Collections <i class="fas fa-chevron-down" style="font-size:9px"></i></span>
-          <div class="gcs-h-drop">
-            <a href="collection.html"><i class="fas fa-th"></i> All Products</a>
-            <a href="#"><i class="fas fa-print"></i> Printed</a>
-            <a href="#"><i class="fas fa-leaf"></i> Cotton Wear</a>
-            <a href="#"><i class="fas fa-tshirt"></i> Suit Sets</a>
-            <a href="#"><i class="fas fa-star"></i> Sarees</a>
-            <a href="#"><i class="fas fa-crown"></i> Lehengas</a>
-          </div>
-        </li>
-        <li><a href="#">New Arrivals <span class="gcs-h-hot">NEW</span></a></li>
-        <li><a href="#">Best Sellers <span class="gcs-h-hot">🔥</span></a></li>
-        <li><a href="#">About Us</a></li>
-        <li><a href="trackorder.html"><i class="fas fa-truck"></i> Track Order</a></li>
-      </ul>
-
-      <div class="gcs-h-nav-right">
-        <a href="/login" class="gcs-h-icon-btn">
-          <i class="fas fa-user"></i> <span>Login</span>
-        </a>
-        <div class="gcs-h-nav-div"></div>
-        <button class="gcs-h-icon-btn" style="position:relative" onclick="gcsHWishlist(this)">
-          <i class="far fa-heart"></i>
-          <span class="gcs-h-badge" id="gcs-h-wish-count">0</span>
-        </button>
-        <button class="gcs-h-icon-btn" id="gcs-h-cart-btn" style="position:relative">
-          <i class="fas fa-shopping-bag"></i>
-          <span class="gcs-h-badge" id="gcs-h-cart-count">0</span>
-        </button>
-      </div>
+      <button class="gcs-h-ham" id="gcs-h-ham" onclick="gcsHToggle(event)" aria-label="Open menu" aria-expanded="false"
+        aria-controls="gcs-h-mob">
+        <span></span><span></span><span></span>
+      </button>
     </div>
-  </nav>
 
-  <!--
+    <!-- Nav -->
+    <nav class="gcs-h-nav" aria-label="Main navigation">
+      <div class="gcs-h-nav-inner">
+        <ul class="gcs-h-nav-links" id="gcs-h-navlinks">
+          <li class="gcs-h-active">
+            <a href="/"><i class="fas fa-home" style="font-size:11px"></i> Home</a>
+          </li>
+          <li>
+            <span>All Collections <i class="fas fa-chevron-down" style="font-size:9px"></i></span>
+            <div class="gcs-h-drop">
+              <a href="collection.html"><i class="fas fa-th"></i> All Products</a>
+              <a href="#"><i class="fas fa-print"></i> Printed</a>
+              <a href="#"><i class="fas fa-leaf"></i> Cotton Wear</a>
+              <a href="#"><i class="fas fa-tshirt"></i> Suit Sets</a>
+              <a href="#"><i class="fas fa-star"></i> Sarees</a>
+              <a href="#"><i class="fas fa-crown"></i> Lehengas</a>
+            </div>
+          </li>
+          <li><a href="#">New Arrivals <span class="gcs-h-hot">NEW</span></a></li>
+          <li><a href="#">Best Sellers <span class="gcs-h-hot">🔥</span></a></li>
+          <li><a href="#">About Us</a></li>
+          <li><a href="trackorder.html"><i class="fas fa-truck"></i> Track Order</a></li>
+        </ul>
+
+        <div class="gcs-h-nav-right">
+          <a href="/login" class="gcs-h-icon-btn">
+            <i class="fas fa-user"></i> <span>Login</span>
+          </a>
+          <div class="gcs-h-nav-div"></div>
+          <button class="gcs-h-icon-btn" style="position:relative" onclick="gcsHWishlist(this)">
+            <i class="far fa-heart"></i>
+            <span class="gcs-h-badge" id="gcs-h-wish-count">0</span>
+          </button>
+          <button class="gcs-h-icon-btn" id="gcs-h-cart-btn" style="position:relative">
+            <i class="fas fa-shopping-bag"></i>
+            <span class="gcs-h-badge" id="gcs-h-cart-count">0</span>
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <!--
     OVERLAY — visual dim layer only.
     pointer-events: none when closed (CSS), auto when .open (CSS).
     Clicking it closes the menu via its own JS listener (not inline onclick).
     This means random page clicks that somehow reach this element are safe
     because the element is invisible to pointer events when menu is closed.
   -->
-  <div class="gcs-h-overlay" id="gcs-h-overlay" role="presentation"></div>
+    <div class="gcs-h-overlay" id="gcs-h-overlay" role="presentation"></div>
 
-  <!-- Mobile menu -->
-  <div class="gcs-h-mob-menu" id="gcs-h-mob"
-       role="dialog" aria-modal="true" aria-label="Navigation menu">
+    <!-- Mobile menu -->
+    <div class="gcs-h-mob-menu" id="gcs-h-mob" role="dialog" aria-modal="true" aria-label="Navigation menu">
 
-    <div class="gcs-h-mob-head">
-      <img src="images/logo.png" alt="Logo">
-      <div class="gcs-h-mob-head-text">
-        <strong>Grover Cloth Store</strong>
-        <span>Meet Your Fashion</span>
-      </div>
-      <button class="gcs-h-mob-close"
-              onclick="gcsHClose()"
-              aria-label="Close menu">
-        <i class="fas fa-times"></i>
-      </button>
-    </div>
-
-    <div class="gcs-h-mob-search">
-      <input type="text" placeholder="Search products…">
-      <button><i class="fas fa-search"></i></button>
-    </div>
-
-    <div class="gcs-h-mob-links">
-      <a class="gcs-h-mob-link" href="/">
-        <i class="fas fa-home" style="margin-right:8px;color:var(--hg)"></i>Home
-      </a>
-
-      <div class="gcs-h-mob-link" onclick="gcsHSub('mob-col', this)">
-        <i class="fas fa-layer-group" style="margin-right:8px;color:var(--hg)"></i>
-        All Collections
-        <i class="fas fa-chevron-down"></i>
-      </div>
-      <div class="gcs-h-mob-sub" id="mob-col">
-        <a href="#">All Products</a>
-        <a href="#">Printed</a>
-        <a href="#">Cotton Wear</a>
-        <a href="#">Suit Sets</a>
-        <a href="#">Sarees</a>
-        <a href="#">Lehengas</a>
-      </div>
-
-      <a class="gcs-h-mob-link" href="#">
-        <i class="fas fa-star" style="margin-right:8px;color:var(--hg)"></i>New Arrivals
-      </a>
-      <a class="gcs-h-mob-link" href="#">
-        <i class="fas fa-fire" style="margin-right:8px;color:var(--hr)"></i>Best Sellers
-      </a>
-      <a class="gcs-h-mob-link" href="#">
-        <i class="fas fa-info-circle" style="margin-right:8px;color:var(--hg)"></i>About Us
-      </a>
-      
-      <a class="gcs-h-mob-link" href="trackorder.html">
-        <i class="fas fa-truck" style="margin-right:8px;color:var(--hg)"></i>Track Order
-      </a>
-
-
-      <a class="gcs-h-mob-link" href="/login">
-        <i class="fas fa-user" style="margin-right:8px;color:var(--hg)"></i>Login / Register
-      </a>
-    </div>
-
-  </div><!-- /gcs-h-mob-menu -->
-
-</div><!-- /gcs-h -->
-
-
-<script>
-(function () {
-  'use strict';
-
-  /* ── Element refs ── */
-  var hdr     = document.getElementById('gcs-h-main');
-  var ham     = document.getElementById('gcs-h-ham');
-  var mob     = document.getElementById('gcs-h-mob');
-  var overlay = document.getElementById('gcs-h-overlay');
-
-  var menuOpen = false;
-
-  /* ══════════════════════════════════════════════
-     OPEN / CLOSE HELPERS
-     All menu state changes go through these two
-     functions — nowhere else.
-  ══════════════════════════════════════════════ */
-  function openMenu() {
-    menuOpen = true;
-    mob.classList.add('open');
-    ham.classList.add('open');
-    overlay.classList.add('open');
-    ham.setAttribute('aria-expanded', 'true');
-    document.body.style.overflow = 'hidden';
-  }
-
-  function closeMenu() {
-    menuOpen = false;
-    mob.classList.remove('open');
-    ham.classList.remove('open');
-    overlay.classList.remove('open');
-    ham.setAttribute('aria-expanded', 'false');
-    document.body.style.overflow = '';
-  }
-
-  /* ══════════════════════════════════════════════
-     HAMBURGER TOGGLE
-     Called ONLY by the hamburger button click.
-     stopPropagation() stops the event reaching
-     anything else (overlay, document, etc.).
-  ══════════════════════════════════════════════ */
-  window.gcsHToggle = function (e) {
-    if (e) e.stopPropagation();   /* ← KEY FIX: don't let click bubble */
-    menuOpen ? closeMenu() : openMenu();
-  };
-
-  /* ══════════════════════════════════════════════
-     CLOSE — used by the ✕ button inside menu
-  ══════════════════════════════════════════════ */
-  window.gcsHClose = function () {
-    closeMenu();
-  };
-
-  /* ══════════════════════════════════════════════
-     OVERLAY CLICK — closes the menu.
-     We attach this via addEventListener so we
-     can use stopPropagation if needed.
-     The overlay only has pointer-events when .open
-     (see CSS), so this can NEVER fire when the
-     menu is closed — no accidental triggers.
-  ══════════════════════════════════════════════ */
-  overlay.addEventListener('click', function (e) {
-    e.stopPropagation();
-    closeMenu();
-  });
-
-  /* ══════════════════════════════════════════════
-     SAFETY NET — Escape key closes menu
-  ══════════════════════════════════════════════ */
-  document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape' && menuOpen) closeMenu();
-  });
-
-  /* ══════════════════════════════════════════════
-     STICKY HEADER on scroll
-  ══════════════════════════════════════════════ */
-  var ticking = false;
-  window.addEventListener('scroll', function () {
-    if (!ticking) {
-      requestAnimationFrame(function () {
-        if (hdr) hdr.classList.toggle('gcs-h-scrolled', window.scrollY > 50);
-        ticking = false;
-      });
-      ticking = true;
-    }
-  });
-
-  /* ══════════════════════════════════════════════
-     MOBILE SUBMENU TOGGLE
-  ══════════════════════════════════════════════ */
-  window.gcsHSub = function (id, triggerEl) {
-    var sub = document.getElementById(id);
-    if (!sub) return;
-    var isOpen = sub.classList.toggle('open');
-    /* toggle arrow on the trigger row */
-    if (triggerEl) triggerEl.classList.toggle('gcs-sub-open', isOpen);
-  };
-
-  /* ══════════════════════════════════════════════
-     SEARCH
-  ══════════════════════════════════════════════ */
-  window.gcsHSearch = function () {
-    var q = document.getElementById('gcs-h-q');
-    var c = document.getElementById('gcs-h-cat');
-    if (q && q.value.trim()) {
-      window.location.href = '/search?q=' + encodeURIComponent(q.value.trim()) +
-        (c && c.value ? '&cat=' + c.value : '');
-    }
-  };
-  var qi = document.getElementById('gcs-h-q');
-  if (qi) qi.addEventListener('keydown', function (e) { if (e.key === 'Enter') gcsHSearch(); });
-
-  /* ══════════════════════════════════════════════
-     NAV ACTIVE STATE
-  ══════════════════════════════════════════════ */
-  var path = window.location.pathname;
-  document.querySelectorAll('.gcs-h-nav-links > li > a').forEach(function (a) {
-    a.closest('li').classList.toggle('gcs-h-active', a.getAttribute('href') === path);
-  });
-
-  /* ══════════════════════════════════════════════
-     WISHLIST DEMO
-  ══════════════════════════════════════════════ */
-  window.gcsHWishlist = function (btn) {
-    var badge = document.getElementById('gcs-h-wish-count');
-    var n = parseInt(badge.textContent) || 0;
-    badge.textContent = n + 1;
-    badge.classList.remove('bump');
-    void badge.offsetWidth; /* reflow to restart animation */
-    badge.classList.add('bump');
-    setTimeout(function () { badge.classList.remove('bump'); }, 500);
-  };
-
-})();
-</script>
-
-<!-- ══ NAVBAR END ══ -->
-
-<!-- NAVBAR END -->
-
-
-
-
-
-
-
-
-
-
-
-    <!-- Notification Bar -->
-    <div class="notification-bar">
-        <div class="container">
-            <div class="notification-content">
-                <span class="notification-label">Updates:</span>
-                <i class="fas fa-shield-alt notification-icon"></i>
-                <span>Beware of Fraud Calls: We at ShipDelight or our courier partners will never ask for OTP, bank details, or additional payments via calls, SMS, or QR codes.</span>
-            </div>
+      <div class="gcs-h-mob-head">
+        <img src="images/logo.png" alt="Logo">
+        <div class="gcs-h-mob-head-text">
+          <strong>Grover Cloth Store</strong>
+          <span>Meet Your Fashion</span>
         </div>
-    </div>
+        <button class="gcs-h-mob-close" onclick="gcsHClose()" aria-label="Close menu">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
 
-    <!-- Logo Section -->
-    <!-- <div class="logo-section">
+      <div class="gcs-h-mob-search">
+        <input type="text" placeholder="Search products…">
+        <button><i class="fas fa-search"></i></button>
+      </div>
+
+      <div class="gcs-h-mob-links">
+        <a class="gcs-h-mob-link" href="/">
+          <i class="fas fa-home" style="margin-right:8px;color:var(--hg)"></i>Home
+        </a>
+
+        <div class="gcs-h-mob-link" onclick="gcsHSub('mob-col', this)">
+          <i class="fas fa-layer-group" style="margin-right:8px;color:var(--hg)"></i>
+          All Collections
+          <i class="fas fa-chevron-down"></i>
+        </div>
+        <div class="gcs-h-mob-sub" id="mob-col">
+          <a href="#">All Products</a>
+          <a href="#">Printed</a>
+          <a href="#">Cotton Wear</a>
+          <a href="#">Suit Sets</a>
+          <a href="#">Sarees</a>
+          <a href="#">Lehengas</a>
+        </div>
+
+        <a class="gcs-h-mob-link" href="#">
+          <i class="fas fa-star" style="margin-right:8px;color:var(--hg)"></i>New Arrivals
+        </a>
+        <a class="gcs-h-mob-link" href="#">
+          <i class="fas fa-fire" style="margin-right:8px;color:var(--hr)"></i>Best Sellers
+        </a>
+        <a class="gcs-h-mob-link" href="#">
+          <i class="fas fa-info-circle" style="margin-right:8px;color:var(--hg)"></i>About Us
+        </a>
+
+        <a class="gcs-h-mob-link" href="trackorder.html">
+          <i class="fas fa-truck" style="margin-right:8px;color:var(--hg)"></i>Track Order
+        </a>
+
+
+        <a class="gcs-h-mob-link" href="/login">
+          <i class="fas fa-user" style="margin-right:8px;color:var(--hg)"></i>Login / Register
+        </a>
+      </div>
+
+    </div><!-- /gcs-h-mob-menu -->
+
+  </div><!-- /gcs-h -->
+
+
+  <script>
+    (function () {
+      'use strict';
+
+      /* ── Element refs ── */
+      var hdr = document.getElementById('gcs-h-main');
+      var ham = document.getElementById('gcs-h-ham');
+      var mob = document.getElementById('gcs-h-mob');
+      var overlay = document.getElementById('gcs-h-overlay');
+
+      var menuOpen = false;
+
+      /* ══════════════════════════════════════════════
+         OPEN / CLOSE HELPERS
+         All menu state changes go through these two
+         functions — nowhere else.
+      ══════════════════════════════════════════════ */
+      function openMenu() {
+        menuOpen = true;
+        mob.classList.add('open');
+        ham.classList.add('open');
+        overlay.classList.add('open');
+        ham.setAttribute('aria-expanded', 'true');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeMenu() {
+        menuOpen = false;
+        mob.classList.remove('open');
+        ham.classList.remove('open');
+        overlay.classList.remove('open');
+        ham.setAttribute('aria-expanded', 'false');
+        document.body.style.overflow = '';
+      }
+
+      /* ══════════════════════════════════════════════
+         HAMBURGER TOGGLE
+         Called ONLY by the hamburger button click.
+         stopPropagation() stops the event reaching
+         anything else (overlay, document, etc.).
+      ══════════════════════════════════════════════ */
+      window.gcsHToggle = function (e) {
+        if (e) e.stopPropagation();   /* ← KEY FIX: don't let click bubble */
+        menuOpen ? closeMenu() : openMenu();
+      };
+
+      /* ══════════════════════════════════════════════
+         CLOSE — used by the ✕ button inside menu
+      ══════════════════════════════════════════════ */
+      window.gcsHClose = function () {
+        closeMenu();
+      };
+
+      /* ══════════════════════════════════════════════
+         OVERLAY CLICK — closes the menu.
+         We attach this via addEventListener so we
+         can use stopPropagation if needed.
+         The overlay only has pointer-events when .open
+         (see CSS), so this can NEVER fire when the
+         menu is closed — no accidental triggers.
+      ══════════════════════════════════════════════ */
+      overlay.addEventListener('click', function (e) {
+        e.stopPropagation();
+        closeMenu();
+      });
+
+      /* ══════════════════════════════════════════════
+         SAFETY NET — Escape key closes menu
+      ══════════════════════════════════════════════ */
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && menuOpen) closeMenu();
+      });
+
+      /* ══════════════════════════════════════════════
+         STICKY HEADER on scroll
+      ══════════════════════════════════════════════ */
+      var ticking = false;
+      window.addEventListener('scroll', function () {
+        if (!ticking) {
+          requestAnimationFrame(function () {
+            if (hdr) hdr.classList.toggle('gcs-h-scrolled', window.scrollY > 50);
+            ticking = false;
+          });
+          ticking = true;
+        }
+      });
+
+      /* ══════════════════════════════════════════════
+         MOBILE SUBMENU TOGGLE
+      ══════════════════════════════════════════════ */
+      window.gcsHSub = function (id, triggerEl) {
+        var sub = document.getElementById(id);
+        if (!sub) return;
+        var isOpen = sub.classList.toggle('open');
+        /* toggle arrow on the trigger row */
+        if (triggerEl) triggerEl.classList.toggle('gcs-sub-open', isOpen);
+      };
+
+      /* ══════════════════════════════════════════════
+         SEARCH
+      ══════════════════════════════════════════════ */
+      window.gcsHSearch = function () {
+        var q = document.getElementById('gcs-h-q');
+        var c = document.getElementById('gcs-h-cat');
+        if (q && q.value.trim()) {
+          window.location.href = '/search?q=' + encodeURIComponent(q.value.trim()) +
+            (c && c.value ? '&cat=' + c.value : '');
+        }
+      };
+      var qi = document.getElementById('gcs-h-q');
+      if (qi) qi.addEventListener('keydown', function (e) { if (e.key === 'Enter') gcsHSearch(); });
+
+      /* ══════════════════════════════════════════════
+         NAV ACTIVE STATE
+      ══════════════════════════════════════════════ */
+      var path = window.location.pathname;
+      document.querySelectorAll('.gcs-h-nav-links > li > a').forEach(function (a) {
+        a.closest('li').classList.toggle('gcs-h-active', a.getAttribute('href') === path);
+      });
+
+      /* ══════════════════════════════════════════════
+         WISHLIST DEMO
+      ══════════════════════════════════════════════ */
+      window.gcsHWishlist = function (btn) {
+        var badge = document.getElementById('gcs-h-wish-count');
+        var n = parseInt(badge.textContent) || 0;
+        badge.textContent = n + 1;
+        badge.classList.remove('bump');
+        void badge.offsetWidth; /* reflow to restart animation */
+        badge.classList.add('bump');
+        setTimeout(function () { badge.classList.remove('bump'); }, 500);
+      };
+
+    })();
+  </script>
+
+  <!-- ══ NAVBAR END ══ -->
+
+  <!-- NAVBAR END -->
+
+
+
+
+
+
+
+
+
+
+
+  <!-- Notification Bar -->
+  <div class="notification-bar">
+    <div class="container">
+      <div class="notification-content">
+        <span class="notification-label">Updates:</span>
+        <i class="fas fa-shield-alt notification-icon"></i>
+        <span>Beware of Fraud Calls: We at ShipDelight or our courier partners will never ask for OTP, bank details, or
+          additional payments via calls, SMS, or QR codes.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Logo Section -->
+  <!-- <div class="logo-section">
         <a href="index.html" class="brand-logo"><img src="images/logo.png" alt="" height="100px"  width="100px"></a>
         <div class="brand-tagline">Ethnic Couture</div>
     </div> -->
 
-    <!-- Main Content -->
-    <div class="container main-container">
-        <div class="row tracking-wrapper g-0">
-            <!-- Image Column -->
-            <div class="col-lg-6">
-                <div class="image-side">
-                    <img src="https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=800&q=80" alt="Traditional Fashion">
-                    <div class="floating-badge">
-                        <i class="fas fa-truck-fast"></i>
-                        <span>Free Shipping</span>
-                    </div>
-                    <div class="image-overlay">
-                        <h3>Elegant Traditions</h3>
-                        <p>Track your exclusive ethnic wear order with real-time updates</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Form Column -->
-            <div class="col-lg-6">
-                <div class="form-side">
-                    <div class="form-header">
-                        <h1>Track Order By</h1>
-                        <p>Enter your tracking details below to get real-time shipment updates</p>
-                    </div>
-
-                    <form id="trackingForm">
-                        <!-- Radio Options -->
-                        <div class="track-options">
-                            <label class="radio-card">
-                                <input type="radio" name="trackType" value="awb" id="awbRadio">
-                                <div class="radio-content">
-                                    <div class="radio-dot"></div>
-                                    <span class="radio-label">AWB Number</span>
-                                </div>
-                            </label>
-                            <label class="radio-card">
-                                <input type="radio" name="trackType" value="order" id="orderRadio" checked>
-                                <div class="radio-content">
-                                    <div class="radio-dot"></div>
-                                    <span class="radio-label">Order Number</span>
-                                </div>
-                            </label>
-                        </div>
-
-                        <!-- Input Field -->
-                        <div class="input-group-custom">
-                            <input type="text" id="trackInput" placeholder=" " required>
-                            <label for="trackInput" id="inputLabel">Enter Order Number to search</label>
-                            <i class="fas fa-search input-icon"></i>
-                        </div>
-
-                        <!-- Track Button -->
-                        <button type="submit" class="btn-track" id="trackBtn">
-                            Track Order
-                            <i class="fas fa-arrow-right"></i>
-                        </button>
-
-                        <!-- Terms -->
-                        <div class="terms-text">
-                            By proceeding, you accept our <a href="#">Terms & Conditions</a>
-                        </div>
-                    </form>
-
-                    <!-- Tracking Result -->
-                    <div class="tracking-result" id="trackingResult">
-                        <div class="result-card">
-                            <div class="result-header">
-                                <div>
-                                    <h5 class="mb-1" id="resultId">Order #ORD123456</h5>
-                                    <small class="text-muted">Estimated Delivery: <strong id="estDate">Tomorrow</strong></small>
-                                </div>
-                                <span class="result-status" id="resultStatus">
-                                    <span class="status-dot"></span>
-                                    <span id="statusText">In Transit</span>
-                                </span>
-                            </div>
-                            <div class="timeline" id="timeline">
-                                <!-- Timeline items injected by JS -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+  <!-- Main Content -->
+  <div class="container main-container">
+    <div class="row tracking-wrapper g-0">
+      <!-- Image Column -->
+      <div class="col-lg-6">
+        <div class="image-side">
+          <img src="https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=800&q=80" alt="Traditional Fashion">
+          <div class="floating-badge">
+            <i class="fas fa-truck-fast"></i>
+            <span>Free Shipping</span>
+          </div>
+          <div class="image-overlay">
+            <h3>Elegant Traditions</h3>
+            <p>Track your exclusive ethnic wear order with real-time updates</p>
+          </div>
         </div>
-    </div>
+      </div>
 
-    <!-- <div class="powered-footer">
+      <!-- Form Column -->
+      <div class="col-lg-6">
+        <div class="form-side">
+          <div class="form-header">
+            <h1>Track Order By</h1>
+            <p>Enter your tracking details below to get real-time shipment updates</p>
+          </div>
+
+          <form id="trackingForm">
+            <!-- Radio Options -->
+            <div class="track-options">
+              <label class="radio-card">
+                <input type="radio" name="trackType" value="awb" id="awbRadio">
+                <div class="radio-content">
+                  <div class="radio-dot"></div>
+                  <span class="radio-label">AWB Number</span>
+                </div>
+              </label>
+              <label class="radio-card">
+                <input type="radio" name="trackType" value="order" id="orderRadio" checked>
+                <div class="radio-content">
+                  <div class="radio-dot"></div>
+                  <span class="radio-label">Order Number</span>
+                </div>
+              </label>
+            </div>
+
+            <!-- Input Field -->
+            <div class="input-group-custom">
+              <input type="text" id="trackInput" placeholder=" " required>
+              <label for="trackInput" id="inputLabel">Enter Order Number to search</label>
+              <i class="fas fa-search input-icon"></i>
+            </div>
+
+            <!-- Track Button -->
+            <button type="submit" class="btn-track" id="trackBtn">
+              Track Order
+              <i class="fas fa-arrow-right"></i>
+            </button>
+
+            <!-- Terms -->
+            <div class="terms-text">
+              By proceeding, you accept our <a href="#">Terms & Conditions</a>
+            </div>
+          </form>
+
+          <!-- Tracking Result -->
+          <div class="tracking-result" id="trackingResult">
+            <div class="result-card">
+              <div class="result-header">
+                <div>
+                  <h5 class="mb-1" id="resultId">Order #ORD123456</h5>
+                  <small class="text-muted">Estimated Delivery: <strong id="estDate">Tomorrow</strong></small>
+                </div>
+                <span class="result-status" id="resultStatus">
+                  <span class="status-dot"></span>
+                  <span id="statusText">In Transit</span>
+                </span>
+              </div>
+              <div class="timeline" id="timeline">
+                <!-- Timeline items injected by JS -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- <div class="powered-footer">
         <span>Powered By</span>
         <i class="fas fa-truck"></i>
         <strong>ShipDelight</strong>
@@ -1833,438 +2240,618 @@
   <!-- ║     GROVER CLOTH STORE — FOOTER START      -->
 
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=DM+Sans:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-<style>
-/* ── scoped reset ── */
-.gcs-ftr-root *, .gcs-ftr-root *::before, .gcs-ftr-root *::after {
-  box-sizing: border-box; margin: 0; padding: 0;
-}
-.gcs-ftr-root {
-  --f-navy:   #1a2044;
-  --f-gold:   #c9a227;
-  --f-red:    #CC0D39;
-  --f-cream:  #fdf8f2;
-  --f-white:  #fff;
-  --f-border: #e8ddd4;
-  --f-muted:  #888;
-  --f-text:   #2c2c2c;
-  font-family: 'DM Sans', sans-serif;
-  width: 100%;
-}
-
-/* ══ MARQUEE STRIP ══ */
-.gcs-ftr-marquee {
-  background: var(--f-white);
-  border-top: 1px solid var(--f-border);
-  border-bottom: 1px solid var(--f-border);
-  padding: 12px 0; overflow: hidden;
-}
-.gcs-ftr-marquee-track {
-  display: flex; white-space: nowrap;
-  animation: gcs-ftr-ltr 32s linear infinite;
-}
-.gcs-ftr-marquee-track:hover { animation-play-state: paused; }
-.gcs-ftr-marquee-item {
-  display: inline-flex; align-items: center; gap: 10px;
-  padding: 0 36px; font-size: 12px; font-weight: 700;
-  letter-spacing: 2px; text-transform: uppercase; color: var(--f-navy);
-}
-.gcs-ftr-marquee-sep { color: var(--f-gold); font-size: 16px; }
-@keyframes gcs-ftr-ltr { from{transform:translateX(-50%)} to{transform:translateX(0)} }
-
-/* ══ MAIN FOOTER ══ */
-.gcs-footer-main {
-  background: var(--f-cream);
-  padding: 56px 20px 40px;
-  position: relative;
-  overflow: hidden;
-}
-/* subtle background pattern */
-.gcs-footer-main::before {
-  content:'';
-  position:absolute; inset:0;
-  background-image:
-    radial-gradient(circle at 10% 20%, rgba(201,162,39,.06) 0%, transparent 40%),
-    radial-gradient(circle at 90% 80%, rgba(26,32,68,.05) 0%, transparent 40%);
-  pointer-events:none;
-}
-
-.gcs-ftr-grid {
-  max-width: 1300px; margin: 0 auto;
-  display: grid;
-  grid-template-columns: 2fr 1fr 1.4fr 1.6fr;
-  gap: 48px;
-  position: relative;
-  z-index: 1;
-}
-
-/* Brand column */
-.gcs-ftr-logo-wrap {
-  display: flex; align-items: center; gap: 12px;
-  margin-bottom: 18px;
-  text-decoration: none;
-}
-.gcs-ftr-logo-wrap img {
-  width: 64px; height: 64px; border-radius: 50%; object-fit: contain;
-  transition: transform .4s cubic-bezier(.34,1.56,.64,1);
-  filter: drop-shadow(0 3px 8px rgba(0,0,0,.15));
-}
-.gcs-ftr-logo-wrap:hover img { transform: scale(1.08) rotate(3deg); }
-.gcs-ftr-brand-name {
-  line-height: 1.2;
-}
-.gcs-ftr-brand-name strong {
-  display: block;
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 18px; font-weight: 700; color: var(--f-navy);
-}
-.gcs-ftr-brand-name span {
-  font-size: 10px; color: var(--f-gold); font-weight: 600;
-  letter-spacing: 1.5px; text-transform: uppercase;
-}
-.gcs-ftr-desc {
-  font-size: 13.5px; color: #666; line-height: 1.75;
-  margin-bottom: 22px;
-}
-.gcs-ftr-social {
-  display: flex; gap: 10px;
-}
-.gcs-ftr-social a {
-  width: 36px; height: 36px; border-radius: 10px;
-  background: var(--f-white); border: 1.5px solid var(--f-border);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 15px; color: var(--f-navy); text-decoration: none;
-  transition: all .3s cubic-bezier(.34,1.56,.64,1);
-}
-.gcs-ftr-social a:hover {
-  background: var(--f-red); color: #fff; border-color: var(--f-red);
-  transform: translateY(-3px) scale(1.12);
-  box-shadow: 0 6px 16px rgba(204,13,57,.3);
-}
-
-/* Column headings */
-.gcs-ftr-col-title {
-  font-size: 13px; font-weight: 700; color: var(--f-navy);
-  text-transform: uppercase; letter-spacing: 1.5px;
-  margin-bottom: 20px; position: relative; padding-bottom: 10px;
-}
-.gcs-ftr-col-title::after {
-  content:''; position:absolute; bottom:0; left:0;
-  width:32px; height:2px; background:var(--f-gold); border-radius:2px;
-}
-
-/* Links */
-.gcs-ftr-links { list-style:none; }
-.gcs-ftr-links li { margin-bottom: 10px; }
-.gcs-ftr-links a {
-  font-size: 13.5px; color: #666; text-decoration: none;
-  transition: all .2s; position: relative; padding-left: 0;
-  display: inline-flex; align-items: center; gap: 6px;
-}
-.gcs-ftr-links a::before {
-  content:''; width: 0; height: 1px; background: var(--f-red);
-  transition: width .3s; display:block; flex-shrink:0;
-}
-.gcs-ftr-links a:hover { color: var(--f-red); }
-.gcs-ftr-links a:hover::before { width: 12px; }
-
-/* Visit store */
-.gcs-ftr-store-item {
-  display: flex; gap: 10px; margin-bottom: 14px; align-items: flex-start;
-}
-.gcs-ftr-store-item i {
-  color: var(--f-gold); font-size: 15px; flex-shrink: 0; margin-top: 2px;
-}
-.gcs-ftr-store-item span { font-size: 13.5px; color: #666; line-height: 1.6; }
-.gcs-ftr-store-item a { color: var(--f-navy); text-decoration:none; font-weight:600; }
-.gcs-ftr-store-item a:hover { color: var(--f-red); }
-
-/* ══ BOTTOM BAR ══ */
-.gcs-footer-bottom {
-  background: var(--f-navy);
-  padding: 18px 20px;
-}
-.gcs-ftr-bottom-inner {
-  max-width: 1300px; margin: 0 auto;
-  display: flex; align-items: center; justify-content: space-between;
-  flex-wrap: wrap; gap: 14px;
-}
-.gcs-ftr-copyright {
-  font-size: 12.5px; color: rgba(255,255,255,.6);
-}
-.gcs-ftr-copyright strong { color: var(--f-gold); }
-
-/* Payment icons */
-.gcs-ftr-payments {
-  display: flex; gap: 8px; align-items: center;
-}
-.gcs-pay-icon {
-  background: #fff; border-radius: 6px;
-  padding: 4px 10px; font-size: 10px; font-weight: 800;
-  letter-spacing: .5px; color: var(--f-navy);
-  display: flex; align-items: center; gap: 4px;
-  box-shadow: 0 2px 6px rgba(0,0,0,.1);
-  transition: transform .25s;
-}
-.gcs-pay-icon:hover { transform: translateY(-2px); }
-.gcs-pay-icon.visa  { color: #1a1f71; }
-.gcs-pay-icon.mc    { color: #eb001b; }
-.gcs-pay-icon.pp    { color: #003087; }
-.gcs-pay-icon.gp    { color: #4285f4; }
-
-/* ══ REVEAL ANIMATIONS ══ */
-.gcs-ftr-reveal {
-  opacity: 0; transform: translateY(24px);
-  transition: opacity .6s cubic-bezier(.4,0,.2,1), transform .6s cubic-bezier(.4,0,.2,1);
-}
-.gcs-ftr-reveal.visible { opacity: 1; transform: translateY(0); }
-
-/* ══ RESPONSIVE ══ */
-@media (max-width: 1024px) {
-  .gcs-ftr-grid { grid-template-columns: 1fr 1fr; gap: 36px; }
-}
-@media (max-width: 600px) {
-  .gcs-ftr-grid { grid-template-columns: 1fr; gap: 28px; }
-  .gcs-ftr-bottom-inner { flex-direction: column; text-align: center; }
-  .gcs-ftr-payments { justify-content: center; }
-}
-</style>
-
-<div class="gcs-ftr-root">
-
-  <!-- Marquee -->
-  <div class="gcs-ftr-marquee">
-    <div class="gcs-ftr-marquee-track" id="gcs-ftr-track"></div>
-  </div>
-
-  <!-- Main footer -->
-  <footer class="gcs-footer-main">
-    <div class="gcs-ftr-grid">
-
-      <!-- Brand -->
-      <div class="gcs-ftr-reveal">
-        <a href="/" class="gcs-ftr-logo-wrap">
-          <img src="images/logo.png" alt="Grover Cloth Store">
-          <div class="gcs-ftr-brand-name">
-            <strong>Grover Cloth Store</strong>
-            <span>Meet Your Fashion</span>
-          </div>
-        </a>
-        <p class="gcs-ftr-desc">
-          Grover Cloth Store offers stylish, high-quality clothing designed for comfort, confidence, and everyday wear. From ethnic to contemporary — your style, our passion.
-        </p>
-        <div class="gcs-ftr-social">
-          <a href="#" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
-          <a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
-          <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
-          <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
-        </div>
-      </div>
-
-      <!-- Explore -->
-      <div class="gcs-ftr-reveal" style="transition-delay:.1s">
-        <h4 class="gcs-ftr-col-title">Explore</h4>
-        <ul class="gcs-ftr-links">
-          <li><a href="#">About Us</a></li>
-          <li><a href="#">Exchange</a></li>
-          <li><a href="#">Bulk Order</a></li>
-          <li><a href="#">Contact Us</a></li>
-          <li><a href="#">New Arrivals</a></li>
-          <li><a href="#">Best Sellers</a></li>
-        </ul>
-      </div>
-
-      <!-- Policies -->
-      <div class="gcs-ftr-reveal" style="transition-delay:.18s">
-        <h4 class="gcs-ftr-col-title">Policies</h4>
-        <ul class="gcs-ftr-links">
-          <li><a href="#">Shipping Policy</a></li>
-          <li><a href="#">Privacy Policy</a></li>
-          <li><a href="#">Cancellation &amp; Exchange</a></li>
-          <li><a href="#">Terms &amp; Services</a></li>
-          <li><a href="#">Return Policy</a></li>
-        </ul>
-      </div>
-
-      <!-- Visit Store -->
-      <div class="gcs-ftr-reveal" style="transition-delay:.26s">
-        <h4 class="gcs-ftr-col-title">Visit Our Store</h4>
-        <div class="gcs-ftr-store-item">
-          <i class="fas fa-map-marker-alt"></i>
-          <span>Hassaria Market, In front of Lal Kothi, Hanumangarh Town, Hanumangarh, Rajasthan 335513</span>
-        </div>
-        <div class="gcs-ftr-store-item">
-          <i class="fas fa-phone-alt"></i>
-          <span><a href="tel:8619375610">8619375610</a></span>
-        </div>
-        <div class="gcs-ftr-store-item">
-          <i class="fas fa-envelope"></i>
-          <span><a href="mailto:groverclothstore@gmail.com">groverclothstore@gmail.com</a></span>
-        </div>
-        <div class="gcs-ftr-store-item">
-          <i class="fab fa-whatsapp"></i>
-          <span><a href="https://wa.me/8619375610">Chat on WhatsApp</a></span>
-        </div>
-      </div>
-
-    </div>
-  </footer>
-
-  <!-- Bottom bar -->
-  <div class="gcs-footer-bottom">
-    <div class="gcs-ftr-bottom-inner">
-      <p class="gcs-ftr-copyright">
-        © 2026 <strong>Grover Cloth Store.</strong> All Rights Reserved.
-      </p>
-      <div class="gcs-ftr-payments">
-        <div class="gcs-pay-icon visa"><i class="fab fa-cc-visa" style="font-size:18px;"></i></div>
-        <div class="gcs-pay-icon mc"><i class="fab fa-cc-mastercard" style="font-size:18px;"></i></div>
-        <div class="gcs-pay-icon pp"><i class="fab fa-cc-paypal" style="font-size:18px;"></i></div>
-        <div class="gcs-pay-icon gp" style="font-size:11px; font-weight:800; color:#4285f4;">G Pay</div>
-      </div>
-    </div>
-  </div>
-
-
-
-
-  <div class="container-full">
-			<img src="images/grover-footer.jpg" sizes="100vw" alt="Grover Cloth Store Footer Banner" loading="lazy" width="1920" height="400" style="width:100%; height:auto;">
-		</div>
-</div>
-
-<script>
-(function(){
-  /* marquee */
-  var track = document.getElementById('gcs-ftr-track');
-  if(track){
-    var html = '';
-    for(var i=0;i<20;i++){
-      html += '<span class="gcs-ftr-marquee-item">GROVER CLOTH STORE <span class="gcs-ftr-marquee-sep">✦</span></span>';
+  <style>
+    /* ── scoped reset ── */
+    .gcs-ftr-root *,
+    .gcs-ftr-root *::before,
+    .gcs-ftr-root *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
-    track.innerHTML = html;
-  }
 
-  /* scroll reveal */
-  if('IntersectionObserver' in window){
-    var io = new IntersectionObserver(function(entries){
-      entries.forEach(function(e){
-        if(e.isIntersecting){ e.target.classList.add('visible'); io.unobserve(e.target); }
-      });
-    }, {threshold:0.12});
-    document.querySelectorAll('.gcs-ftr-reveal').forEach(function(el){ io.observe(el); });
-  } else {
-    document.querySelectorAll('.gcs-ftr-reveal').forEach(function(el){ el.classList.add('visible'); });
-  }
-})();
-</script>
+    .gcs-ftr-root {
+      --f-navy: #1a2044;
+      --f-gold: #c9a227;
+      --f-red: #CC0D39;
+      --f-cream: #fdf8f2;
+      --f-white: #fff;
+      --f-border: #e8ddd4;
+      --f-muted: #888;
+      --f-text: #2c2c2c;
+      font-family: 'DM Sans', sans-serif;
+      width: 100%;
+    }
+
+    /* ══ MARQUEE STRIP ══ */
+    .gcs-ftr-marquee {
+      background: var(--f-white);
+      border-top: 1px solid var(--f-border);
+      border-bottom: 1px solid var(--f-border);
+      padding: 12px 0;
+      overflow: hidden;
+    }
+
+    .gcs-ftr-marquee-track {
+      display: flex;
+      white-space: nowrap;
+      animation: gcs-ftr-ltr 32s linear infinite;
+    }
+
+    .gcs-ftr-marquee-track:hover {
+      animation-play-state: paused;
+    }
+
+    .gcs-ftr-marquee-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 36px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--f-navy);
+    }
+
+    .gcs-ftr-marquee-sep {
+      color: var(--f-gold);
+      font-size: 16px;
+    }
+
+    @keyframes gcs-ftr-ltr {
+      from {
+        transform: translateX(-50%)
+      }
+
+      to {
+        transform: translateX(0)
+      }
+    }
+
+    /* ══ MAIN FOOTER ══ */
+    .gcs-footer-main {
+      background: var(--f-cream);
+      padding: 56px 20px 40px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* subtle background pattern */
+    .gcs-footer-main::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        radial-gradient(circle at 10% 20%, rgba(201, 162, 39, .06) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(26, 32, 68, .05) 0%, transparent 40%);
+      pointer-events: none;
+    }
+
+    .gcs-ftr-grid {
+      max-width: 1300px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1.4fr 1.6fr;
+      gap: 48px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Brand column */
+    .gcs-ftr-logo-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 18px;
+      text-decoration: none;
+    }
+
+    .gcs-ftr-logo-wrap img {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      object-fit: contain;
+      transition: transform .4s cubic-bezier(.34, 1.56, .64, 1);
+      filter: drop-shadow(0 3px 8px rgba(0, 0, 0, .15));
+    }
+
+    .gcs-ftr-logo-wrap:hover img {
+      transform: scale(1.08) rotate(3deg);
+    }
+
+    .gcs-ftr-brand-name {
+      line-height: 1.2;
+    }
+
+    .gcs-ftr-brand-name strong {
+      display: block;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--f-navy);
+    }
+
+    .gcs-ftr-brand-name span {
+      font-size: 10px;
+      color: var(--f-gold);
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+
+    .gcs-ftr-desc {
+      font-size: 13.5px;
+      color: #666;
+      line-height: 1.75;
+      margin-bottom: 22px;
+    }
+
+    .gcs-ftr-social {
+      display: flex;
+      gap: 10px;
+    }
+
+    .gcs-ftr-social a {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: var(--f-white);
+      border: 1.5px solid var(--f-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      color: var(--f-navy);
+      text-decoration: none;
+      transition: all .3s cubic-bezier(.34, 1.56, .64, 1);
+    }
+
+    .gcs-ftr-social a:hover {
+      background: var(--f-red);
+      color: #fff;
+      border-color: var(--f-red);
+      transform: translateY(-3px) scale(1.12);
+      box-shadow: 0 6px 16px rgba(204, 13, 57, .3);
+    }
+
+    /* Column headings */
+    .gcs-ftr-col-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--f-navy);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 20px;
+      position: relative;
+      padding-bottom: 10px;
+    }
+
+    .gcs-ftr-col-title::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 32px;
+      height: 2px;
+      background: var(--f-gold);
+      border-radius: 2px;
+    }
+
+    /* Links */
+    .gcs-ftr-links {
+      list-style: none;
+    }
+
+    .gcs-ftr-links li {
+      margin-bottom: 10px;
+    }
+
+    .gcs-ftr-links a {
+      font-size: 13.5px;
+      color: #666;
+      text-decoration: none;
+      transition: all .2s;
+      position: relative;
+      padding-left: 0;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .gcs-ftr-links a::before {
+      content: '';
+      width: 0;
+      height: 1px;
+      background: var(--f-red);
+      transition: width .3s;
+      display: block;
+      flex-shrink: 0;
+    }
+
+    .gcs-ftr-links a:hover {
+      color: var(--f-red);
+    }
+
+    .gcs-ftr-links a:hover::before {
+      width: 12px;
+    }
+
+    /* Visit store */
+    .gcs-ftr-store-item {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 14px;
+      align-items: flex-start;
+    }
+
+    .gcs-ftr-store-item i {
+      color: var(--f-gold);
+      font-size: 15px;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .gcs-ftr-store-item span {
+      font-size: 13.5px;
+      color: #666;
+      line-height: 1.6;
+    }
+
+    .gcs-ftr-store-item a {
+      color: var(--f-navy);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .gcs-ftr-store-item a:hover {
+      color: var(--f-red);
+    }
+
+    /* ══ BOTTOM BAR ══ */
+    .gcs-footer-bottom {
+      background: var(--f-navy);
+      padding: 18px 20px;
+    }
+
+    .gcs-ftr-bottom-inner {
+      max-width: 1300px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .gcs-ftr-copyright {
+      font-size: 12.5px;
+      color: rgba(255, 255, 255, .6);
+    }
+
+    .gcs-ftr-copyright strong {
+      color: var(--f-gold);
+    }
+
+    /* Payment icons */
+    .gcs-ftr-payments {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .gcs-pay-icon {
+      background: #fff;
+      border-radius: 6px;
+      padding: 4px 10px;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: .5px;
+      color: var(--f-navy);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, .1);
+      transition: transform .25s;
+    }
+
+    .gcs-pay-icon:hover {
+      transform: translateY(-2px);
+    }
+
+    .gcs-pay-icon.visa {
+      color: #1a1f71;
+    }
+
+    .gcs-pay-icon.mc {
+      color: #eb001b;
+    }
+
+    .gcs-pay-icon.pp {
+      color: #003087;
+    }
+
+    .gcs-pay-icon.gp {
+      color: #4285f4;
+    }
+
+    /* ══ REVEAL ANIMATIONS ══ */
+    .gcs-ftr-reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity .6s cubic-bezier(.4, 0, .2, 1), transform .6s cubic-bezier(.4, 0, .2, 1);
+    }
+
+    .gcs-ftr-reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ══ RESPONSIVE ══ */
+    @media (max-width: 1024px) {
+      .gcs-ftr-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 36px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .gcs-ftr-grid {
+        grid-template-columns: 1fr;
+        gap: 28px;
+      }
+
+      .gcs-ftr-bottom-inner {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .gcs-ftr-payments {
+        justify-content: center;
+      }
+    }
+  </style>
+
+  <div class="gcs-ftr-root">
+
+    <!-- Marquee -->
+    <div class="gcs-ftr-marquee">
+      <div class="gcs-ftr-marquee-track" id="gcs-ftr-track"></div>
+    </div>
+
+    <!-- Main footer -->
+    <footer class="gcs-footer-main">
+      <div class="gcs-ftr-grid">
+
+        <!-- Brand -->
+        <div class="gcs-ftr-reveal">
+          <a href="/" class="gcs-ftr-logo-wrap">
+            <img src="images/logo.png" alt="Grover Cloth Store">
+            <div class="gcs-ftr-brand-name">
+              <strong>Grover Cloth Store</strong>
+              <span>Meet Your Fashion</span>
+            </div>
+          </a>
+          <p class="gcs-ftr-desc">
+            Grover Cloth Store offers stylish, high-quality clothing designed for comfort, confidence, and everyday
+            wear. From ethnic to contemporary — your style, our passion.
+          </p>
+          <div class="gcs-ftr-social">
+            <a href="#" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+            <a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
+          </div>
+        </div>
+
+        <!-- Explore -->
+        <div class="gcs-ftr-reveal" style="transition-delay:.1s">
+          <h4 class="gcs-ftr-col-title">Explore</h4>
+          <ul class="gcs-ftr-links">
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Exchange</a></li>
+            <li><a href="#">Bulk Order</a></li>
+            <li><a href="#">Contact Us</a></li>
+            <li><a href="#">New Arrivals</a></li>
+            <li><a href="#">Best Sellers</a></li>
+          </ul>
+        </div>
+
+        <!-- Policies -->
+        <div class="gcs-ftr-reveal" style="transition-delay:.18s">
+          <h4 class="gcs-ftr-col-title">Policies</h4>
+          <ul class="gcs-ftr-links">
+            <li><a href="#">Shipping Policy</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Cancellation &amp; Exchange</a></li>
+            <li><a href="#">Terms &amp; Services</a></li>
+            <li><a href="#">Return Policy</a></li>
+          </ul>
+        </div>
+
+        <!-- Visit Store -->
+        <div class="gcs-ftr-reveal" style="transition-delay:.26s">
+          <h4 class="gcs-ftr-col-title">Visit Our Store</h4>
+          <div class="gcs-ftr-store-item">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>Hissaria Market, In front of Lal Kothi, Hanumangarh Town, Hanumangarh, Rajasthan 335513</span>
+          </div>
+          <div class="gcs-ftr-store-item">
+            <i class="fas fa-phone-alt"></i>
+            <span><a href="tel:8619375610">8619375610</a></span>
+          </div>
+          <div class="gcs-ftr-store-item">
+            <i class="fas fa-envelope"></i>
+            <span><a href="mailto:groverclothstore@gmail.com">groverclothstore@gmail.com</a></span>
+          </div>
+          <div class="gcs-ftr-store-item">
+            <i class="fab fa-whatsapp"></i>
+            <span><a href="https://wa.me/8619375610">Chat on WhatsApp</a></span>
+          </div>
+        </div>
+
+      </div>
+    </footer>
+
+    <!-- Bottom bar -->
+    <div class="gcs-footer-bottom">
+      <div class="gcs-ftr-bottom-inner">
+        <p class="gcs-ftr-copyright">
+          © 2026 <strong>Grover Cloth Store.</strong> All Rights Reserved.
+        </p>
+        <div class="gcs-ftr-payments">
+          <div class="gcs-pay-icon visa"><i class="fab fa-cc-visa" style="font-size:18px;"></i></div>
+          <div class="gcs-pay-icon mc"><i class="fab fa-cc-mastercard" style="font-size:18px;"></i></div>
+          <div class="gcs-pay-icon pp"><i class="fab fa-cc-paypal" style="font-size:18px;"></i></div>
+          <div class="gcs-pay-icon gp" style="font-size:11px; font-weight:800; color:#4285f4;">G Pay</div>
+        </div>
+      </div>
+    </div>
 
 
-<!-- FOOTER END  -->
 
 
+    <div class="container-full">
+      <img src="images/grover-footer.jpg" sizes="100vw" alt="Grover Cloth Store Footer Banner" loading="lazy"
+        width="1920" height="400" style="width:100%; height:auto;">
+    </div>
+  </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // DOM Elements
-        const trackForm = document.getElementById('trackingForm');
-        const trackInput = document.getElementById('trackInput');
-        const inputLabel = document.getElementById('inputLabel');
-        const awbRadio = document.getElementById('awbRadio');
-        const orderRadio = document.getElementById('orderRadio');
-        const trackBtn = document.getElementById('trackBtn');
-        const trackingResult = document.getElementById('trackingResult');
-        const timeline = document.getElementById('timeline');
-
-        // Update placeholder based on selection
-        function updateInputPlaceholder() {
-            if (awbRadio.checked) {
-                inputLabel.textContent = 'Enter AWB Number to search';
-                trackInput.placeholder = ' ';
-            } else {
-                inputLabel.textContent = 'Enter Order Number to search';
-                trackInput.placeholder = ' ';
-            }
-            trackInput.value = '';
-            trackInput.focus();
+  <script>
+    (function () {
+      /* marquee */
+      var track = document.getElementById('gcs-ftr-track');
+      if (track) {
+        var html = '';
+        for (var i = 0; i < 20; i++) {
+          html += '<span class="gcs-ftr-marquee-item">GROVER CLOTH STORE <span class="gcs-ftr-marquee-sep">✦</span></span>';
         }
+        track.innerHTML = html;
+      }
 
-        awbRadio.addEventListener('change', updateInputPlaceholder);
-        orderRadio.addEventListener('change', updateInputPlaceholder);
+      /* scroll reveal */
+      if ('IntersectionObserver' in window) {
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+          });
+        }, { threshold: 0.12 });
+        document.querySelectorAll('.gcs-ftr-reveal').forEach(function (el) { io.observe(el); });
+      } else {
+        document.querySelectorAll('.gcs-ftr-reveal').forEach(function (el) { el.classList.add('visible'); });
+      }
+    })();
+  </script>
 
-        // Mock Tracking Data Generator
-        function generateTrackingData(type, id) {
-            const statuses = [
-                {
-                    status: 'Delivered',
-                    statusClass: 'status-delivered',
-                    estDate: 'Delivered on May 1, 2026',
-                    events: [
-                        { title: 'Delivered', desc: 'Package delivered to customer', time: 'Today, 2:30 PM', completed: true },
-                        { title: 'Out for Delivery', desc: 'Courier is on the way', time: 'Today, 9:00 AM', completed: true },
-                        { title: 'Arrived at Hub', desc: 'Nearest delivery hub', time: 'Yesterday, 6:45 PM', completed: true },
-                        { title: 'In Transit', desc: 'Moving to destination city', time: 'Apr 30, 11:20 AM', completed: true },
-                        { title: 'Shipped', desc: 'Picked up by courier', time: 'Apr 29, 4:00 PM', completed: true },
-                        { title: 'Order Placed', desc: 'Order confirmed by seller', time: 'Apr 29, 10:00 AM', completed: true }
-                    ]
-                },
-                {
-                    status: 'Out for Delivery',
-                    statusClass: 'status-out',
-                    estDate: 'Today by 8:00 PM',
-                    events: [
-                        { title: 'Out for Delivery', desc: 'Courier is on the way', time: 'Today, 9:00 AM', completed: true, active: true },
-                        { title: 'Arrived at Hub', desc: 'Nearest delivery hub', time: 'Yesterday, 6:45 PM', completed: true },
-                        { title: 'In Transit', desc: 'Moving to destination city', time: 'Yesterday, 11:20 AM', completed: true },
-                        { title: 'Shipped', desc: 'Picked up by courier', time: 'Apr 30, 4:00 PM', completed: true },
-                        { title: 'Order Placed', desc: 'Order confirmed by seller', time: 'Apr 30, 10:00 AM', completed: true }
-                    ]
-                },
-                {
-                    status: 'In Transit',
-                    statusClass: 'status-transit',
-                    estDate: 'May 3, 2026',
-                    events: [
-                        { title: 'In Transit', desc: 'Moving to destination city', time: 'Today, 8:00 AM', completed: true, active: true },
-                        { title: 'Shipped', desc: 'Picked up by courier', time: 'Yesterday, 4:00 PM', completed: true },
-                        { title: 'Order Placed', desc: 'Order confirmed by seller', time: 'Yesterday, 10:00 AM', completed: true }
-                    ]
-                }
-            ];
 
-            // Deterministic random based on input
-            const seed = id.split('').reduce((a, b) => a + b.charCodeAt(0), 0);
-            const index = seed % statuses.length;
-            return statuses[index];
+  <!-- FOOTER END  -->
+
+
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // DOM Elements
+    const trackForm = document.getElementById('trackingForm');
+    const trackInput = document.getElementById('trackInput');
+    const inputLabel = document.getElementById('inputLabel');
+    const awbRadio = document.getElementById('awbRadio');
+    const orderRadio = document.getElementById('orderRadio');
+    const trackBtn = document.getElementById('trackBtn');
+    const trackingResult = document.getElementById('trackingResult');
+    const timeline = document.getElementById('timeline');
+
+    // Update placeholder based on selection
+    function updateInputPlaceholder() {
+      if (awbRadio.checked) {
+        inputLabel.textContent = 'Enter AWB Number to search';
+        trackInput.placeholder = ' ';
+      } else {
+        inputLabel.textContent = 'Enter Order Number to search';
+        trackInput.placeholder = ' ';
+      }
+      trackInput.value = '';
+      trackInput.focus();
+    }
+
+    awbRadio.addEventListener('change', updateInputPlaceholder);
+    orderRadio.addEventListener('change', updateInputPlaceholder);
+
+    // Mock Tracking Data Generator
+    function generateTrackingData(type, id) {
+      const statuses = [
+        {
+          status: 'Delivered',
+          statusClass: 'status-delivered',
+          estDate: 'Delivered on May 1, 2026',
+          events: [
+            { title: 'Delivered', desc: 'Package delivered to customer', time: 'Today, 2:30 PM', completed: true },
+            { title: 'Out for Delivery', desc: 'Courier is on the way', time: 'Today, 9:00 AM', completed: true },
+            { title: 'Arrived at Hub', desc: 'Nearest delivery hub', time: 'Yesterday, 6:45 PM', completed: true },
+            { title: 'In Transit', desc: 'Moving to destination city', time: 'Apr 30, 11:20 AM', completed: true },
+            { title: 'Shipped', desc: 'Picked up by courier', time: 'Apr 29, 4:00 PM', completed: true },
+            { title: 'Order Placed', desc: 'Order confirmed by seller', time: 'Apr 29, 10:00 AM', completed: true }
+          ]
+        },
+        {
+          status: 'Out for Delivery',
+          statusClass: 'status-out',
+          estDate: 'Today by 8:00 PM',
+          events: [
+            { title: 'Out for Delivery', desc: 'Courier is on the way', time: 'Today, 9:00 AM', completed: true, active: true },
+            { title: 'Arrived at Hub', desc: 'Nearest delivery hub', time: 'Yesterday, 6:45 PM', completed: true },
+            { title: 'In Transit', desc: 'Moving to destination city', time: 'Yesterday, 11:20 AM', completed: true },
+            { title: 'Shipped', desc: 'Picked up by courier', time: 'Apr 30, 4:00 PM', completed: true },
+            { title: 'Order Placed', desc: 'Order confirmed by seller', time: 'Apr 30, 10:00 AM', completed: true }
+          ]
+        },
+        {
+          status: 'In Transit',
+          statusClass: 'status-transit',
+          estDate: 'May 3, 2026',
+          events: [
+            { title: 'In Transit', desc: 'Moving to destination city', time: 'Today, 8:00 AM', completed: true, active: true },
+            { title: 'Shipped', desc: 'Picked up by courier', time: 'Yesterday, 4:00 PM', completed: true },
+            { title: 'Order Placed', desc: 'Order confirmed by seller', time: 'Yesterday, 10:00 AM', completed: true }
+          ]
         }
+      ];
 
-        // Create Confetti
-        function createConfetti() {
-            const colors = ['#ff6b6b', '#ffd93d', '#6bcb77', '#4d96ff', '#ff9f45'];
-            for (let i = 0; i < 50; i++) {
-                setTimeout(() => {
-                    const confetti = document.createElement('div');
-                    confetti.className = 'confetti';
-                    confetti.style.left = Math.random() * 100 + 'vw';
-                    confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
-                    confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
-                    confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
-                    document.body.appendChild(confetti);
-                    setTimeout(() => confetti.remove(), 4000);
-                }, i * 30);
-            }
-        }
+      // Deterministic random based on input
+      const seed = id.split('').reduce((a, b) => a + b.charCodeAt(0), 0);
+      const index = seed % statuses.length;
+      return statuses[index];
+    }
 
-        // Render Timeline
-        function renderTimeline(events) {
-            timeline.innerHTML = '';
-            events.forEach((event, index) => {
-                const item = document.createElement('div');
-                item.className = `timeline-item ${event.completed ? 'completed' : ''} ${event.active ? 'active' : ''}`;
-                item.innerHTML = `
+    // Create Confetti
+    function createConfetti() {
+      const colors = ['#ff6b6b', '#ffd93d', '#6bcb77', '#4d96ff', '#ff9f45'];
+      for (let i = 0; i < 50; i++) {
+        setTimeout(() => {
+          const confetti = document.createElement('div');
+          confetti.className = 'confetti';
+          confetti.style.left = Math.random() * 100 + 'vw';
+          confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+          confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+          confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+          document.body.appendChild(confetti);
+          setTimeout(() => confetti.remove(), 4000);
+        }, i * 30);
+      }
+    }
+
+    // Render Timeline
+    function renderTimeline(events) {
+      timeline.innerHTML = '';
+      events.forEach((event, index) => {
+        const item = document.createElement('div');
+        item.className = `timeline-item ${event.completed ? 'completed' : ''} ${event.active ? 'active' : ''}`;
+        item.innerHTML = `
                     <div class="timeline-dot"></div>
                     <div class="timeline-content">
                         <h5>${event.title}</h5>
@@ -2272,73 +2859,74 @@
                         <span class="timeline-time"><i class="far fa-clock"></i> ${event.time}</span>
                     </div>
                 `;
-                timeline.appendChild(item);
-            });
-        }
+        timeline.appendChild(item);
+      });
+    }
 
-        // Form Submit
-        trackForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
+    // Form Submit
+    trackForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
 
-            const value = trackInput.value.trim();
-            if (!value) {
-                trackInput.parentElement.classList.add('shake');
-                setTimeout(() => trackInput.parentElement.classList.remove('shake'), 500);
-                return;
-            }
+      const value = trackInput.value.trim();
+      if (!value) {
+        trackInput.parentElement.classList.add('shake');
+        setTimeout(() => trackInput.parentElement.classList.remove('shake'), 500);
+        return;
+      }
 
-            // Loading State
-            trackBtn.classList.add('loading');
-            trackBtn.innerHTML = 'Tracking... <i class="fas fa-spinner"></i>';
-            trackingResult.style.display = 'none';
+      // Loading State
+      trackBtn.classList.add('loading');
+      trackBtn.innerHTML = 'Tracking... <i class="fas fa-spinner"></i>';
+      trackingResult.style.display = 'none';
 
-            // Simulate API Call
-            await new Promise(resolve => setTimeout(resolve, 1500));
+      // Simulate API Call
+      await new Promise(resolve => setTimeout(resolve, 1500));
 
-            // Generate Data
-            const type = awbRadio.checked ? 'AWB' : 'Order';
-            const data = generateTrackingData(type, value);
+      // Generate Data
+      const type = awbRadio.checked ? 'AWB' : 'Order';
+      const data = generateTrackingData(type, value);
 
-            // Update UI
-            document.getElementById('resultId').textContent = `${type} #${value.toUpperCase()}`;
-            document.getElementById('estDate').textContent = data.estDate;
-            document.getElementById('statusText').textContent = data.status;
+      // Update UI
+      document.getElementById('resultId').textContent = `${type} #${value.toUpperCase()}`;
+      document.getElementById('estDate').textContent = data.estDate;
+      document.getElementById('statusText').textContent = data.status;
 
-            const statusEl = document.getElementById('resultStatus');
-            statusEl.className = `result-status ${data.statusClass}`;
+      const statusEl = document.getElementById('resultStatus');
+      statusEl.className = `result-status ${data.statusClass}`;
 
-            renderTimeline(data.events);
+      renderTimeline(data.events);
 
-            // Show Result
-            trackBtn.classList.remove('loading');
-            trackBtn.innerHTML = 'Track Order <i class="fas fa-arrow-right"></i>';
-            trackingResult.style.display = 'block';
+      // Show Result
+      trackBtn.classList.remove('loading');
+      trackBtn.innerHTML = 'Track Order <i class="fas fa-arrow-right"></i>';
+      trackingResult.style.display = 'block';
 
-            // Confetti if delivered
-            if (data.status === 'Delivered') {
-                createConfetti();
-            }
+      // Confetti if delivered
+      if (data.status === 'Delivered') {
+        createConfetti();
+      }
 
-            // Scroll to result on mobile
-            if (window.innerWidth < 992) {
-                trackingResult.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-            }
-        });
+      // Scroll to result on mobile
+      if (window.innerWidth < 992) {
+        trackingResult.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    });
 
-        // Input Animation on Load
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                trackInput.focus();
-            }, 500);
-        });
+    // Input Animation on Load
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        trackInput.focus();
+      }, 500);
+    });
 
-        // Enter key support
-        trackInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                trackForm.dispatchEvent(new Event('submit'));
-            }
-        });
-        
-    </script>
+    // Enter key support
+    trackInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        trackForm.dispatchEvent(new Event('submit'));
+      }
+    });
+
+  </script>
 </body>
+
 </html>

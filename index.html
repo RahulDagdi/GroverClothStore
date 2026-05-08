@@ -2073,14 +2073,14 @@
 
 
 
-<!-- // floating In=con Whatsapp instagram -->
-<script src="floating-buttons.js"></script>
-<script>
-  FloatingButtons.init({
-    instagram: 'https://www.instagram.com/grover_cloth__store',
-    whatsapp: 'https://api.whatsapp.com/send/?phone=918619375610&text&type=phone_number&app_absent=0',
-  });
-</script>
+    <!-- // floating In=con Whatsapp instagram -->
+    <script src="floating-buttons.js"></script>
+    <script>
+        FloatingButtons.init({
+            instagram: 'https://www.instagram.com/grover_cloth__store',
+            whatsapp: 'https://api.whatsapp.com/send/?phone=918619375610&text&type=phone_number&app_absent=0',
+        });
+    </script>
 
 
 
@@ -2262,11 +2262,11 @@
 
 
 
-<!-- // whatsapp-banner carousal START -->
+    <!-- // whatsapp-banner carousal START -->
 
-<div id="whatsapp-banner"></div>
+    <div id="whatsapp-banner"></div>
 
-<!-- // whatsapp-banner carousal END -->
+    <!-- // whatsapp-banner carousal END -->
 
 
 
@@ -4816,8 +4816,8 @@
         <div class="store-overlay">
             <div class="store-info">
                 <h2>Our Retail Store</h2>
-                <h3>MON-SAT<br>09:30 AM - 06:00 PM</h3>
-                <p>Hassaria Market, In front of Lal Kothi, Hanumangarh Town, Hanumangarh, Rajasthan 335513</p>
+                <h3>MON-SAT<br>09:30 AM to 08:00 PM</h3>
+                <p>Hissaria Market, In front of Lal Kothi, Hanumangarh Town, Hanumangarh, Rajasthan 335513</p>
             </div>
         </div>
     </section>
@@ -4881,12 +4881,12 @@
 
 
 
- <!-- ║     GROVER CLOTH STORE — FOOTER START      -->
+    <!-- ║     GROVER CLOTH STORE — FOOTER START      -->
 
-  <div id="footer"></div>
+    <div id="footer"></div>
 
 
-<!-- FOOTER END  -->
+    <!-- FOOTER END  -->
 
     <script>
 
@@ -4933,23 +4933,23 @@
 
 
 
-    // <!--  NAVBAR START         -->
-  // HEADER fetch
-  fetch("header.html")
-    .then(res => res.text())
-    .then(data => {
-      const header = document.getElementById("header");
-      header.innerHTML = data;
+        // <!--  NAVBAR START         -->
+        // HEADER fetch
+        fetch("header.html")
+            .then(res => res.text())
+            .then(data => {
+                const header = document.getElementById("header");
+                header.innerHTML = data;
 
-      // header ke scripts run karne ke liye
-      const scripts = header.querySelectorAll("script");
-      scripts.forEach(oldScript => {
-        const newScript = document.createElement("script");
-        newScript.textContent = oldScript.textContent;
-        document.body.appendChild(newScript);
-      });
-    });
-    // <!-- ══ NAVBAR END ══ -->
+                // header ke scripts run karne ke liye
+                const scripts = header.querySelectorAll("script");
+                scripts.forEach(oldScript => {
+                    const newScript = document.createElement("script");
+                    newScript.textContent = oldScript.textContent;
+                    document.body.appendChild(newScript);
+                });
+            });
+        // <!-- ══ NAVBAR END ══ -->
 
 
 
@@ -5143,29 +5143,29 @@
 
 
 
-// whatsapp-banner carousal START
- 
-function loadComponent(file, id) {
-  fetch(file)
-    .then(res => res.text())
-    .then(data => {
-      const el = document.getElementById(id);
-      el.innerHTML = data;
+        // whatsapp-banner carousal START
 
-      // script run karne ke liye
-      const scripts = el.querySelectorAll("script");
-      scripts.forEach(oldScript => {
-        const newScript = document.createElement("script");
-        newScript.textContent = oldScript.textContent;
-        document.body.appendChild(newScript);
-      });
-    });
-}
+        function loadComponent(file, id) {
+            fetch(file)
+                .then(res => res.text())
+                .then(data => {
+                    const el = document.getElementById(id);
+                    el.innerHTML = data;
 
-// load banner
-loadComponent("whatsapp-banner.html", "whatsapp-banner");
+                    // script run karne ke liye
+                    const scripts = el.querySelectorAll("script");
+                    scripts.forEach(oldScript => {
+                        const newScript = document.createElement("script");
+                        newScript.textContent = oldScript.textContent;
+                        document.body.appendChild(newScript);
+                    });
+                });
+        }
 
-// whatsapp-banner carousal END 
+        // load banner
+        loadComponent("whatsapp-banner.html", "whatsapp-banner");
+
+        // whatsapp-banner carousal END 
 
 
 
@@ -5243,25 +5243,25 @@ loadComponent("whatsapp-banner.html", "whatsapp-banner");
                 toast(f ? 'Now following @grover_cloth__store 🎉' : 'Unfollowed @grover_cloth__store');
             };
         })();
-  // <!-- ║     GROVER CLOTH STORE — FOOTER START      -->
+        // <!-- ║     GROVER CLOTH STORE — FOOTER START      -->
 
 
-fetch("footer.html")
-  .then(res => res.text())
-  .then(data => {
-    const footer = document.getElementById("footer");
-    footer.innerHTML = data;
+        fetch("footer.html")
+            .then(res => res.text())
+            .then(data => {
+                const footer = document.getElementById("footer");
+                footer.innerHTML = data;
 
-    // script ko run karne ka hack
-    const scripts = footer.querySelectorAll("script");
-    scripts.forEach(oldScript => {
-      const newScript = document.createElement("script");
-      newScript.textContent = oldScript.textContent;
-      document.body.appendChild(newScript);
-    });
-  });
+                // script ko run karne ka hack
+                const scripts = footer.querySelectorAll("script");
+                scripts.forEach(oldScript => {
+                    const newScript = document.createElement("script");
+                    newScript.textContent = oldScript.textContent;
+                    document.body.appendChild(newScript);
+                });
+            });
 
-// <!-- FOOTER END  -->
+        // <!-- FOOTER END  -->
 
 
     </script>
